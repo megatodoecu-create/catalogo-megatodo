@@ -64,11 +64,13 @@ const productos = [
 {
 nombre:"Peluche Stitch",
 precio:"$10",
+categoria:"Peluches",
 foto:"https://via.placeholder.com/200"
 },
 {
 nombre:"Vincha Estrellitas",
 precio:"$2",
+categoria:"Accesorios",
 foto:"https://via.placeholder.com/200"
 }
 ];
@@ -82,7 +84,7 @@ contenedor.innerHTML+=`
 <div class="producto">
 <img src="${p.foto}">
 <h3>${p.nombre}</h3>
-<p>${p.precio}</p>
+<p>Categoría: ${p.categoria}</p>
 </div>
 `;
 });
