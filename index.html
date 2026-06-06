@@ -81,67 +81,67 @@ font-size:30px;
 <script>
 const productos = [];
 
-const contenedor = document.getElementById(“productos”);
+const contenedor = document.getElementById("productos");
 
-function mostrar(lista){
-contenedor.innerHTML=””;
+function mostrar(lista) {
+  contenedor.innerHTML = "";
 
-lista.forEach(p=>{
+  lista.forEach(p => {
 
-let tamanosHtml = “”;
+    let tamanosHtml = "";
 
-if(p.tamanos){
-tamanosHtml = p.tamanos
-.split(”;”)
-.map(t => <p>${t.trim()}</p>)
-.join(””);
+    if (p.tamanos) {
+      tamanosHtml = p.tamanos
+        .split(",")
+        .map(t => `<p>${t.trim()}</p>`)
+        .join("");
+    }
+
+    contenedor.innerHTML += `
+      <div class="producto">
+        <img src="${p.foto}">
+        <h3>${p.nombre}</h3>
+        <p>Categoría: ${p.categoria}</p>
+        ${tamanosHtml}
+      </div>
+    `;
+  });
 }
 
-contenedor.innerHTML += `
+fetch("Productos.csv")
+  .then(response => response.text())
+  .then(data => {
 
-<div class="producto">
-<img src="${p.foto}">
-<h3>${p.nombre}</h3>
-<p>Categoría: ${p.categoria}</p>
-${tamanosHtml}
-</div>
-`;
-});
+    const filas = data.split("\n").slice(1);
 
-}
+    filas.forEach(fila => {
 
-fetch(“Productos.csv”)
-.then(response => response.text())
-.then(data => {
+      if (!fila.trim()) return;
 
-const filas = data.split(”\n”).slice(1);
+      const columnas = fila.split(";");
 
-filas.forEach(fila => {
+      productos.push({
+        nombre: columnas[0].trim(),
+        categoria: columnas[1].trim(),
+        foto: "Peluches/" + columnas[2].trim(),
+        tamanos: columnas[3].trim()
+      });
 
-if(!fila.trim()) return;
+    });
 
-const columnas = fila.split(”;”);
-console.log(columnas);
+    mostrar(productos);
 
-productos.push({
-nombre: columnas[0]?.trim(),
-categoria: columnas[1]?.trim(),
-foto: “Peluches/” + columnas[2]?.trim(),
-tamanos: columnas[3]?.trim()
-});
+  });
 
-});
+document.getElementById("buscador").addEventListener("input", e => {
 
-mostrar(productos);
+  const texto = e.target.value.toLowerCase();
 
-});
-
-document.getElementById(“buscador”).addEventListener(“input”,e=>{
-const texto=e.target.value.toLowerCase();
-
-mostrar(productos.filter(p=>
-p.nombre.toLowerCase().includes(texto)
-));
+  mostrar(
+    productos.filter(p =>
+      p.nombre.toLowerCase().includes(texto)
+    )
+  );
 
 });
 </script>
