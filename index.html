@@ -120,7 +120,7 @@ filas.forEach(fila => {
 
 if(!fila.trim()) return;
 
-const columnas = fila.split(”,”);
+const columnas = fila.split(”;”);
 
 productos.push({
 nombre: columnas[0]?.trim(),
