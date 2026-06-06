@@ -11,7 +11,6 @@ body{
     background: #f5f5f5;
 }
 
-/* HEADER */
 header{
     background: #ff4d6d;
     color: white;
@@ -21,31 +20,6 @@ header{
     font-weight: bold;
 }
 
-/* CATEGORÍAS */
-#categorias{
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    padding: 10px;
-    background: white;
-}
-
-.categoria{
-    flex: 0 0 auto;
-    padding: 10px 15px;
-    border-radius: 20px;
-    background: #eee;
-    font-weight: bold;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.categoria.activa{
-    background: #ff4d6d;
-    color: white;
-}
-
-/* PRODUCTOS */
 #productos{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -55,8 +29,8 @@ header{
 
 .producto{
     background: white;
-    border-radius: 10px;
     padding: 10px;
+    border-radius: 10px;
     text-align: center;
 }
 
@@ -76,14 +50,12 @@ header{
 
 <header>MEGATODO</header>
 
-<div id="categorias"></div>
 <div id="productos"></div>
 
 <script>
 
 let productos = [];
 
-// CARGAR CSV
 fetch("productos.csv")
 .then(r => r.text())
 .then(data => {
@@ -95,47 +67,9 @@ fetch("productos.csv")
         return {nombre, categoria, foto, tamaño, precio};
     });
 
-    crearCategorias();
     mostrar(productos);
 });
 
-// CREAR CATEGORÍAS
-function crearCategorias(){
-
-    const cont = document.getElementById("categorias");
-
-    const cats = ["TODOS", ...new Set(productos.map(p => p.categoria))];
-
-    cats.forEach(cat => {
-
-        const div = document.createElement("div");
-        div.className = "categoria";
-        div.innerText = cat;
-
-        if(cat === "TODOS") div.classList.add("activa");
-
-        div.onclick = () => filtrar(cat, div);
-
-        cont.appendChild(div);
-    });
-}
-
-// FILTRAR
-function filtrar(cat, el){
-
-    document.querySelectorAll(".categoria")
-    .forEach(c => c.classList.remove("activa"));
-
-    el.classList.add("activa");
-
-    if(cat === "TODOS"){
-        mostrar(productos);
-    }else{
-        mostrar(productos.filter(p => p.categoria === cat));
-    }
-}
-
-// MOSTRAR PRODUCTOS
 function mostrar(lista){
 
     const cont = document.getElementById("productos");
