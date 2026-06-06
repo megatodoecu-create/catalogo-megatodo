@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +11,7 @@ body{
     background: #f5f5f5;
 }
 
-/* Header */
+/* HEADER */
 header{
     background: #ff4d6d;
     color: white;
@@ -22,8 +21,8 @@ header{
     font-weight: bold;
 }
 
-/* Categorías */
-.categorias{
+/* CATEGORÍAS */
+#categorias{
     display: flex;
     overflow-x: auto;
     gap: 10px;
@@ -33,11 +32,12 @@ header{
 
 .categoria{
     flex: 0 0 auto;
-    background: #eee;
     padding: 10px 15px;
     border-radius: 20px;
+    background: #eee;
     font-weight: bold;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .categoria.activa{
@@ -45,7 +45,7 @@ header{
     color: white;
 }
 
-/* Productos */
+/* PRODUCTOS */
 #productos{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -66,8 +66,8 @@ header{
 }
 
 .precio{
-    font-weight: bold;
     color: #ff4d6d;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -76,25 +76,22 @@ header{
 
 <header>MEGATODO</header>
 
-<!-- CATEGORÍAS -->
-<div class="categorias" id="categorias"></div>
-
-<!-- PRODUCTOS -->
+<div id="categorias"></div>
 <div id="productos"></div>
 
 <script>
 
 let productos = [];
-let categoriaSeleccionada = "TODOS";
 
-// Cargar CSV
+// CARGAR CSV
 fetch("productos.csv")
-.then(res => res.text())
+.then(r => r.text())
 .then(data => {
+
     const filas = data.trim().split("\n").slice(1);
 
-    productos = filas.map(fila => {
-        const [nombre, categoria, foto, tamaño, precio] = fila.split(";");
+    productos = filas.map(f => {
+        const [nombre, categoria, foto, tamaño, precio] = f.split(";");
         return {nombre, categoria, foto, tamaño, precio};
     });
 
@@ -102,13 +99,15 @@ fetch("productos.csv")
     mostrar(productos);
 });
 
-// Crear categorías automáticas
+// CREAR CATEGORÍAS
 function crearCategorias(){
+
     const cont = document.getElementById("categorias");
 
-    const categoriasUnicas = ["TODOS", ...new Set(productos.map(p => p.categoria))];
+    const cats = ["TODOS", ...new Set(productos.map(p => p.categoria))];
 
-    categoriasUnicas.forEach(cat => {
+    cats.forEach(cat => {
+
         const div = document.createElement("div");
         div.className = "categoria";
         div.innerText = cat;
@@ -121,12 +120,13 @@ function crearCategorias(){
     });
 }
 
-// Filtrar productos
-function filtrar(cat, elemento){
-    categoriaSeleccionada = cat;
+// FILTRAR
+function filtrar(cat, el){
 
-    document.querySelectorAll(".categoria").forEach(c => c.classList.remove("activa"));
-    elemento.classList.add("activa");
+    document.querySelectorAll(".categoria")
+    .forEach(c => c.classList.remove("activa"));
+
+    el.classList.add("activa");
 
     if(cat === "TODOS"){
         mostrar(productos);
@@ -135,12 +135,14 @@ function filtrar(cat, elemento){
     }
 }
 
-// Mostrar productos
+// MOSTRAR PRODUCTOS
 function mostrar(lista){
+
     const cont = document.getElementById("productos");
     cont.innerHTML = "";
 
     lista.forEach(p => {
+
         cont.innerHTML += `
         <div class="producto">
             <img src="${p.foto}">
