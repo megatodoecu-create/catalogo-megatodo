@@ -1,178 +1,157 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Megatodo</title>
 
 <style>
 body{
-font-family:Arial;
-margin:0;
-padding:15px;
-background:#fff0f5;
+    font-family: Arial;
+    margin: 0;
+    background: #f5f5f5;
 }
 
-h1{
-text-align:center;
-color:#d63384;
-margin-bottom:10px;
+/* Header */
+header{
+    background: #ff4d6d;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
 }
 
-#buscador{
-width:100%;
-padding:12px;
-font-size:16px;
-margin-bottom:15px;
-border:2px solid #ffb6c1;
-border-radius:12px;
-outline:none;
+/* Categorías */
+.categorias{
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    background: white;
 }
 
-.productos{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-gap:15px;
+.categoria{
+    flex: 0 0 auto;
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.categoria.activa{
+    background: #ff4d6d;
+    color: white;
+}
+
+/* Productos */
+#productos{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
 }
 
 .producto{
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-display:flex;
-flex-direction:column;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
 }
 
 .producto img{
-width:100%;
-height:160px;
-object-fit:cover;
+    width: 100%;
+    border-radius: 10px;
 }
 
-.info{
-padding:10px;
-}
-
-.producto h3{
-font-size:14px;
-color:#d63384;
-margin:5px 0;
-}
-
-.producto p{
-font-size:12px;
-color:#555;
-margin:2px 0;
-}
-
-.btn{
-display:block;
-text-align:center;
-background:#25D366;
-color:white;
-padding:8px;
-margin-top:8px;
-border-radius:10px;
-text-decoration:none;
-font-size:13px;
-}
-
-/* WhatsApp flotante */
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-width:55px;
-height:55px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-text-decoration:none;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
+.precio{
+    font-weight: bold;
+    color: #ff4d6d;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🌸 Catálogo Megatodo 🌸</h1>
+<header>MEGATODO</header>
 
-<input type="text" id="buscador" placeholder="Buscar productos...">
+<!-- CATEGORÍAS -->
+<div class="categorias" id="categorias"></div>
 
-<div class="productos" id="productos"></div>
-
-<a href="https://wa.me/0990924437" class="whatsapp" target="_blank">💬</a>
+<!-- PRODUCTOS -->
+<div id="productos"></div>
 
 <script>
-const productos = [];
-const contenedor = document.getElementById("productos");
 
-function mostrar(lista){
-contenedor.innerHTML = "";
+let productos = [];
+let categoriaSeleccionada = "TODOS";
 
-lista.forEach(p => {
-
-let tamanosHtml = "";
-if(p.tamanos){
-tamanosHtml = p.tamanos
-.split(",")
-.map(t => `<p><b>💲Precio: ${p.precio}</b></p>
-<p><b>📦Tamaño: ${p.tamanos}</b></p>`)
-.join("");
-}
-
-contenedor.innerHTML += `
-<div class="producto">
-<img src="${p.foto}">
-<div class="info">
-<h3>${p.nombre}</h3>
-<p>Categoría: ${p.categoria}</p>
-${tamanosHtml}
-<a class="btn" href="https://wa.me/0990924437?text=Hola%20quiero%20este%20producto:%20${p.nombre}" target="_blank">
-Comprar por WhatsApp
-</a>
-</div>
-</div>
-`;
-});
-}
-
-fetch("Productos.csv")
-.then(response => response.text())
+// Cargar CSV
+fetch("productos.csv")
+.then(res => res.text())
 .then(data => {
+    const filas = data.trim().split("\n").slice(1);
 
-const filas = data.split("\n").slice(1);
+    productos = filas.map(fila => {
+        const [nombre, categoria, foto, tamaño, precio] = fila.split(";");
+        return {nombre, categoria, foto, tamaño, precio};
+    });
 
-filas.forEach(fila => {
-if(!fila.trim()) return;
-
-const columnas = fila.split(";");
-
-productos.push({
-nombre: columnas[0].trim(),
-categoria: columnas[1].trim(),
-foto: "Peluches/" + columnas[2].trim(),
-tamanos: columnas[3].trim(),
-precio: columnas[4].trim(),
-});
+    crearCategorias();
+    mostrar(productos);
 });
 
-mostrar(productos);
-});
+// Crear categorías automáticas
+function crearCategorias(){
+    const cont = document.getElementById("categorias");
 
-document.getElementById("buscador").addEventListener("input", e => {
-const texto = e.target.value.toLowerCase();
+    const categoriasUnicas = ["TODOS", ...new Set(productos.map(p => p.categoria))];
 
-mostrar(
-productos.filter(p =>
-p.nombre.toLowerCase().includes(texto)
-)
-);
-});
+    categoriasUnicas.forEach(cat => {
+        const div = document.createElement("div");
+        div.className = "categoria";
+        div.innerText = cat;
+
+        if(cat === "TODOS") div.classList.add("activa");
+
+        div.onclick = () => filtrar(cat, div);
+
+        cont.appendChild(div);
+    });
+}
+
+// Filtrar productos
+function filtrar(cat, elemento){
+    categoriaSeleccionada = cat;
+
+    document.querySelectorAll(".categoria").forEach(c => c.classList.remove("activa"));
+    elemento.classList.add("activa");
+
+    if(cat === "TODOS"){
+        mostrar(productos);
+    }else{
+        mostrar(productos.filter(p => p.categoria === cat));
+    }
+}
+
+// Mostrar productos
+function mostrar(lista){
+    const cont = document.getElementById("productos");
+    cont.innerHTML = "";
+
+    lista.forEach(p => {
+        cont.innerHTML += `
+        <div class="producto">
+            <img src="${p.foto}">
+            <h4>${p.nombre}</h4>
+            <div>${p.tamaño}</div>
+            <div class="precio">${p.precio}</div>
+        </div>
+        `;
+    });
+}
+
 </script>
 
 </body>
