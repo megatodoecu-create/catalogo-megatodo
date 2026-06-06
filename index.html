@@ -2,75 +2,102 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Megatodo</title>
+
 <style>
 body{
 font-family:Arial;
-padding:20px;
+margin:0;
+padding:15px;
 background:#fff0f5;
 }
 
 h1{
 text-align:center;
 color:#d63384;
+margin-bottom:10px;
 }
 
 #buscador{
 width:100%;
-padding:10px;
+padding:12px;
 font-size:16px;
-margin-bottom:20px;
+margin-bottom:15px;
 border:2px solid #ffb6c1;
-border-radius:10px;
+border-radius:12px;
+outline:none;
 }
 
 .productos{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:15px;
 }
 
 .producto{
 background:white;
-border:2px solid #ffc0cb;
-padding:10px;
 border-radius:15px;
-box-shadow:0 2px 8px rgba(255,192,203,0.4);
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+display:flex;
+flex-direction:column;
 }
 
 .producto img{
 width:100%;
-height:200px;
+height:160px;
 object-fit:cover;
-border-radius:10px;
+}
+
+.info{
+padding:10px;
 }
 
 .producto h3{
+font-size:14px;
 color:#d63384;
+margin:5px 0;
 }
 
 .producto p{
+font-size:12px;
 color:#555;
+margin:2px 0;
 }
-</style>
-</head>
-<a href="https://wa.me/0990924437" class="whatsapp" target="_blank">
-💬
-</a>
 
-<style>
+.btn{
+display:block;
+text-align:center;
+background:#25D366;
+color:white;
+padding:8px;
+margin-top:8px;
+border-radius:10px;
+text-decoration:none;
+font-size:13px;
+}
+
+/* WhatsApp flotante */
 .whatsapp{
 position:fixed;
 bottom:20px;
 right:20px;
 background:#25D366;
-padding:15px;
+width:55px;
+height:55px;
 border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
 text-decoration:none;
-font-size:30px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 </style>
-  <body>
+</head>
+
+<body>
 
 <h1>🌸 Catálogo Megatodo 🌸</h1>
 
@@ -78,71 +105,71 @@ font-size:30px;
 
 <div class="productos" id="productos"></div>
 
+<a href="https://wa.me/0990924437" class="whatsapp" target="_blank">💬</a>
+
 <script>
 const productos = [];
-
 const contenedor = document.getElementById("productos");
 
-function mostrar(lista) {
-  contenedor.innerHTML = "";
+function mostrar(lista){
+contenedor.innerHTML = "";
 
-  lista.forEach(p => {
+lista.forEach(p => {
 
-    let tamanosHtml = "";
+let tamanosHtml = "";
+if(p.tamanos){
+tamanosHtml = p.tamanos
+.split(",")
+.map(t => `<p>📦 ${t.trim()}</p>`)
+.join("");
+}
 
-    if (p.tamanos) {
-      tamanosHtml = p.tamanos
-        .split(",")
-        .map(t => `<p>${t.trim()}</p>`)
-        .join("");
-    }
-
-    contenedor.innerHTML += `
-      <div class="producto">
-        <img src="${p.foto}">
-        <h3>${p.nombre}</h3>
-        <p>Categoría: ${p.categoria}</p>
-        ${tamanosHtml}
-      </div>
-    `;
-  });
+contenedor.innerHTML += `
+<div class="producto">
+<img src="${p.foto}">
+<div class="info">
+<h3>${p.nombre}</h3>
+<p>📁 ${p.categoria}</p>
+${tamanosHtml}
+<a class="btn" href="https://wa.me/0990924437?text=Hola%20quiero%20este%20producto:%20${p.nombre}" target="_blank">
+Comprar por WhatsApp
+</a>
+</div>
+</div>
+`;
+});
 }
 
 fetch("Productos.csv")
-  .then(response => response.text())
-  .then(data => {
+.then(response => response.text())
+.then(data => {
 
-    const filas = data.split("\n").slice(1);
+const filas = data.split("\n").slice(1);
 
-    filas.forEach(fila => {
+filas.forEach(fila => {
+if(!fila.trim()) return;
 
-      if (!fila.trim()) return;
+const columnas = fila.split(";");
 
-      const columnas = fila.split(";");
+productos.push({
+nombre: columnas[0].trim(),
+categoria: columnas[1].trim(),
+foto: "Peluches/" + columnas[2].trim(),
+tamanos: columnas[3].trim()
+});
+});
 
-      productos.push({
-        nombre: columnas[0].trim(),
-        categoria: columnas[1].trim(),
-        foto: "Peluches/" + columnas[2].trim(),
-        tamanos: columnas[3].trim()
-      });
-
-    });
-
-    mostrar(productos);
-
-  });
+mostrar(productos);
+});
 
 document.getElementById("buscador").addEventListener("input", e => {
+const texto = e.target.value.toLowerCase();
 
-  const texto = e.target.value.toLowerCase();
-
-  mostrar(
-    productos.filter(p =>
-      p.nombre.toLowerCase().includes(texto)
-    )
-  );
-
+mostrar(
+productos.filter(p =>
+p.nombre.toLowerCase().includes(texto)
+)
+);
 });
 </script>
 
