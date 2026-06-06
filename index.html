@@ -120,7 +120,8 @@ let tamanosHtml = "";
 if(p.tamanos){
 tamanosHtml = p.tamanos
 .split(",")
-.map(t => `<p><b>📦 ${t.trim()}</b></p>`)
+.map(t => `<p><b>💲 ${p.precio}</b></p>
+<p><b>📦 ${p.tamanos}</b></p>`)
 .join("");
 }
 
