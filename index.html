@@ -120,8 +120,8 @@ let tamanosHtml = "";
 if(p.tamanos){
 tamanosHtml = p.tamanos
 .split(",")
-.map(t => `<p><b>💲Precio ${p.precio}</b></p>
-<p><b>📦Tamaño ${p.tamanos}</b></p>`)
+.map(t => `<p><b>💲Precio: ${p.precio}</b></p>
+<p><b>📦Tamaño: ${p.tamanos}</b></p>`)
 .join("");
 }
 
@@ -130,7 +130,7 @@ contenedor.innerHTML += `
 <img src="${p.foto}">
 <div class="info">
 <h3>${p.nombre}</h3>
-<p>📁Categoría ${p.categoria}</p>
+<p>Categoría: ${p.categoria}</p>
 ${tamanosHtml}
 <a class="btn" href="https://wa.me/0990924437?text=Hola%20quiero%20este%20producto:%20${p.nombre}" target="_blank">
 Comprar por WhatsApp
