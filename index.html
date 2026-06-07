@@ -2,92 +2,141 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Megatodo</title>
 
 <style>
 body{
-    font-family: Arial;
-    margin: 0;
-    background: #f5f5f5;
+  font-family: Arial;
+  margin:0;
+  background:#f5f5f5;
 }
 
 header{
-    background: #ff4d6d;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
+  background:#ff4d6d;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+}
+
+#categorias{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  padding:10px;
+  background:white;
+}
+
+.categoria{
+  padding:8px 12px;
+  background:#eee;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.categoria:hover{
+  background:#ff4d6d;
+  color:white;
 }
 
 #productos{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 10px;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:10px;
+  padding:10px;
 }
 
 .producto{
-    background: white;
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
+  background:white;
+  padding:10px;
+  border-radius:10px;
 }
 
 .producto img{
-    width: 100%;
-    border-radius: 10px;
+  width:100%;
+  border-radius:10px;
 }
 
 .precio{
-    color: #ff4d6d;
-    font-weight: bold;
+  font-weight:bold;
+  color:#ff4d6d;
 }
 </style>
 </head>
 
 <body>
 
-<header>MEGATODO</header>
+<header>Megatodo Catálogo</header>
+
+<div id="categorias"></div>
 
 <div id="productos"></div>
 
 <script>
-
 let productos = [];
+let categoriaActual = "Todos";
 
-fetch("productos.csv")
+// CSV desde GitHub (CAMBIA ESTE LINK por el tuyo)
+const csvURL = "productos.csv";
+
+fetch(csvURL)
 .then(r => r.text())
 .then(data => {
+  const filas = data.trim().split("\n").slice(1);
 
-    const filas = data.trim().split("\n").slice(1);
+  productos = filas.map(f => {
+    const [nombre,categoria,foto,tamaño,precio] = f.split(";");
+    return {nombre,categoria,foto,tamaño,precio};
+  });
 
-    productos = filas.map(f => {
-        const [nombre, categoria, foto, tamaño, precio] = f.split(";");
-        return {nombre, categoria, foto, tamaño, precio};
-    });
-
-    mostrar(productos);
+  crearCategorias();
+  mostrar(productos);
 });
 
-function mostrar(lista){
+function crearCategorias(){
+  const cont = document.getElementById("categorias");
 
-    const cont = document.getElementById("productos");
-    cont.innerHTML = "";
+  let cats = ["Todos", ...new Set(productos.map(p => p.categoria))];
 
-    lista.forEach(p => {
+  cats.forEach(c=>{
+    const btn = document.createElement("div");
+    btn.className = "categoria";
+    btn.textContent = c;
 
-        cont.innerHTML += `
-        <div class="producto">
-            <img src="${p.foto}">
-            <h4>${p.nombre}</h4>
-            <div>${p.tamaño}</div>
-            <div class="precio">${p.precio}</div>
-        </div>
-        `;
-    });
+    btn.onclick = ()=>{
+      categoriaActual = c;
+      filtrar();
+    };
+
+    cont.appendChild(btn);
+  });
 }
 
+function filtrar(){
+  if(categoriaActual === "Todos"){
+    mostrar(productos);
+  } else {
+    mostrar(productos.filter(p => p.categoria === categoriaActual));
+  }
+}
+
+function mostrar(lista){
+  const cont = document.getElementById("productos");
+  cont.innerHTML = "";
+
+  lista.forEach(p=>{
+    cont.innerHTML += `
+      <div class="producto">
+        <img src="${p.foto}">
+        <h4>${p.nombre}</h4>
+        <div class="precio">${p.precio}</div>
+        <small>${p.tamaño}</small>
+      </div>
+    `;
+  });
+}
 </script>
 
 </body>
