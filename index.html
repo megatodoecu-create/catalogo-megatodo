@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megatodo</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+}
+
+.logo{
+width:100%;
+display:block;
+}
+
+.buscador{
+padding:20px;
+text-align:center;
+}
+
+.buscador input{
+width:90%;
+max-width:600px;
+padding:15px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+.categorias{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.categoria{
+background:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+text-decoration:none;
+color:#333;
+font-weight:bold;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.horarios{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+}
+
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#25D366;
+color:white;
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+text-decoration:none;
+}
+
+</style>
+
+</head>
+<body>
+
+<img src="logo-megatodo.jpg" class="logo">
+
+<div class="buscador">
+<input type="text" placeholder="Buscar productos próximamente">
+</div>
+
+<div class="categorias">
+
+<a class="categoria" href="categoria.html?cat=Belleza">💄 Belleza</a>
+
+<a class="categoria" href="categoria.html?cat=Juguetes">🧸 Juguetes</a>
+
+<a class="categoria" href="categoria.html?cat=Bazar">🏠 Bazar</a>
+
+<a class="categoria" href="categoria.html?cat=Peluche">🐻 Peluches</a>
+
+<a class="categoria" href="categoria.html?cat=Cosmeticos">✨ Cosméticos</a>
+
+<a class="categoria" href="categoria.html?cat=Cajas de Regalo">🎁 Cajas de Regalo</a>
+
+<a class="categoria" href="categoria.html?cat=Coches de Bebé">👶 Coches de Bebé</a>
+
+</div>
+
+<div class="horarios">
+<h2>Horarios de Atención</h2>
+<p>Lunes a Sábado: 8:30 am - 7:30 pm</p>
+<p>Domingo: 9:30 am - 6:30 pm</p>
+</div>
+
+<a
+href="https://wa.me/593990924437"
+class="whatsapp"
+target="_blank">
+💬
+</a>
+
+</body>
+</html>
 
