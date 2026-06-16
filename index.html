@@ -74,14 +74,91 @@ text-decoration:none;
 }
 
 </style>
+#resultadosBusqueda{
+max-width:600px;
+margin:10px auto;
+text-align:left;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
 
+.resultado{
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+.resultado a{
+text-decoration:none;
+color:#333;
+font-weight:bold;
+}
+
+.resultado:last-child{
+border-bottom:none;
+}
 </head>
+  <script>
+
+const url =
+"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+
+let productos = [];
+
+fetch(url)
+.then(r => r.json())
+.then(data => {
+
+productos = data;
+
+document
+.getElementById("buscadorGlobal")
+.addEventListener("input", function(){
+
+const texto =
+this.value.toLowerCase();
+
+const resultados =
+document.getElementById("resultadosBusqueda");
+
+if(texto.length < 2){
+resultados.innerHTML = "";
+return;
+}
+
+const encontrados =
+productos.filter(p =>
+p.Nombre.toLowerCase().includes(texto)
+);
+
+resultados.innerHTML = encontrados
+.slice(0,10)
+.map(p => `
+<div class="resultado">
+<a href="categoria.html?cat=${encodeURIComponent(p.Categoria)}">
+${p.Nombre}
+</a>
+</div>
+`)
+.join("");
+
+});
+
+});
+
+</script>
 <body>
 
 <img src="logo-megatodo.jpg" class="logo">
 
 <div class="buscador">
-<input type="text" placeholder="Buscar productos próximamente">
+<input
+type="text"
+id="buscadorGlobal"
+placeholder="Buscar productos...">
+
+<div id="resultadosBusqueda"></div>
 </div>
 
 <div class="categorias">
