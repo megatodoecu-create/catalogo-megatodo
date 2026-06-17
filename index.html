@@ -174,54 +174,74 @@ fetch(url)
 .then(response => response.json())
 .then(data => {
 
-productos = data;
+    productos = data;
 
-document
-.getElementById("buscadorGlobal")
-.addEventListener("input", function(){
+    // Mostrar sugerencias mientras escribe
+    document
+    .getElementById("buscadorGlobal")
+    .addEventListener("input", function(){
 
-const texto = this.value.toLowerCase();
+        const texto = this.value.toLowerCase();
 
-const resultados =
-document.getElementById("resultadosBusqueda");
+        const resultados =
+        document.getElementById("resultadosBusqueda");
 
-if(texto.length < 2){
-resultados.innerHTML = "";
-return;
-}
+        if(texto.length < 2){
+            resultados.innerHTML = "";
+            return;
+        }
 
-const encontrados =
-productos.filter(producto =>
-producto.Nombre &&
-producto.Nombre.toLowerCase().includes(texto)
-);
+        const encontrados =
+        productos.filter(producto =>
+            producto.Nombre &&
+            producto.Nombre.toLowerCase().includes(texto)
+        );
 
-if(encontrados.length === 0){
+        if(encontrados.length === 0){
 
-resultados.innerHTML =
-'<div class="resultado">No se encontraron productos.</div>';
+            resultados.innerHTML =
+            '<div class="resultado">No se encontraron productos.</div>';
 
-return;
+            return;
+        }
 
-}
+        resultados.innerHTML =
+        encontrados
+        .slice(0,10)
+        .map(producto => `
+        <div class="resultado">
+            <a href="buscar.html?q=${encodeURIComponent(producto.Nombre)}">
+                ${producto.Nombre}
+            </a>
+        </div>
+        `)
+        .join("");
 
-resultados.innerHTML =
-encontrados
-.slice(0,10)
-.map(producto => `
-<div class="resultado">
-<a href="buscar.html?q=${encodeURIComponent(producto.Nombre)}">
-${producto.Nombre}
-</a>
-</div>
-`)
-.join("");
+    });
 
-});
+    // Buscar al presionar Enter
+    document
+    .getElementById("buscadorGlobal")
+    .addEventListener("keydown", function(e){
+
+        if(e.key === "Enter"){
+
+            const texto = this.value.trim();
+
+            if(texto.length > 0){
+
+                window.location.href =
+                `buscar.html?q=${encodeURIComponent(texto)}`;
+
+            }
+
+        }
+
+    });
 
 })
 .catch(error => {
-console.error("Error cargando productos:", error);
+    console.error("Error cargando productos:", error);
 });
 
 </script>
