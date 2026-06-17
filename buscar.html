@@ -1,65 +1,129 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resultados de búsqueda</title>
+<title>Resultados - Megatodo</title>
 
 <style>
+
 body{
-    font-family: Arial, sans-serif;
-    margin:20px;
-    background:#f5f5f5;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+padding:20px;
 }
 
 h1{
-    color:#333;
+text-align:center;
+}
+
+#resultados{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+max-width:1200px;
+margin:auto;
 }
 
 .producto{
-    background:white;
-    padding:15px;
-    margin:10px 0;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+background:white;
+border-radius:10px;
+padding:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+text-align:center;
 }
+
+.producto img{
+width:100%;
+height:250px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.producto h3{
+margin:10px 0;
+}
+
+.producto p{
+font-weight:bold;
+color:green;
+}
+
+.volver{
+display:block;
+width:200px;
+margin:20px auto;
+padding:12px;
+background:#333;
+color:white;
+text-align:center;
+text-decoration:none;
+border-radius:8px;
+}
+
 </style>
 </head>
 <body>
 
 <h1>Resultados de búsqueda</h1>
 
+<a href="index.html" class="volver">← Volver al inicio</a>
+
 <div id="resultados"></div>
 
 <script>
-const productos = [
-    "Peluche Stitch",
-    "Peluche Capibara",
-    "Peluche Pikachu",
-    "Peluche Panda"
-];
+
+const url =
+"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
 const params = new URLSearchParams(window.location.search);
 const texto = (params.get("q") || "").toLowerCase();
 
-const resultados = document.getElementById("resultados");
+fetch(url)
+.then(response => response.json())
+.then(productos => {
 
 const encontrados = productos.filter(producto =>
-    producto.toLowerCase().includes(texto)
+producto.Nombre &&
+producto.Nombre.toLowerCase().includes(texto)
 );
 
-if(encontrados.length > 0){
-    encontrados.forEach(producto=>{
-        resultados.innerHTML += `
-            <div class="producto">
-                ${producto}
-            </div>
-        `;
-    });
-}else{
-    resultados.innerHTML = "<p>No se encontraron productos.</p>";
+const contenedor =
+document.getElementById("resultados");
+
+if(encontrados.length === 0){
+
+contenedor.innerHTML =
+"<h2>No se encontraron productos.</h2>";
+
+return;
+
 }
+
+contenedor.innerHTML =
+encontrados.map(producto => `
+<div class="producto">
+
+<img src="${producto.Foto}" alt="${producto.Nombre}">
+
+<h3>${producto.Nombre}</h3>
+
+<p>$${producto.Precio}</p>
+
+</div>
+`).join("");
+
+})
+.catch(error => {
+
+document.getElementById("resultados").innerHTML =
+"<h2>Error cargando productos.</h2>";
+
+console.error(error);
+
+});
+
 </script>
 
 </body>
