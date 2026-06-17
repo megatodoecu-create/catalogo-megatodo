@@ -28,6 +28,20 @@ header{
     font-weight:bold;
 }
 
+.buscador{
+    padding:20px;
+    text-align:center;
+}
+
+.buscador input{
+    width:90%;
+    max-width:500px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+}
+
 .productos{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -90,6 +104,13 @@ header{
     <h1 id="titulo"></h1>
 </header>
 
+<div class="buscador">
+    <input
+        type="text"
+        id="buscadorCategoria"
+        placeholder="Buscar producto en esta categoría...">
+</div>
+
 <div id="productos" class="productos"></div>
 
 <script>
@@ -116,15 +137,18 @@ item.Categoria === categoria
 
 if(filtrados.length === 0){
 
-contenedor.innerHTML = `
-<h2>No hay productos en esta categoría.</h2>
-`;
+contenedor.innerHTML =
+"<h2>No hay productos en esta categoría.</h2>";
 
 return;
 
 }
 
-filtrados.forEach(producto => {
+function mostrarProductos(lista){
+
+contenedor.innerHTML = "";
+
+lista.forEach(producto => {
 
 contenedor.innerHTML += `
 
@@ -158,6 +182,26 @@ Consultar por WhatsApp
 </div>
 
 `;
+
+});
+
+}
+
+mostrarProductos(filtrados);
+
+document
+.getElementById("buscadorCategoria")
+.addEventListener("input", function(){
+
+const texto =
+this.value.toLowerCase();
+
+const resultado =
+filtrados.filter(producto =>
+producto.Nombre.toLowerCase().includes(texto)
+);
+
+mostrarProductos(resultado);
 
 });
 
