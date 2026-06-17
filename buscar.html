@@ -105,7 +105,10 @@ contenedor.innerHTML =
 encontrados.map(producto => `
 <div class="producto">
 
-<img src="${producto.Foto}" alt="${producto.Nombre}">
+<img
+src="${producto.Foto}"
+alt="${producto.Nombre}"
+onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Foto'">
 
 <h3>${producto.Nombre}</h3>
 
