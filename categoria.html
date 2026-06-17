@@ -115,8 +115,8 @@ header{
 
 <script>
 
-const categoria =
-new URLSearchParams(window.location.search).get("cat");
+const productoBuscado =
+new URLSearchParams(window.location.search).get("producto");
 
 document.getElementById("titulo").textContent = categoria;
 
@@ -130,10 +130,21 @@ fetch(url)
 const contenedor =
 document.getElementById("productos");
 
-const filtrados =
+let filtrados =
 data.filter(item =>
 item.Categoria === categoria
 );
+
+if(productoBuscado){
+
+filtrados =
+filtrados.filter(item =>
+item.Nombre &&
+item.Nombre.toLowerCase()
+.includes(productoBuscado.toLowerCase())
+);
+
+}
 
 if(filtrados.length === 0){
 
