@@ -210,7 +210,7 @@ encontrados
 .slice(0,10)
 .map(producto => `
 <div class="resultado">
-<a href="categoria.html?cat=${encodeURIComponent(producto.Categoria)}&producto=${encodeURIComponent(producto.Nombre)}">
+<a href="buscar.html?q=${encodeURIComponent(producto.Nombre)}">
 ${producto.Nombre}
 </a>
 </div>
