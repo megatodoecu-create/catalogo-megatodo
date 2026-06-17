@@ -115,11 +115,14 @@ header{
 
 <script>
 
+const categoria =
+new URLSearchParams(window.location.search).get("cat");
+
 const productoBuscado =
 new URLSearchParams(window.location.search).get("producto");
 
 document.getElementById("titulo").textContent = categoria;
-
+    
 const url =
 "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
@@ -140,8 +143,8 @@ if(productoBuscado){
 filtrados =
 filtrados.filter(item =>
 item.Nombre &&
-item.Nombre.toLowerCase()
-.includes(productoBuscado.toLowerCase())
+item.Nombre.toLowerCase().trim() ===
+productoBuscado.toLowerCase().trim()
 );
 
 }
