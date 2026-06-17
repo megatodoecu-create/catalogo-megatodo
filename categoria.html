@@ -54,6 +54,19 @@ header{
     border-radius:12px;
     overflow:hidden;
     box-shadow:0 2px 8px rgba(0,0,0,.15);
+    position:relative;
+}
+
+.oferta{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:red;
+    color:white;
+    font-weight:bold;
+    padding:8px 12px;
+    border-radius:8px;
+    z-index:10;
 }
 
 .card img{
@@ -167,6 +180,8 @@ lista.forEach(producto => {
 contenedor.innerHTML += `
 
 <div class="card">
+
+${producto.Oferta === "SI" ? '<div class="oferta">🔥 OFERTA</div>' : ''}
 
 <img src="${producto.Foto}" alt="${producto.Nombre}">
 
