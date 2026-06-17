@@ -32,6 +32,32 @@ border:1px solid #ccc;
 font-size:16px;
 }
 
+#resultadosBusqueda{
+max-width:600px;
+margin:10px auto;
+text-align:left;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.resultado{
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+.resultado a{
+text-decoration:none;
+color:#333;
+font-weight:bold;
+display:block;
+}
+
+.resultado:last-child{
+border-bottom:none;
+}
+
 .categorias{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -73,109 +99,54 @@ font-size:30px;
 text-decoration:none;
 }
 
-  #resultadosBusqueda{
-max-width:600px;
-margin:10px auto;
-text-align:left;
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-.resultado{
-padding:12px;
-border-bottom:1px solid #eee;
-}
-
-.resultado a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-}
-
-.resultado:last-child{
-border-bottom:none;
-}
 </style>
+
 </head>
-  <script>
 
-const url =
-"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
-
-let productos = [];
-
-fetch(url)
-.then(r => r.json())
-.then(data => {
-
-productos = data;
-
-document
-.getElementById("buscadorGlobal")
-.addEventListener("input", function(){
-
-const texto =
-this.value.toLowerCase();
-
-const resultados =
-document.getElementById("resultadosBusqueda");
-
-if(texto.length < 2){
-resultados.innerHTML = "";
-return;
-}
-
-const encontrados =
-productos.filter(p =>
-p.Nombre.toLowerCase().includes(texto)
-);
-
-resultados.innerHTML = encontrados
-.slice(0,10)
-.map(p => `
-<div class="resultado">
-<a href="categoria.html?cat=${encodeURIComponent(p.Categoria)}">
-${p.Nombre}
-</a>
-</div>
-`)
-.join("");
-
-});
-
-});
-
-</script>
 <body>
 
 <img src="logo-megatodo.jpg" class="logo">
 
 <div class="buscador">
+
 <input
 type="text"
 id="buscadorGlobal"
 placeholder="Buscar productos...">
 
 <div id="resultadosBusqueda"></div>
+
 </div>
 
 <div class="categorias">
 
-<a class="categoria" href="categoria.html?cat=Artículos de Belleza">✨ Artículos de Belleza</a>
+<a class="categoria" href="categoria.html?cat=Artículos%20de%20Belleza">
+✨ Artículos de Belleza
+</a>
 
-<a class="categoria" href="categoria.html?cat=Juguetes">🧸 Juguetes</a>
+<a class="categoria" href="categoria.html?cat=Juguetes">
+🧸 Juguetes
+</a>
 
-<a class="categoria" href="categoria.html?cat=Bazar">🏠 Bazar</a>
+<a class="categoria" href="categoria.html?cat=Bazar">
+🏠 Bazar
+</a>
 
-<a class="categoria" href="categoria.html?cat=Peluches">🐻 Peluches</a>
+<a class="categoria" href="categoria.html?cat=Peluches">
+🐻 Peluches
+</a>
 
-<a class="categoria" href="categoria.html?cat=Cosméticos">💄 Cosméticos</a>
+<a class="categoria" href="categoria.html?cat=Cosméticos">
+💄 Cosméticos
+</a>
 
-<a class="categoria" href="categoria.html?cat=Cajas de Regalo">🎁 Cajas de Regalo</a>
+<a class="categoria" href="categoria.html?cat=Cajas%20de%20Regalo">
+🎁 Cajas de Regalo
+</a>
 
-<a class="categoria" href="categoria.html?cat=Coches de Bebé">👶 Coches de Bebé</a>
+<a class="categoria" href="categoria.html?cat=Coches%20de%20Bebé">
+👶 Coches de Bebé
+</a>
 
 </div>
 
@@ -191,6 +162,69 @@ class="whatsapp"
 target="_blank">
 💬
 </a>
+
+<script>
+
+const url =
+"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+
+let productos = [];
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+
+productos = data;
+
+document
+.getElementById("buscadorGlobal")
+.addEventListener("input", function(){
+
+const texto = this.value.toLowerCase();
+
+const resultados =
+document.getElementById("resultadosBusqueda");
+
+if(texto.length < 2){
+resultados.innerHTML = "";
+return;
+}
+
+const encontrados =
+productos.filter(producto =>
+producto.Nombre &&
+producto.Nombre.toLowerCase().includes(texto)
+);
+
+if(encontrados.length === 0){
+
+resultados.innerHTML =
+'<div class="resultado">No se encontraron productos.</div>';
+
+return;
+
+}
+
+resultados.innerHTML =
+encontrados
+.slice(0,10)
+.map(producto => `
+<div class="resultado">
+<a href="categoria.html?cat=${encodeURIComponent(producto.Categoria)}">
+${producto.Nombre}
+</a>
+</div>
+`)
+.join("");
+
+});
+
+})
+.catch(error => {
+console.error("Error cargando productos:", error);
+});
+
+</script>
 
 </body>
 </html>
