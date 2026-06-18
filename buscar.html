@@ -104,7 +104,6 @@ return;
 
 contenedor.innerHTML =
 encontrados.map(producto => `
-
 <div class="producto">
 
 ${producto.Oferta && producto.Oferta.toLowerCase() === "si"
@@ -118,12 +117,13 @@ onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Foto'">
 
 <h3>${producto.Nombre}</h3>
 
-${producto.Tamaño ? `<div class="tamano">${producto.Tamaño}</div>` : ''}
+${producto.Tamaño
+? `<div class="tamano">${producto.Tamaño}</div>`
+: ''}
 
 <p>$${producto.Precio}</p>
 
 </div>
-
 `).join("");
 })
 .catch(error => {
