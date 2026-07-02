@@ -111,7 +111,7 @@ align-items:center;
 justify-content:center;
 font-size:30px;
 text-decoration:none;
-}   
+}
 
 .nuevos{
 padding:25px;
@@ -162,6 +162,7 @@ color:#444;
 margin:10px 0;
 min-height:40px;
 }
+
 .descripcion{
 font-size:13px;
 color:#666;
@@ -169,7 +170,7 @@ line-height:1.4;
 margin:8px 0;
 min-height:38px;
 }
-    
+
 .producto-nuevo p{
 margin:5px 0;
 }
@@ -189,13 +190,15 @@ margin-bottom:10px;
 font-size:20px;
 font-weight:bold;
 color:#d63384;
-} 
+}
+
+/* BOTÓN SUBIR */
 #btnArriba{
 position:fixed;
 bottom:20px;
 right:20px;
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 background:#ff2a2a;
 color:white;
 border-radius:50%;
@@ -203,72 +206,49 @@ display:none;
 align-items:center;
 justify-content:center;
 font-size:22px;
-box-shadow:0 4px 10px rgba(0,0,0,.3);
 cursor:pointer;
-z-index:9999;
+z-index:99999;
+box-shadow:0 4px 10px rgba(0,0,0,.3);
 }
 
-/* Solo mejorar en móvil */
 @media (max-width:600px){
 #btnArriba{
-width:55px;
-height:55px;
+width:60px;
+height:60px;
 font-size:24px;
 }
 }
-    
+
 </style>
 
 </head>
 
 <body>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
-    
+
 <img src="logo-megatodo.jpg" class="logo">
 
 <div class="buscador">
 
-<input
-type="text"
-id="buscadorGlobal"
-placeholder="Buscar productos...">
-
+<input type="text" id="buscadorGlobal" placeholder="Buscar productos...">
 <div id="resultadosBusqueda"></div>
 
 </div>
+
 <div class="nuevos">
 <h2>NUEVOS INGRESOS</h2>
 <div id="productosNuevos" class="productos-grid"></div>
 </div>
+
 <div class="categorias">
 
-<a class="categoria" href="categoria.html?cat=Artículos%20de%20Belleza">
-✨ Artículos de Belleza
-</a>
-
-<a class="categoria" href="categoria.html?cat=Juguetes">
-🧸 Juguetes
-</a>
-
-<a class="categoria" href="categoria.html?cat=Bazar">
-🏠 Bazar
-</a>
-
-<a class="categoria" href="categoria.html?cat=Peluches">
-🐻 Peluches
-</a>
-
-<a class="categoria" href="categoria.html?cat=Cosméticos">
-💄 Cosméticos
-</a>
-
-<a class="categoria" href="categoria.html?cat=Cajas%20de%20Regalo">
-🎁 Cajas de Regalo
-</a>
-
-<a class="categoria" href="categoria.html?cat=Coches%20de%20Bebé">
-👶 Coches de Bebé
-</a>
+<a class="categoria" href="categoria.html?cat=Artículos%20de%20Belleza">✨ Artículos de Belleza</a>
+<a class="categoria" href="categoria.html?cat=Juguetes">🧸 Juguetes</a>
+<a class="categoria" href="categoria.html?cat=Bazar">🏠 Bazar</a>
+<a class="categoria" href="categoria.html?cat=Peluches">🐻 Peluches</a>
+<a class="categoria" href="categoria.html?cat=Cajas%20de%20Regalo">🎁 Cajas de Regalo</a>
+<a class="categoria" href="categoria.html?cat=Coches%20de%20Bebé">👶 Coches de Bebé</a>
 
 </div>
 
@@ -278,167 +258,86 @@ placeholder="Buscar productos...">
 <p>Domingo: 9:30 am - 6:30 pm</p>
 </div>
 
-<a
-href="https://wa.me/593990924437"
-class="whatsapp"
-target="_blank">
-💬
-</a>
+<a href="https://wa.me/593990924437" class="whatsapp" target="_blank">💬</a>
 
 <script>
 
-const url =
-"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
 let productos = [];
 
 fetch(url)
-.then(response => response.json())
+.then(res => res.json())
 .then(data => {
 
-    productos = data;
-const nuevos = productos.filter(
-producto =>
-producto.Nuevo &&
-producto.Nuevo.toUpperCase() === "SI"
-);
+productos = data;
+
+const nuevos = productos.filter(p => p.Nuevo && p.Nuevo.toUpperCase() === "SI");
 
 document.getElementById("productosNuevos").innerHTML =
-nuevos.slice(0,8).map(producto => `
+nuevos.slice(0,8).map(p => `
 <div class="producto-nuevo">
 
-<div class="etiqueta-nuevo">
-NUEVO
-</div>
+<div class="etiqueta-nuevo">NUEVO</div>
 
-<img src="${producto.Foto}" alt="${producto.Nombre}">
+<img src="${p.Foto}" alt="${p.Nombre}">
 
-<h3>${producto.Nombre}</h3>
+<h3>${p.Nombre}</h3>
 
-${producto.Descripción ? `
-<p class="descripcion">
-${producto.Descripción}
-</p>
-` : ""}
+${p.Descripción ? `<p class="descripcion">${p.Descripción}</p>` : ""}
 
-${producto.Tamaño ? `
-<p>Tamaño: ${producto.Tamaño}</p>
-` : ""}
+${p.Tamaño ? `<p>Tamaño: ${p.Tamaño}</p>` : ""}
 
-<p>$${producto.Precio}</p>
+<p>$${p.Precio}</p>
 
 </div>
 `).join("");
-    // Mostrar sugerencias mientras escribe
-    document
-    .getElementById("buscadorGlobal")
-    .addEventListener("input", function(){
 
-        const texto = this.value.toLowerCase();
+// BUSCADOR
+document.getElementById("buscadorGlobal").addEventListener("input", function(){
 
-        const resultados =
-        document.getElementById("resultadosBusqueda");
+const texto = this.value.toLowerCase();
+const resultados = document.getElementById("resultadosBusqueda");
 
-        if(texto.length < 2){
-            resultados.innerHTML = "";
-            return;
-        }
+if(texto.length < 2){
+resultados.innerHTML = "";
+return;
+}
 
-        const encontrados =
-        productos.filter(producto =>
-            producto.Nombre &&
-            producto.Nombre.toLowerCase().includes(texto)
-        );
+const encontrados = productos.filter(p =>
+p.Nombre && p.Nombre.toLowerCase().includes(texto)
+);
 
-        if(encontrados.length === 0){
+resultados.innerHTML = encontrados.slice(0,10).map(p => `
+<div class="resultado">
+<a href="buscar.html?q=${encodeURIComponent(p.Nombre)}">${p.Nombre}</a>
+</div>
+`).join("");
 
-            resultados.innerHTML =
-            '<div class="resultado">No se encontraron productos.</div>';
-
-            return;
-        }
-
-        resultados.innerHTML =
-        encontrados
-        .slice(0,10)
-        .map(producto => `
-        <div class="resultado">
-            <a href="buscar.html?q=${encodeURIComponent(producto.Nombre)}">
-                ${producto.Nombre}
-            </a>
-        </div>
-        `)
-        .join("");
-
-    });
-
-    // Buscar al presionar Enter
-    document
-    .getElementById("buscadorGlobal")
-    .addEventListener("keydown", function(e){
-
-        if(e.key === "Enter"){
-
-            const texto = this.value.trim();
-
-            if(texto.length > 0){
-
-                window.location.href =
-                `buscar.html?q=${encodeURIComponent(texto)}`;
-
-            }
-
-        }
-
-    });
-
-})
-.catch(error => {
-    console.error("Error cargando productos:", error);
 });
-// Mostrar botón cuando baja
+
+// ENTER BUSCADOR
+document.getElementById("buscadorGlobal").addEventListener("keydown", function(e){
+if(e.key === "Enter"){
+window.location.href = `buscar.html?q=${encodeURIComponent(this.value)}`;
+}
+});
+
+});
+
+// BOTÓN SUBIR
 window.addEventListener("scroll", function(){
+const btn = document.getElementById("btnArriba");
+if(!btn) return;
 
-    const btn = document.getElementById("btnArriba");
-
-    if(!btn) return;
-
-    if(window.scrollY > 200){
-        btn.style.display = "flex";
-    } else {
-        btn.style.display = "none";
-    }
-
+btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
 function irArriba(){
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+window.scrollTo({ top: 0, behavior: "smooth" });
 }
-// Función subir arriba
-function irArriba(){
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
- document.addEventListener("DOMContentLoaded", function(){
 
-    const btn = document.getElementById("btnArriba");
-
-    window.addEventListener("scroll", function(){
-
-        if(!btn) return;
-
-        btn.style.display = window.scrollY > 200 ? "flex" : "none";
-
-    });
-
-});   
 </script>
 
 </body>
 </html>
-
