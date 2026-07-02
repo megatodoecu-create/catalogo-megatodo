@@ -196,7 +196,8 @@ color:#d63384;
 #btnArriba{
 position:fixed;
 bottom:20px;
-left:20px; /* 👈 aquí lo movemos a la izquierda */
+left:20px;
+right:auto; /* 👈 IMPORTANTE: anula la derecha */
 width:55px;
 height:55px;
 background:#ff2a2a;
@@ -212,18 +213,6 @@ z-index:9999;
 transition:all .3s ease;
 }
 
-#btnArriba:hover{
-transform:scale(1.1);
-background:#d60000;
-}
-
-@media (max-width:600px){
-#btnArriba{
-width:60px;
-height:60px;
-font-size:24px;
-}
-}
 
 </style>
 
