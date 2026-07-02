@@ -134,20 +134,6 @@ text-align:center;
 box-shadow:0 4px 15px rgba(214,51,132,.15);
 }
 
-.producto-nuevo img{
-width:100%;
-height:180px;
-object-fit:contain;
-background:white;
-border-radius:10px;
-}
-
-.descripcion{
-font-size:13px;
-color:#666;
-margin:6px 0;
-}
-
 /* BOTÓN SUBIR (IZQUIERDA) */
 #btnArriba{
 position:fixed;
@@ -229,15 +215,13 @@ const nuevos = productos.filter(p => p.Nuevo && p.Nuevo.toUpperCase() === "SI");
 
 document.getElementById("productosNuevos").innerHTML =
 nuevos.slice(0,8).map(p => `
-<div class="producto-nuevo">
-<img src="${p.Foto}" alt="${p.Nombre}">
+<a href="producto.html?codigo=${p.Código}" class="producto-nuevo">
+<img src="${p.Foto}" style="width:100%;border-radius:10px;">
 <h3>${p.Nombre}</h3>
-${p.Descripción ? `<p class="descripcion">${p.Descripción}</p>` : ""}
-<p>$${p.Precio}</p>
-</div>
+</a>
 `).join("");
 
-/* BUSCADOR EN VIVO */
+/* BUSCADOR INTELIGENTE */
 document.getElementById("buscadorGlobal").addEventListener("input", function(){
 
 const texto = this.value.toLowerCase();
@@ -248,32 +232,42 @@ resultados.innerHTML = "";
 return;
 }
 
-const encontrados = productos.filter(p =>
-p.Nombre && p.Nombre.toLowerCase().includes(texto)
+const encontrados = productos.filter(p => {
+
+const nombre = (p.Nombre || "").toLowerCase();
+const categoria = (p.Categoria || "").toLowerCase();
+const descripcion = (p["Descripción"] || "").toLowerCase();
+
+const palabras = texto.split(" ");
+
+return palabras.some(word =>
+nombre.includes(word) ||
+categoria.includes(word) ||
+descripcion.includes(word)
 );
+
+});
 
 resultados.innerHTML = encontrados.slice(0,10).map(p => `
 <div class="resultado">
-<a href="producto.html?codigo=${p.Código}">${p.Nombre}</a>
+<a href="producto.html?codigo=${p.Código}">
+${p.Nombre}
+</a>
 </div>
 `).join("");
 
 });
 
-/* 🔥 ENTER (ESTO ES LO QUE TE FALTABA) */
+/* ENTER BUSCADOR */
 document.getElementById("buscadorGlobal").addEventListener("keydown", function(e){
 
 if(e.key === "Enter"){
-
 const texto = this.value.trim();
-
 if(texto.length > 0){
-
-window.location.href =
-`buscar.html?q=${encodeURIComponent(texto)}`;
-
+window.location.href = `buscar.html?q=${encodeURIComponent(texto)}`;
 }
 }
+
 });
 
 });
