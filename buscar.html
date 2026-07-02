@@ -47,6 +47,13 @@ background:white;
 margin:10px 0;
 }
 
+.descripcion{
+font-size:13px;
+color:#666;
+margin:8px 0;
+line-height:1.4;
+}
+
 .producto p{
 font-weight:bold;
 color:green;
@@ -87,12 +94,13 @@ text-decoration:none;
 border-radius:8px;
 }
 
-  #btnArriba{
+/* BOTÓN SUBIR */
+#btnArriba{
 position:fixed;
 bottom:20px;
-left:20px;
-width:50px;
-height:50px;
+right:20px;
+width:55px;
+height:55px;
 background:#ff2a2a;
 color:white;
 border-radius:50%;
@@ -105,19 +113,21 @@ cursor:pointer;
 z-index:9999;
 }
 
-/* Solo mejorar en móvil */
 @media (max-width:600px){
 #btnArriba{
-width:55px;
-height:55px;
+width:60px;
+height:60px;
 font-size:24px;
 }
 }
+
 </style>
 </head>
+
 <body>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
-  
+
 <h1>Resultados de búsqueda</h1>
 
 <a href="index.html" class="volver">← Volver al inicio</a>
@@ -126,92 +136,67 @@ font-size:24px;
 
 <script>
 
-const url =
-"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
 const params = new URLSearchParams(window.location.search);
 const texto = (params.get("q") || "").toLowerCase();
 
 fetch(url)
-.then(response => response.json())
+.then(res => res.json())
 .then(productos => {
 
-const encontrados = productos.filter(producto =>
-producto.Nombre &&
-producto.Nombre.toLowerCase().includes(texto)
+const encontrados = productos.filter(p =>
+p.Nombre && p.Nombre.toLowerCase().includes(texto)
 );
 
-const contenedor =
-document.getElementById("resultados");
+const contenedor = document.getElementById("resultados");
 
 if(encontrados.length === 0){
-
-contenedor.innerHTML =
-"<h2 style='text-align:center;'>No se encontraron productos.</h2>";
-
+contenedor.innerHTML = "<h2 style='text-align:center;'>No se encontraron productos.</h2>";
 return;
-
 }
 
-contenedor.innerHTML =
-encontrados.map(producto => `
-
+contenedor.innerHTML = encontrados.map(p => `
 <div class="producto">
 
-${producto.Oferta && producto.Oferta.toLowerCase() === "si"
+${p.Oferta && p.Oferta.toLowerCase() === "si"
 ? '<div class="oferta">OFERTA</div>'
 : ''}
 
-<img
-src="${producto.Foto}"
-alt="${producto.Nombre}"
-onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Foto'">
+<img src="${p.Foto}" alt="${p.Nombre}">
 
-<h3>${producto.Nombre}</h3>
-${producto.Descripción ? `
-<div style="font-size:13px; color:#666; margin:8px 0; line-height:1.4;">
-${producto.Descripción}
-</div>
-` : ''}
-${producto.Tamaño
-? `<div class="tamano">${producto.Tamaño}</div>`
-: ''}
+<h3>${p.Nombre}</h3>
 
-<p>$${producto.Precio}</p>
+${p.Descripción ? `<div class="descripcion">${p.Descripción}</div>` : ""}
+
+${p.Tamaño ? `<div class="tamano">${p.Tamaño}</div>` : ""}
+
+<p>$${p.Precio}</p>
 
 </div>
-
 `).join("");
 
 })
-.catch(error => {
-
+.catch(() => {
 document.getElementById("resultados").innerHTML =
 "<h2 style='text-align:center;'>Error cargando productos.</h2>";
-
-console.error(error);
-
 });
-// Mostrar botón cuando baja
+
+// BOTÓN SUBIR
 window.addEventListener("scroll", function(){
+const btn = document.getElementById("btnArriba");
+if(!btn) return;
 
-    const btn = document.getElementById("btnArriba");
-
-    if(window.scrollY > 300){
-        btn.style.display = "flex";
-    } else {
-        btn.style.display = "none";
-    }
-
+btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
-// Función subir arriba
 function irArriba(){
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
 }
+
 </script>
 
 </body>
