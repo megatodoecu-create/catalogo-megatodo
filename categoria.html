@@ -177,7 +177,13 @@ return `
 ${p.Oferta === "SI" ? `<div class="oferta">OFERTA</div>` : ""}
 
 <a href="producto.html?codigo=${codigo}">
-<img src="${p.Foto}" alt="${p.Nombre}">
+const fotos = [
+p["Foto 1"],
+p["Foto 2"],
+p["Foto 3"]
+].filter(Boolean);
+
+const foto = fotos[0] || "https://via.placeholder.com/300";
 </a>
 
 <div class="info">
