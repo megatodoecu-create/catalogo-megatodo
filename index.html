@@ -162,7 +162,14 @@ color:#444;
 margin:10px 0;
 min-height:40px;
 }
-
+.descripcion{
+font-size:13px;
+color:#666;
+line-height:1.4;
+margin:8px 0;
+min-height:38px;
+}
+    
 .producto-nuevo p{
 margin:5px 0;
 }
@@ -279,6 +286,10 @@ NUEVO
 <img src="${producto.Foto}" alt="${producto.Nombre}">
 
 <h3>${producto.Nombre}</h3>
+
+<p class="descripcion">
+${producto.Descripción || ""}
+</p>
 
 <p>Tamaño: ${producto.Tamaño}</p>
 
