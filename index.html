@@ -254,7 +254,7 @@ p.Nombre && p.Nombre.toLowerCase().includes(texto)
 
 resultados.innerHTML = encontrados.slice(0,10).map(p => `
 <div class="resultado">
-<a href="buscar.html?q=${encodeURIComponent(p.Nombre)}">${p.Nombre}</a>
+<a href="producto.html?codigo=${p.Código}">${p.Nombre}</a>
 </div>
 `).join("");
 
