@@ -191,9 +191,17 @@ ${producto.Oferta === "SI" ? '<div class="oferta">🔥 OFERTA</div>' : ''}
 ${producto.Nombre}
 </div>
 
+${producto.Descripción ? `
+<div style="font-size:13px; color:#666; margin-top:6px; line-height:1.4;">
+${producto.Descripción}
+</div>
+` : ""}
+
+${producto.Tamaño ? `
 <div class="tamano">
 Tamaño: ${producto.Tamaño}
 </div>
+` : ""}
 
 <div class="precio">
 $${producto.Precio}
