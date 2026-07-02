@@ -8,104 +8,113 @@
 <style>
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
 }
 
 header{
-    background:#ff2a2a;
-    color:white;
-    text-align:center;
-    padding:20px;
+background:#ff2a2a;
+color:white;
+text-align:center;
+padding:20px;
 }
 
 .volver{
-    display:inline-block;
-    margin:10px;
-    text-decoration:none;
-    color:#ff2a2a;
-    font-weight:bold;
+display:inline-block;
+margin:10px;
+text-decoration:none;
+color:#ff2a2a;
+font-weight:bold;
 }
 
 .buscador{
-    padding:20px;
-    text-align:center;
+padding:20px;
+text-align:center;
 }
 
 .buscador input{
-    width:90%;
-    max-width:500px;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:16px;
+width:90%;
+max-width:500px;
+padding:12px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
 }
 
 .productos{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-    padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
 }
 
 .card{
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
-    position:relative;
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+position:relative;
 }
 
 .oferta{
-    position:absolute;
-    top:10px;
-    left:10px;
-    background:red;
-    color:white;
-    font-weight:bold;
-    padding:8px 12px;
-    border-radius:8px;
-    z-index:10;
+position:absolute;
+top:10px;
+left:10px;
+background:red;
+color:white;
+font-weight:bold;
+padding:8px 12px;
+border-radius:8px;
+z-index:10;
 }
 
 .card img{
-    width:100%;
-    height:280px;
-    object-fit:contain;
+width:100%;
+height:280px;
+object-fit:contain;
 }
 
 .info{
-    padding:15px;
+padding:15px;
 }
 
 .nombre{
-    font-size:18px;
-    font-weight:bold;
+font-size:18px;
+font-weight:bold;
+}
+
+.descripcion{
+font-size:13px;
+color:#666;
+margin-top:6px;
+line-height:1.4;
 }
 
 .tamano{
-    color:#666;
-    margin-top:5px;
+color:#666;
+margin-top:8px;
 }
 
 .precio{
-    color:#ff2a2a;
-    font-size:24px;
-    font-weight:bold;
-    margin-top:10px;
+color:#ff2a2a;
+font-size:24px;
+font-weight:bold;
+margin-top:10px;
 }
 
 .btn{
-    display:block;
-    margin-top:15px;
-    background:#25D366;
-    color:white;
-    text-align:center;
-    padding:10px;
-    border-radius:8px;
-    text-decoration:none;
+display:block;
+margin-top:15px;
+background:#25D366;
+color:white;
+text-align:center;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
 }
+
+/* BOTÓN SUBIR */
 #btnArriba{
 position:fixed;
 bottom:20px;
@@ -124,77 +133,55 @@ cursor:pointer;
 z-index:9999;
 }
 
-/* Solo mejorar en móvil */
 @media (max-width:600px){
 #btnArriba{
-width:55px;
-height:55px;
+width:60px;
+height:60px;
 font-size:24px;
 }
 }
+
 </style>
 </head>
+
 <body>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
-    
+
 <a class="volver" href="index.html">← Volver al inicio</a>
 
 <header>
-    <h1 id="titulo"></h1>
+<h1 id="titulo"></h1>
 </header>
 
 <div class="buscador">
-    <input
-        type="text"
-        id="buscadorCategoria"
-        placeholder="Buscar producto en esta categoría...">
+<input type="text" id="buscadorCategoria" placeholder="Buscar producto en esta categoría...">
 </div>
 
 <div id="productos" class="productos"></div>
 
 <script>
 
-const categoria =
-new URLSearchParams(window.location.search).get("cat");
-
-const productoBuscado =
-new URLSearchParams(window.location.search).get("producto");
+const categoria = new URLSearchParams(window.location.search).get("cat");
+const productoBuscado = new URLSearchParams(window.location.search).get("producto");
 
 document.getElementById("titulo").textContent = categoria;
-    
-const url =
-"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+
+const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
 fetch(url)
-.then(response => response.json())
+.then(res => res.json())
 .then(data => {
 
-const contenedor =
-document.getElementById("productos");
+const contenedor = document.getElementById("productos");
 
-let filtrados =
-data.filter(item =>
-item.Categoria === categoria
-);
+let filtrados = data.filter(item => item.Categoria === categoria);
 
 if(productoBuscado){
-
-filtrados =
-filtrados.filter(item =>
+filtrados = filtrados.filter(item =>
 item.Nombre &&
-item.Nombre.toLowerCase().trim() ===
-productoBuscado.toLowerCase().trim()
+item.Nombre.toLowerCase().trim() === productoBuscado.toLowerCase().trim()
 );
-
-}
-
-if(filtrados.length === 0){
-
-contenedor.innerHTML =
-"<h2>No hay productos en esta categoría.</h2>";
-
-return;
-
 }
 
 function mostrarProductos(lista){
@@ -204,7 +191,6 @@ contenedor.innerHTML = "";
 lista.forEach(producto => {
 
 contenedor.innerHTML += `
-
 <div class="card">
 
 ${producto.Oferta === "SI" ? '<div class="oferta">🔥 OFERTA</div>' : ''}
@@ -213,12 +199,10 @@ ${producto.Oferta === "SI" ? '<div class="oferta">🔥 OFERTA</div>' : ''}
 
 <div class="info">
 
-<div class="nombre">
-${producto.Nombre}
-</div>
+<div class="nombre">${producto.Nombre}</div>
 
 ${producto.Descripción ? `
-<div style="font-size:13px; color:#666; margin-top:6px; line-height:1.4;">
+<div class="descripcion">
 ${producto.Descripción}
 </div>
 ` : ""}
@@ -229,71 +213,56 @@ Tamaño: ${producto.Tamaño}
 </div>
 ` : ""}
 
-<div class="precio">
-$${producto.Precio}
-</div>
+<div class="precio">$${producto.Precio}</div>
 
-<a
-class="btn"
+<a class="btn"
 target="_blank"
 href="https://wa.me/593990924437?text=Hola,%20quiero%20información%20sobre%20${encodeURIComponent(producto.Nombre)}">
 Consultar por WhatsApp
 </a>
 
 </div>
-
 </div>
-
 `;
-
 });
 
 }
 
 mostrarProductos(filtrados);
 
-document
-.getElementById("buscadorCategoria")
-.addEventListener("input", function(){
+// buscador
+document.getElementById("buscadorCategoria").addEventListener("input", function(){
+const texto = this.value.toLowerCase();
 
-const texto =
-this.value.toLowerCase();
-
-const resultado =
-filtrados.filter(producto =>
-producto.Nombre.toLowerCase().includes(texto)
+const resultado = filtrados.filter(p =>
+p.Nombre.toLowerCase().includes(texto)
 );
 
 mostrarProductos(resultado);
-
 });
 
 })
-.catch(error => {
-
+.catch(err => {
 document.getElementById("productos").innerHTML =
 "<h2>Error cargando productos.</h2>";
-
-console.error(error);
-
+console.error(err);
 });
-// Mostrar botón cuando baja
+
+// BOTÓN SUBIR
 window.addEventListener("scroll", function(){
+const btn = document.getElementById("btnArriba");
+if(!btn) return;
 
-    const btn = document.getElementById("btnArriba");
-
-    if(!btn) return;
-
-    btn.style.display = window.scrollY > 200 ? "flex" : "none";
-
+btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
 function irArriba(){
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
 }
+
 </script>
 
 </body>
