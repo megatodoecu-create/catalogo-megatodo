@@ -107,7 +107,7 @@ font-size:18px;
 margin-top:5px;
 }
 
-/* BOTÓN WHATSAPP */
+/* WHATSAPP */
 .btn-wpp{
 display:block;
 margin-top:10px;
@@ -168,14 +168,25 @@ return;
 
 contenedor.innerHTML = encontrados.map(p => {
 
+const codigo = p.Código || p.Codigo || p.ID || "";
+
 const nombre = p.Nombre || "Producto";
-const foto = p.Foto || "https://via.placeholder.com/300";
+
+const foto =
+p.Foto || p["Foto 1"] || p["Foto2"] || "https://via.placeholder.com/300";
+
 const precio = p.Precio || "0";
 const descripcion = p["Descripción"] || p["Descripcion"] || "";
 const tamaño = p.Tamaño || "";
 
-/* MENSAJE WHATSAPP */
-const mensaje = `Hola, quiero información sobre: ${nombre}`;
+/* 🔥 LINK PRODUCTO */
+const link = `https://TU-DOMINIO.com/producto.html?codigo=${codigo}`;
+
+/* WHATSAPP MEJORADO */
+const mensaje = `🛍️ Producto:
+${nombre}
+💰 Precio: $${precio}
+🔗 Ver producto: ${link}`;
 
 return `
 <div class="producto">
