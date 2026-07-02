@@ -287,11 +287,15 @@ NUEVO
 
 <h3>${producto.Nombre}</h3>
 
+${producto.Descripción ? `
 <p class="descripcion">
-${producto.Descripción || ""}
+${producto.Descripción}
 </p>
+` : ""}
 
+${producto.Tamaño ? `
 <p>Tamaño: ${producto.Tamaño}</p>
+` : ""}
 
 <p>$${producto.Precio}</p>
 
