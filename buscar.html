@@ -30,7 +30,7 @@ text-decoration:none;
 border-radius:8px;
 }
 
-/* BOTÓN SUBIR */
+/* BOTÓN SUBIR IZQUIERDA */
 #btnArriba{
 position:fixed;
 bottom:20px;
@@ -49,6 +49,7 @@ cursor:pointer;
 z-index:9999;
 }
 
+/* GRID PRODUCTOS */
 #resultados{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -96,6 +97,7 @@ font-size:13px;
 font-size:13px;
 color:#666;
 margin:8px 0;
+line-height:1.4;
 }
 
 .precio{
@@ -142,7 +144,7 @@ fetch(url)
 .then(data => {
 
 const encontrados = data.filter(p =>
-p.Nombre && p.Nombre.toLowerCase().includes(texto)
+(p.Nombre || "").toLowerCase().includes(texto)
 );
 
 const contenedor = document.getElementById("resultados");
@@ -154,7 +156,13 @@ return;
 
 contenedor.innerHTML = encontrados.map(p => {
 
-const mensaje = `Hola, quiero información sobre: ${p.Nombre}`;
+const nombre = p.Nombre || "Producto";
+const foto = p.Foto || "https://via.placeholder.com/300";
+const precio = p.Precio || "0";
+const descripcion = p["Descripción"] || p["Descripcion"] || "";
+const tamaño = p.Tamaño || "";
+
+const mensaje = `Hola, quiero información sobre: ${nombre}`;
 
 return `
 <div class="producto">
@@ -162,20 +170,20 @@ return `
 ${p.Oferta && p.Oferta.toUpperCase() === "SI"
 ? `<div class="oferta">OFERTA</div>` : ""}
 
-<img src="${p.Foto}" alt="${p.Nombre}">
+<img src="${foto}" alt="${nombre}">
 
-<h3>${p.Nombre}</h3>
+<h3>${nombre}</h3>
 
-${p.Descripción ? `<div class="descripcion">${p.Descripción}</div>` : ""}
+${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
 
-${p.Tamaño ? `<div class="tamano">Tamaño: ${p.Tamaño}</div>` : ""}
+${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 
-<div class="precio">$${p.Precio}</div>
+<div class="precio">$${precio}</div>
 
 <a class="btn-wpp"
 target="_blank"
 href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
-WhatsApp
+📲 WhatsApp
 </a>
 
 </div>
