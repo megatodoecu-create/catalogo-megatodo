@@ -13,6 +13,7 @@ font-family:Arial,sans-serif;
 background:#f5f5f5;
 }
 
+/* HEADER */
 header{
 background:#ff2a2a;
 color:white;
@@ -30,6 +31,7 @@ color:#ff2a2a;
 font-weight:bold;
 }
 
+/* GRID */
 .productos{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -37,6 +39,7 @@ gap:20px;
 padding:20px;
 }
 
+/* CARD */
 .card{
 background:white;
 border-radius:12px;
@@ -53,6 +56,7 @@ background:white;
 cursor:pointer;
 }
 
+/* OFERTA */
 .oferta{
 position:absolute;
 top:10px;
@@ -65,6 +69,7 @@ border-radius:6px;
 font-weight:bold;
 }
 
+/* INFO */
 .info{
 padding:15px;
 }
@@ -95,6 +100,7 @@ font-weight:bold;
 margin-top:10px;
 }
 
+/* BOTÓN WHATSAPP */
 .btn{
 display:block;
 margin-top:10px;
@@ -163,13 +169,17 @@ return;
 
 contenedor.innerHTML = filtrados.map(p => {
 
-const codigo = p.Código;
+const codigo = p.Código || p.Codigo || p.ID || "";
 
-const mensaje = `Hola, quiero este producto:
+const foto =
+p.Foto || p["Foto 1"] || p["Foto2"] || "https://via.placeholder.com/300";
+
+const link = `https://TU-DOMINIO.com/producto.html?codigo=${codigo}`;
+
+const mensaje = `🛍️ Producto:
 ${p.Nombre}
-Código: ${codigo}
-Precio: $${p.Precio}
-Link: producto.html?codigo=${codigo}`;
+💰 Precio: $${p.Precio}
+🔗 Ver producto: ${link}`;
 
 return `
 <div class="card">
@@ -177,13 +187,7 @@ return `
 ${p.Oferta === "SI" ? `<div class="oferta">OFERTA</div>` : ""}
 
 <a href="producto.html?codigo=${codigo}">
-const fotos = [
-p["Foto 1"],
-p["Foto 2"],
-p["Foto 3"]
-].filter(Boolean);
-
-const foto = fotos[0] || "https://via.placeholder.com/300";
+<img src="${foto}" alt="${p.Nombre}">
 </a>
 
 <div class="info">
