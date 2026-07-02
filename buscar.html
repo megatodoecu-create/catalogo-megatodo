@@ -143,9 +143,24 @@ fetch(url)
 .then(res => res.json())
 .then(data => {
 
-const encontrados = data.filter(p =>
-(p.Nombre || "").toLowerCase().includes(texto)
+const encontrados = data.filter(p => {
+
+const nombre = (p.Nombre || "").toLowerCase();
+const categoria = (p.Categoria || "").toLowerCase();
+const descripcion = (p["Descripción"] || p["Descripcion"] || "").toLowerCase();
+
+const busqueda = texto.toLowerCase();
+
+// divide en palabras (snoopy peluche => ["snoopy","peluche"])
+const palabras = busqueda.split(" ");
+
+return palabras.some(palabra =>
+nombre.includes(palabra) ||
+categoria.includes(palabra) ||
+descripcion.includes(palabra)
 );
+
+});
 
 const contenedor = document.getElementById("resultados");
 
