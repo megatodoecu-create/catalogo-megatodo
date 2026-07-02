@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buscar - Megatodo</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Resultados - Megatodo</title>
 
 <style>
 
@@ -16,89 +14,20 @@ background:#f5f5f5;
 padding:20px;
 }
 
-/* TITULO */
 h1{
 text-align:center;
 }
 
-/* GRID */
-#resultados{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-max-width:1200px;
-margin:auto;
-}
-
-/* CARD */
-.producto{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-position:relative;
-}
-
-.producto img{
-width:100%;
-height:280px;
-object-fit:contain;
-background:white;
-}
-
-/* INFO */
-.info{
-padding:15px;
-}
-
-.nombre{
-font-size:18px;
-font-weight:bold;
-}
-
-.descripcion{
-font-size:13px;
-color:#666;
-margin:6px 0;
-line-height:1.4;
-}
-
-.tamano{
-font-size:13px;
-color:#777;
-margin:5px 0;
-}
-
-.precio{
-font-size:22px;
-color:#2e7d32;
-font-weight:bold;
-margin-top:8px;
-}
-
-/* OFERTA */
-.oferta{
-position:absolute;
-top:10px;
-left:10px;
-background:red;
-color:white;
-padding:6px 10px;
-border-radius:6px;
-font-size:12px;
-font-weight:bold;
-}
-
-/* BOTON WHATSAPP */
-.btn{
+.volver{
 display:block;
-margin-top:10px;
-background:#25D366;
-color:white;
-text-align:center;
+width:200px;
+margin:10px auto 20px;
 padding:10px;
-border-radius:8px;
+text-align:center;
+background:#333;
+color:white;
 text-decoration:none;
+border-radius:8px;
 }
 
 /* BOTÓN SUBIR */
@@ -115,9 +44,77 @@ display:none;
 align-items:center;
 justify-content:center;
 font-size:22px;
+box-shadow:0 6px 15px rgba(0,0,0,.3);
 cursor:pointer;
-box-shadow:0 4px 12px rgba(0,0,0,.3);
 z-index:9999;
+}
+
+#resultados{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+max-width:1200px;
+margin:auto;
+}
+
+.producto{
+background:white;
+border-radius:10px;
+padding:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+text-align:center;
+position:relative;
+}
+
+.producto img{
+width:100%;
+height:280px;
+object-fit:contain;
+}
+
+.oferta{
+position:absolute;
+top:10px;
+left:10px;
+background:red;
+color:white;
+padding:5px 10px;
+border-radius:6px;
+font-weight:bold;
+}
+
+.tamano{
+background:#eee;
+padding:5px;
+border-radius:6px;
+display:inline-block;
+margin:5px 0;
+font-size:13px;
+}
+
+.descripcion{
+font-size:13px;
+color:#666;
+margin:8px 0;
+}
+
+.precio{
+font-weight:bold;
+color:green;
+font-size:18px;
+margin-top:5px;
+}
+
+/* BOTÓN WHATSAPP */
+.btn-wpp{
+display:block;
+margin-top:10px;
+background:#25D366;
+color:white;
+padding:10px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 </style>
@@ -125,15 +122,11 @@ z-index:9999;
 
 <body>
 
-<div id="btnArriba" onclick="irArriba()">
-<i class="fa-solid fa-arrow-up"></i>
-</div>
+<div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <h1>Resultados de búsqueda</h1>
 
-<a href="index.html" style="display:block;text-align:center;margin-bottom:20px;color:#ff2a2a;font-weight:bold;">
-← Volver al inicio
-</a>
+<a class="volver" href="index.html">← Volver al inicio</a>
 
 <div id="resultados"></div>
 
@@ -155,38 +148,36 @@ p.Nombre && p.Nombre.toLowerCase().includes(texto)
 const contenedor = document.getElementById("resultados");
 
 if(encontrados.length === 0){
-contenedor.innerHTML = "<h3 style='text-align:center;'>No se encontraron productos</h3>";
+contenedor.innerHTML = "<h2 style='text-align:center'>No se encontraron productos</h2>";
 return;
 }
 
 contenedor.innerHTML = encontrados.map(p => {
 
-const descripcion = p.Descripción ? `<div class="descripcion">${p.Descripción}</div>` : "";
-const tamaño = p.Tamaño ? `<div class="tamano">Tamaño: ${p.Tamaño}</div>` : "";
+const mensaje = `Hola, quiero información sobre: ${p.Nombre}`;
 
 return `
 <div class="producto">
 
-${p.Oferta === "SI" ? `<div class="oferta">OFERTA</div>` : ""}
+${p.Oferta && p.Oferta.toUpperCase() === "SI"
+? `<div class="oferta">OFERTA</div>` : ""}
 
 <img src="${p.Foto}" alt="${p.Nombre}">
 
-<div class="info">
+<h3>${p.Nombre}</h3>
 
-<div class="nombre">${p.Nombre}</div>
+${p.Descripción ? `<div class="descripcion">${p.Descripción}</div>` : ""}
 
-${descripcion}
-${tamaño}
+${p.Tamaño ? `<div class="tamano">Tamaño: ${p.Tamaño}</div>` : ""}
 
 <div class="precio">$${p.Precio}</div>
 
-<a class="btn"
+<a class="btn-wpp"
 target="_blank"
-href="https://wa.me/593990924437?text=Hola,%20quiero%20el%20producto:%20${encodeURIComponent(p.Nombre)}%20-%20Precio:%20$${p.Precio}">
-💬 WhatsApp
+href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
+WhatsApp
 </a>
 
-</div>
 </div>
 `;
 }).join("");
@@ -194,8 +185,10 @@ href="https://wa.me/593990924437?text=Hola,%20quiero%20el%20producto:%20${encode
 });
 
 // BOTÓN SUBIR
-window.addEventListener("scroll", () => {
+window.addEventListener("scroll", function(){
 const btn = document.getElementById("btnArriba");
+if(!btn) return;
+
 btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
