@@ -193,7 +193,7 @@ color:#d63384;
 #btnArriba{
 position:fixed;
 bottom:20px;
-left:20px;
+right:20px;
 width:50px;
 height:50px;
 background:#ff2a2a;
@@ -401,7 +401,9 @@ window.addEventListener("scroll", function(){
 
     const btn = document.getElementById("btnArriba");
 
-    if(window.scrollY > 300){
+    if(!btn) return;
+
+    if(window.scrollY > 200){
         btn.style.display = "flex";
     } else {
         btn.style.display = "none";
@@ -409,6 +411,12 @@ window.addEventListener("scroll", function(){
 
 });
 
+function irArriba(){
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
 // Función subir arriba
 function irArriba(){
     window.scrollTo({
@@ -416,7 +424,19 @@ function irArriba(){
         behavior: "smooth"
     });
 }
-    
+ document.addEventListener("DOMContentLoaded", function(){
+
+    const btn = document.getElementById("btnArriba");
+
+    window.addEventListener("scroll", function(){
+
+        if(!btn) return;
+
+        btn.style.display = window.scrollY > 200 ? "flex" : "none";
+
+    });
+
+});   
 </script>
 
 </body>
