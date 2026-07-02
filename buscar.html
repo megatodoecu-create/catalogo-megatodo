@@ -54,9 +54,21 @@ margin:8px 0;
 line-height:1.4;
 }
 
-.producto p{
+.tamano{
+display:inline-block;
+background:#eee;
+padding:5px 10px;
+border-radius:5px;
+margin-bottom:10px;
+font-size:14px;
+font-weight:bold;
+}
+
+.precio{
 font-weight:bold;
 color:green;
+margin-top:10px;
+font-size:18px;
 }
 
 .oferta{
@@ -72,26 +84,17 @@ font-size:14px;
 z-index:10;
 }
 
-.tamano{
-display:inline-block;
-background:#eee;
-padding:5px 10px;
-border-radius:5px;
-margin-bottom:10px;
-font-size:14px;
-font-weight:bold;
-}
-
-.volver{
+/* BOTÓN WHATSAPP */
+.btn-wsp{
 display:block;
-width:200px;
-margin:20px auto;
-padding:12px;
-background:#333;
+margin-top:12px;
+background:#25D366;
 color:white;
 text-align:center;
-text-decoration:none;
+padding:10px;
 border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 /* BOTÓN SUBIR */
@@ -119,6 +122,18 @@ width:60px;
 height:60px;
 font-size:24px;
 }
+}
+
+.volver{
+display:block;
+width:200px;
+margin:20px auto;
+padding:12px;
+background:#333;
+color:white;
+text-align:center;
+text-decoration:none;
+border-radius:8px;
 }
 
 </style>
@@ -156,7 +171,20 @@ contenedor.innerHTML = "<h2 style='text-align:center;'>No se encontraron product
 return;
 }
 
-contenedor.innerHTML = encontrados.map(p => `
+contenedor.innerHTML = encontrados.map(p => {
+
+const mensaje = `
+Hola 👋 quiero este producto:
+
+Nombre: ${p.Nombre}
+Precio: $${p.Precio}
+${p.Tamaño ? "Tamaño: " + p.Tamaño : ""}
+Foto: ${p.Foto}
+`;
+
+const linkWsp = `https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
+
+return `
 <div class="producto">
 
 ${p.Oferta && p.Oferta.toLowerCase() === "si"
@@ -171,30 +199,27 @@ ${p.Descripción ? `<div class="descripcion">${p.Descripción}</div>` : ""}
 
 ${p.Tamaño ? `<div class="tamano">${p.Tamaño}</div>` : ""}
 
-<p>$${p.Precio}</p>
+<div class="precio">$${p.Precio}</div>
+
+<a class="btn-wsp" href="${linkWsp}" target="_blank">
+💬 Consultar por WhatsApp
+</a>
 
 </div>
-`).join("");
+`;
+}).join("");
 
-})
-.catch(() => {
-document.getElementById("resultados").innerHTML =
-"<h2 style='text-align:center;'>Error cargando productos.</h2>";
 });
 
 // BOTÓN SUBIR
 window.addEventListener("scroll", function(){
 const btn = document.getElementById("btnArriba");
 if(!btn) return;
-
 btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
 function irArriba(){
-window.scrollTo({
-top: 0,
-behavior: "smooth"
-});
+window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 </script>
