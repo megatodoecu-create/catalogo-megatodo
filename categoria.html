@@ -277,7 +277,26 @@ document.getElementById("productos").innerHTML =
 console.error(error);
 
 });
+// Mostrar botón cuando baja
+window.addEventListener("scroll", function(){
 
+    const btn = document.getElementById("btnArriba");
+
+    if(window.scrollY > 300){
+        btn.style.display = "flex";
+    } else {
+        btn.style.display = "none";
+    }
+
+});
+
+// Función subir arriba
+function irArriba(){
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
 </script>
 
 </body>
