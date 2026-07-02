@@ -141,7 +141,11 @@ alt="${producto.Nombre}"
 onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Foto'">
 
 <h3>${producto.Nombre}</h3>
-
+${producto.Descripción ? `
+<div style="font-size:13px; color:#666; margin:8px 0; line-height:1.4;">
+${producto.Descripción}
+</div>
+` : ''}
 ${producto.Tamaño
 ? `<div class="tamano">${producto.Tamaño}</div>`
 : ''}
