@@ -146,6 +146,7 @@ font-size:24px;
 
 <body>
 
+<!-- BOTÓN SUBIR -->
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <a class="volver" href="index.html">← Volver al inicio</a>
@@ -173,8 +174,6 @@ fetch(url)
 .then(res => res.json())
 .then(data => {
 
-const contenedor = document.getElementById("productos");
-
 let filtrados = data.filter(item => item.Categoria === categoria);
 
 if(productoBuscado){
@@ -186,9 +185,20 @@ item.Nombre.toLowerCase().trim() === productoBuscado.toLowerCase().trim()
 
 function mostrarProductos(lista){
 
+const contenedor = document.getElementById("productos");
 contenedor.innerHTML = "";
 
 lista.forEach(producto => {
+
+const mensaje = `
+Hola, quiero información sobre:
+
+Producto: ${producto.Nombre}
+Precio: $${producto.Precio}
+Foto: ${producto.Foto}
+`;
+
+const link = `https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
 
 contenedor.innerHTML += `
 <div class="card">
@@ -202,22 +212,16 @@ ${producto.Oferta === "SI" ? '<div class="oferta">🔥 OFERTA</div>' : ''}
 <div class="nombre">${producto.Nombre}</div>
 
 ${producto.Descripción ? `
-<div class="descripcion">
-${producto.Descripción}
-</div>
+<div class="descripcion">${producto.Descripción}</div>
 ` : ""}
 
 ${producto.Tamaño ? `
-<div class="tamano">
-Tamaño: ${producto.Tamaño}
-</div>
+<div class="tamano">Tamaño: ${producto.Tamaño}</div>
 ` : ""}
 
 <div class="precio">$${producto.Precio}</div>
 
-<a class="btn"
-target="_blank"
-href="https://wa.me/593990924437?text=Hola,%20quiero%20información%20sobre%20:%0A%0AProducto:%20${encodeURIComponent(producto.Nombre)}%0A%0AFoto:%20${encodeURIComponent(producto.Foto)}"
+<a class="btn" target="_blank" href="${link}">
 Consultar por WhatsApp
 </a>
 
@@ -242,10 +246,9 @@ mostrarProductos(resultado);
 });
 
 })
-.catch(err => {
+.catch(() => {
 document.getElementById("productos").innerHTML =
 "<h2>Error cargando productos.</h2>";
-console.error(err);
 });
 
 // BOTÓN SUBIR
