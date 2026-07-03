@@ -198,28 +198,22 @@ const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
 
-/* 🔥 LINK SIEMPRE CORRECTO */
+/* 🔥 LINK CORRECTO */
 const linkProducto = `${window.location.origin}/producto.html?codigo=${codigo}`;
 
-/* MENSAJE WHATSAPP PRO */
-const link = window.location.href;
+/* 🔥 MENSAJE WHATSAPP IGUAL QUE PRODUCTO */
+const mensaje = `
+Hola, quiero información sobre:
 
-const mensaje =
-`Hola, quiero información sobre:
+${p.Nombre || ""}
 
-${productoActual.Nombre}
+Precio: $${p.Precio || ""}
 
-Precio: $${productoActual.Precio}
+Código: ${codigo}
 
-Código: ${productoActual.Código}
-
-Link:
-${link}`;
-
-document.getElementById("wpp").href =
-`https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
-
-});
+Link del producto:
+${linkProducto}
+`;
 
 return `
 <div class="card">
@@ -249,6 +243,7 @@ href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 `;
 
 }).join("");
+
 }
 
 window.addEventListener("scroll", function(){
