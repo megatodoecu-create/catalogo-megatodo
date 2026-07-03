@@ -13,7 +13,7 @@ font-family:Arial,sans-serif;
 background:#f5f5f5;
 }
 
-/* 🔥 BOTÓN VOLVER (PRO FLOTANTE) */
+/* BOTÓN VOLVER */
 .volver-home{
 position:fixed;
 top:15px;
@@ -51,7 +51,7 @@ cursor:pointer;
 z-index:9999;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* CONTENEDOR */
 .contenedor{
 max-width:1100px;
 margin:auto;
@@ -61,7 +61,6 @@ gap:30px;
 padding:20px;
 }
 
-/* GALERÍA */
 .galeria{
 background:white;
 padding:20px;
@@ -77,7 +76,6 @@ border-radius:10px;
 background:white;
 }
 
-/* MINIATURAS */
 .miniaturas{
 display:flex;
 gap:10px;
@@ -97,7 +95,6 @@ border:2px solid transparent;
 border:2px solid #ff2a2a;
 }
 
-/* INFO */
 .info{
 background:white;
 padding:20px;
@@ -145,11 +142,6 @@ margin-bottom:10px;
 margin-left:5px;
 }
 
-.stock{
-margin:10px 0;
-font-weight:bold;
-}
-
 .descripcion{
 margin-top:15px;
 color:#555;
@@ -177,12 +169,7 @@ background:#ff2a2a;
 color:white;
 }
 
-@media(max-width:900px){
-.contenedor{
-grid-template-columns:1fr;
-}
-}
-
+/* CARRITO GLOBAL (CORRECTO) */
 .btn-carrito-global{
 position:fixed;
 top:15px;
@@ -200,23 +187,24 @@ transition:0.2s;
 
 .btn-carrito-global:hover{
 transform:scale(1.05);
-}    
+}
+
+@media(max-width:900px){
+.contenedor{
+grid-template-columns:1fr;
+}
+}
+
 </style>
 </head>
 
 <body>
-<a href="carrito.html" class="btn-carrito-global">🛒 Carrito</a>
-    <span id="cartCount" style="
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
-">
-0
-</span>
+
+<!-- ✅ CARRITO CORREGIDO (SOLO UNO) -->
+<a href="carrito.html" class="btn-carrito-global">
+🛒 Carrito <span id="cartCount">0</span>
+</a>
+
 <a class="volver-home" href="index.html">← Inicio</a>
 
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
@@ -224,7 +212,7 @@ font-weight:bold;
 <div class="contenedor">
 
 <div class="galeria">
-<img id="imgPrincipal" src="" alt="producto">
+<img id="imgPrincipal" src="">
 
 <div class="miniaturas">
 <img id="img1" onclick="cambiar(this)">
@@ -236,7 +224,6 @@ font-weight:bold;
 <div class="info">
 
 <div id="etiquetas"></div>
-
 <div class="titulo" id="nombre"></div>
 
 <div>
@@ -245,11 +232,9 @@ font-weight:bold;
 </div>
 
 <div class="stock" id="stock"></div>
-
 <div class="descripcion" id="descripcion"></div>
 
 <a id="wpp" class="btn btn-wpp" target="_blank">📲 WhatsApp</a>
-
 <a href="#" class="btn btn-carrito" id="btnAddCart">🛒 Agregar al carrito</a>
 
 </div>
@@ -276,7 +261,6 @@ document.body.innerHTML = "<h2 style='text-align:center'>Producto no encontrado<
 return;
 }
 
-// IMÁGENES
 const img1 = productoActual["Foto 1"];
 const img2 = productoActual["Foto 2"];
 const img3 = productoActual["Foto 3"];
@@ -286,7 +270,6 @@ document.getElementById("img1").src = img1;
 document.getElementById("img2").src = img2 || img1;
 document.getElementById("img3").src = img3 || img1;
 
-// INFO
 document.getElementById("nombre").textContent = productoActual.Nombre;
 document.getElementById("precio").textContent = "$" + productoActual.Precio;
 
@@ -294,39 +277,13 @@ if(productoActual["Precio Anterior"]){
 document.getElementById("precioAnt").textContent = "$" + productoActual["Precio Anterior"];
 }
 
-// 🔥 FIX STOCK (DISPONIBLE / AGOTADO)
-let stockTexto = (productoActual.Stock || "").toLowerCase();
-document.getElementById("stock").textContent =
-(stockTexto.includes("disponible") || stockTexto.includes("si") || stockTexto.includes("1"))
-? "Disponible"
-: "Agotado";
+document.getElementById("descripcion").textContent = productoActual.Descripción || "";
 
-// DESCRIPCIÓN (solo si existe)
-const descripcion = productoActual.Descripción || "";
-const tamaño = productoActual.Tamaño || "";
-
-// DESCRIPCIÓN (solo si existe)
-if(descripcion && descripcion.trim() !== ""){
-    document.getElementById("descripcion").textContent = descripcion;
-} else {
-    document.getElementById("descripcion").style.display = "none";
-}
-
-// TAMAÑO (solo si existe)
-if(tamaño && tamaño.trim() !== ""){
-    const div = document.createElement("div");
-    div.className = "descripcion";
-    div.textContent = "Tamaño: " + tamaño;
-    document.querySelector(".info").appendChild(div);
-}
-
-// ETIQUETAS
 let etiquetas = "";
 if(productoActual.Oferta === "SI") etiquetas += `<span class="oferta">OFERTA</span>`;
 if(productoActual.Nuevo === "SI") etiquetas += `<span class="nuevo">NUEVO</span>`;
 document.getElementById("etiquetas").innerHTML = etiquetas;
 
-// WHATSAPP
 const link = window.location.href;
 
 const mensaje =
@@ -346,81 +303,72 @@ document.getElementById("wpp").href =
 
 });
 
-// CAMBIAR IMAGEN
 function cambiar(img){
 document.getElementById("imgPrincipal").src = img.src;
 }
 
-
-// 🛒 CARRITO PRO NIVEL 2
-// =====================
+/* ================= CARRITO ================= */
 
 function getCart(){
-    return JSON.parse(localStorage.getItem("carrito")) || [];
+return JSON.parse(localStorage.getItem("carrito")) || [];
 }
 
 function saveCart(cart){
-    localStorage.setItem("carrito", JSON.stringify(cart));
+localStorage.setItem("carrito", JSON.stringify(cart));
 }
 
-// agregar al carrito (PRO)
 document.getElementById("btnAddCart").addEventListener("click", function(e){
-    e.preventDefault();
+e.preventDefault();
 
-    if(!productoActual){
-        alert("Producto no cargado aún");
-        return;
-    }
+if(!productoActual) return;
 
-    let cart = getCart();
+let cart = getCart();
 
-    const codigo = productoActual.Código;
+const codigo = productoActual.Código;
 
-    // 🔥 verificar si ya existe
-    let index = cart.findIndex(item => item.codigo === codigo);
+let index = cart.findIndex(i => i.codigo === codigo);
 
-    if(index !== -1){
-        cart[index].cantidad += 1;
-    } else {
-        cart.push({
-            codigo: codigo,
-            nombre: productoActual.Nombre,
-            precio: parseFloat(productoActual.Precio),
-            imagen: productoActual["Foto 1"],
-            cantidad: 1
-        });
-    }
+if(index !== -1){
+cart[index].cantidad += 1;
+}else{
+cart.push({
+codigo: codigo,
+nombre: productoActual.Nombre,
+precio: parseFloat(productoActual.Precio),
+imagen: productoActual["Foto 1"],
+cantidad: 1
+});
+}
 
-    saveCart(cart);
+saveCart(cart);
 
-    // feedback PRO
-    const btn = document.getElementById("btnAddCart");
-    btn.innerText = "✔ Agregado";
-    btn.style.background = "#28a745";
+const btn = this;
+btn.innerText = "✔ Agregado";
+btn.style.background = "#28a745";
 
-    setTimeout(() => {
-        btn.innerText = "🛒 Agregar al carrito";
-        btn.style.background = "#ff2a2a";
-    }, 1200);
+setTimeout(()=>{
+btn.innerText = "🛒 Agregar al carrito";
+btn.style.background = "#ff2a2a";
+},1200);
 });
 
-// BOTÓN SUBIR
+function actualizarCarritoUI(){
+let carrito = getCart();
+let total = carrito.reduce((sum,p)=>sum + p.cantidad,0);
+document.getElementById("cartCount").textContent = total;
+}
+
+actualizarCarritoUI();
+
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
 });
 
 function irArriba(){
-window.scrollTo({ top: 0, behavior: "smooth" });
+window.scrollTo({top:0,behavior:"smooth"});
 }
-function actualizarCarritoUI() {
-    let carrito = getCart();
-    let total = carrito.reduce((sum, p) => sum + p.cantidad, 0);
 
-    const el = document.getElementById("cartCount");
-    if (el) el.textContent = total;
-}
-actualizarCarritoUI();
 </script>
 
 </body>
