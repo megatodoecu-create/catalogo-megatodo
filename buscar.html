@@ -147,17 +147,25 @@ const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0
 const params = new URLSearchParams(window.location.search);
 const texto = (params.get("q") || "").toLowerCase().trim();
 
+function normalizar(texto) {
+return (texto || "")
+.toString()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "");
+}
+    
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
-const palabras = texto.split(" ").filter(p => p.length > 0);
+const palabras = normalizar(texto).split(" ").filter(p => p.length > 0);
 
 const encontrados = data.filter(p => {
 
-const nombre = (p.Nombre || "").toLowerCase();
-const categoria = (p.Categoria || "").toLowerCase();
-const descripcion = (p["Descripción"] || p["Descripcion"] || "").toLowerCase();
+const nombre = normalizar(p.Nombre);
+const categoria = normalizar(p.Categoria);
+const descripcion = normalizar(p["Descripción"] || p["Descripcion"]);
 
 return palabras.some(word =>
 nombre.includes(word) ||
