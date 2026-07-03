@@ -3,47 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carrito PRO - Megatodo</title>
+<title>Carrito - Megatodo</title>
 
 <style>
-
 body{
-font-family:Arial;
-background:#f5f5f5;
 margin:0;
-padding:20px;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
 }
 
-h1{
+header{
+background:#ff2a2a;
+color:white;
+padding:15px;
 text-align:center;
-color:#333;
+font-size:22px;
+font-weight:bold;
 }
 
 .volver{
 display:block;
+margin:15px auto;
+width:200px;
 text-align:center;
-margin-bottom:15px;
+padding:10px;
+background:#333;
+color:white;
 text-decoration:none;
-font-weight:bold;
-color:#ff2a2a;
+border-radius:8px;
 }
 
-/* ITEM */
+.contenedor{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
 .item{
+display:flex;
+gap:15px;
 background:white;
 padding:15px;
-margin:10px 0;
-display:flex;
-align-items:center;
-gap:15px;
-border-radius:10px;
+margin-bottom:15px;
+border-radius:12px;
 box-shadow:0 2px 8px rgba(0,0,0,.1);
+align-items:center;
 }
 
 .item img{
-width:80px;
-height:80px;
+width:90px;
+height:90px;
 object-fit:contain;
+border-radius:8px;
+background:white;
 }
 
 .info{
@@ -52,66 +64,63 @@ flex:1;
 
 .nombre{
 font-weight:bold;
-margin-bottom:5px;
 }
 
-.controles{
-display:flex;
-align-items:center;
-gap:10px;
+.precio{
+color:#ff2a2a;
+font-weight:bold;
 margin-top:5px;
 }
 
-.btn{
-background:#ff2a2a;
-color:white;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
+.cantidad{
+margin-top:8px;
 }
 
-.btn-minus{
+button{
+padding:5px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.eliminar{
 background:#333;
+color:white;
 }
 
 .total{
-text-align:center;
-font-size:22px;
-margin-top:20px;
+text-align:right;
+font-size:20px;
 font-weight:bold;
+margin-top:20px;
 }
 
-.btn-wpp{
+.whatsapp{
+display:block;
+margin-top:20px;
 background:#25D366;
 color:white;
-width:100%;
+text-align:center;
 padding:12px;
-border:none;
 border-radius:8px;
+text-decoration:none;
 font-weight:bold;
-margin-top:20px;
-cursor:pointer;
-font-size:16px;
 }
-
 </style>
 </head>
 
 <body>
 
+<header>🛒 Tu Carrito</header>
+
 <a class="volver" href="index.html">← Seguir comprando</a>
 
-<h1>🛒 Carrito PRO</h1>
+<div class="contenedor" id="carrito"></div>
 
-<div id="carrito"></div>
-
+<div class="contenedor">
 <div class="total" id="total"></div>
-
-<button class="btn-wpp" onclick="enviarWhatsApp()">
-📲 Finalizar pedido
-</button>
+<a id="wpp" class="whatsapp" target="_blank">Pedir por WhatsApp</a>
+</div>
 
 <script>
 
@@ -121,26 +130,8 @@ return JSON.parse(localStorage.getItem("cart")) || [];
 
 function saveCart(cart){
 localStorage.setItem("cart", JSON.stringify(cart));
-render();
 }
 
-// 🧠 AGREGAR LÓGICA PRO (SIN DUPLICADOS)
-function addItem(p){
-
-let cart = getCart();
-
-let exist = cart.find(x => x.codigo === p.codigo);
-
-if(exist){
-exist.cantidad += 1;
-} else {
-cart.push(p);
-}
-
-saveCart(cart);
-}
-
-// RENDER
 function render(){
 
 let cart = getCart();
@@ -148,95 +139,56 @@ let cont = document.getElementById("carrito");
 
 if(cart.length === 0){
 cont.innerHTML = "<h3 style='text-align:center'>Carrito vacío</h3>";
-document.getElementById("total").textContent = "";
+document.getElementById("total").innerText = "";
+document.getElementById("wpp").style.display = "none";
 return;
 }
 
 let total = 0;
 
-cont.innerHTML = cart.map((p,i)=>{
+cont.innerHTML = cart.map((p, i) => {
+
 total += p.precio * p.cantidad;
 
 return `
 <div class="item">
 <img src="${p.imagen}">
-
 <div class="info">
 <div class="nombre">${p.nombre}</div>
-<div>$${p.precio}</div>
+<div class="precio">$${p.precio}</div>
 
-<div class="controles">
-
-<button class="btn btn-minus" onclick="menos('${p.codigo}')">-</button>
-
-<span>${p.cantidad}</span>
-
-<button class="btn" onclick="mas('${p.codigo}')">+</button>
-
-<button class="btn" onclick="eliminar('${p.codigo}')">🗑</button>
-
-</div>
+<div class="cantidad">
+Cantidad: ${p.cantidad}
 </div>
 
+<button class="eliminar" onclick="eliminar(${i})">Eliminar</button>
+</div>
 </div>
 `;
 }).join("");
 
-document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
-}
+document.getElementById("total").innerText = "Total: $" + total.toFixed(2);
 
-// +++
-function mas(codigo){
-let cart = getCart();
-let p = cart.find(x => x.codigo === codigo);
-if(p) p.cantidad++;
-saveCart(cart);
-}
+// WhatsApp pedido
+let mensaje = "🛒 Pedido Megatodo:%0A%0A";
 
-// ---
-function menos(codigo){
-let cart = getCart();
-let p = cart.find(x => x.codigo === codigo);
-
-if(p){
-p.cantidad--;
-if(p.cantidad <= 0){
-cart = cart.filter(x => x.codigo !== codigo);
-}
-}
-
-saveCart(cart);
-}
-
-// eliminar
-function eliminar(codigo){
-let cart = getCart();
-cart = cart.filter(x => x.codigo !== codigo);
-saveCart(cart);
-}
-
-// WhatsApp
-function enviarWhatsApp(){
-
-let cart = getCart();
-
-if(cart.length === 0){
-alert("Carrito vacío");
-return;
-}
-
-let mensaje = "🛒 PEDIDO MEGATODO:%0A%0A";
-let total = 0;
-
-cart.forEach(p=>{
-mensaje += `• ${p.nombre}%0A`;
-mensaje += `$${p.precio} x ${p.cantidad}%0A%0A`;
-total += p.precio * p.cantidad;
+cart.forEach(p => {
+mensaje += `${p.nombre} x${p.cantidad} - $${p.precio}%0A`;
 });
 
-mensaje += `%0ATOTAL: $${total.toFixed(2)}%0A`;
+mensaje += `%0ATotal: $${total.toFixed(2)}`;
 
-window.open("https://wa.me/593990924437?text=" + mensaje, "_blank");
+document.getElementById("wpp").href =
+"https://wa.me/593990924437?text=" + mensaje;
+
+document.getElementById("wpp").style.display = "block";
+}
+
+function eliminar(index){
+let cart = getCart();
+cart.splice(index,1);
+saveCart(cart);
+render();
 }
 
 render();
