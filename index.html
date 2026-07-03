@@ -220,6 +220,43 @@ ${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 `;
 }).join("");
 
+/* 🔥 BUSCADOR (AQUÍ YA FUNCIONA) */
+const input = document.getElementById("buscadorGlobal");
+const resultados = document.getElementById("resultadosBusqueda");
+
+input.addEventListener("input", function () {
+    const texto = this.value.toLowerCase().trim();
+
+    if (texto === "") {
+        resultados.innerHTML = "";
+        return;
+    }
+
+    const filtrados = productos.filter(p =>
+        (p.Nombre || "").toLowerCase().includes(texto) ||
+        (p.Código || "").toLowerCase().includes(texto)
+    );
+
+    resultados.innerHTML = filtrados.slice(0, 10).map(p => {
+        return `
+        <div class="resultado">
+            <a href="producto.html?codigo=${p.Código}">
+                ${p.Nombre}
+            </a>
+        </div>
+        `;
+    }).join("");
+});
+
+input.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        const texto = input.value.trim();
+        if (texto !== "") {
+            window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
+        }
+    }
+});
+
 });
 
 /* BOTÓN SUBIR */
