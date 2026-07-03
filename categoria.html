@@ -202,16 +202,24 @@ const tamaño = (p.Tamaño || "").trim();
 const linkProducto = `${window.location.origin}/producto.html?codigo=${codigo}`;
 
 /* MENSAJE WHATSAPP PRO */
-const mensaje = `Hola, quiero información sobre:
+const link = window.location.href;
 
-${p.Nombre || ""}
+const mensaje =
+`Hola, quiero información sobre:
 
-Precio: $${p.Precio || ""}
+${productoActual.Nombre}
 
-Código: ${codigo}
+Precio: $${productoActual.Precio}
 
-Link del producto:
-${linkProducto}`;
+Código: ${productoActual.Código}
+
+Link:
+${link}`;
+
+document.getElementById("wpp").href =
+`https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
+
+});
 
 return `
 <div class="card">
