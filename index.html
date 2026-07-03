@@ -410,6 +410,46 @@ window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 </script>
+<script>
+function getCart(){
+    return JSON.parse(localStorage.getItem("carrito")) || [];
+}
 
+function actualizarCarritoUI(){
+    let cart = getCart();
+
+    // suma cantidades
+    let total = cart.reduce((sum, p) => sum + (p.cantidad || 1), 0);
+
+    let el = document.getElementById("cartCount");
+
+    // si no existe el span, lo crea automáticamente
+    if(!el){
+        const btn = document.querySelector(".btn-carrito-global");
+        if(btn){
+            const span = document.createElement("span");
+            span.id = "cartCount";
+            span.style.background = "red";
+            span.style.color = "white";
+            span.style.fontSize = "12px";
+            span.style.padding = "3px 7px";
+            span.style.borderRadius = "50%";
+            span.style.marginLeft = "6px";
+            span.style.fontWeight = "bold";
+            span.textContent = total;
+
+            btn.appendChild(span);
+        }
+    } else {
+        el.textContent = total;
+    }
+}
+
+// actualizar al cargar
+document.addEventListener("DOMContentLoaded", actualizarCarritoUI);
+
+// actualizar cuando cambie el carrito en otras páginas
+window.addEventListener("storage", actualizarCarritoUI);
+</script>
 </body>
 </html>
