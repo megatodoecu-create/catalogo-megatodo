@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Categoría - Megatodo</title>
+<title>Resultados - Megatodo</title>
 
 <style>
 
@@ -11,114 +11,27 @@ body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f5f5f5;
-}
-
-.volver-home{
-position:fixed;
-top:15px;
-left:15px;
-background:#333;
-color:white;
-padding:10px 14px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-z-index:9999;
-box-shadow:0 2px 10px rgba(0,0,0,.2);
-}
-
-header{
-background:#ff2a2a;
-color:white;
-text-align:center;
-padding:15px;
-font-size:20px;
-font-weight:bold;
-margin-top:60px;
-}
-
-.buscador{
-text-align:center;
-padding:15px;
-}
-
-.buscador input{
-width:90%;
-max-width:500px;
-padding:12px;
-border-radius:10px;
-border:1px solid #ccc;
-font-size:16px;
-}
-
-.productos{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
 padding:20px;
 }
 
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-transition:0.2s;
-}
-
-.card:hover{
-transform:scale(1.02);
-}
-
-.card img{
-width:100%;
-height:240px;
-object-fit:contain;
-background:white;
-cursor:pointer;
-}
-
-.info{
-padding:15px;
-}
-
-.nombre{
-font-size:16px;
-font-weight:bold;
-margin-bottom:5px;
-}
-
-.precio{
-font-size:18px;
-color:#ff2a2a;
-font-weight:bold;
-margin-top:5px;
-}
-
-.descripcion{
-font-size:13px;
-color:#666;
-margin-top:5px;
-}
-
-.tamano{
-font-size:13px;
-color:#777;
-margin-top:5px;
-}
-
-.btn{
-display:block;
-margin-top:10px;
-background:#25D366;
-color:white;
+h1{
 text-align:center;
-padding:10px;
-border-radius:8px;
+color:#333;
+}
+
+/* BOTÓN VOLVER */
+.volver{
+display:inline-block;
+margin:10px 0 20px;
+padding:10px 15px;
+background:#333;
+color:white;
 text-decoration:none;
+border-radius:8px;
 font-weight:bold;
 }
 
+/* BOTÓN SUBIR */
 #btnArriba{
 position:fixed;
 bottom:20px;
@@ -132,22 +45,82 @@ display:none;
 align-items:center;
 justify-content:center;
 font-size:22px;
+box-shadow:0 6px 15px rgba(0,0,0,.3);
 cursor:pointer;
 z-index:9999;
 }
 
-.btn-carrito-global{
-position:fixed;
-top:15px;
-right:15px;
-background:#ff2a2a;
+/* GRID */
+#resultados{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+max-width:1200px;
+margin:auto;
+}
+
+/* CARD */
+.producto{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,.12);
+text-align:center;
+position:relative;
+}
+
+.producto img{
+width:100%;
+height:240px;
+object-fit:contain;
+background:white;
+cursor:pointer;
+}
+
+.oferta{
+position:absolute;
+top:10px;
+left:10px;
+background:red;
 color:white;
-padding:12px 18px;
-border-radius:50px;
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+font-weight:bold;
+}
+
+.descripcion{
+font-size:13px;
+color:#666;
+margin:5px 0;
+}
+
+.tamano{
+font-size:12px;
+color:#777;
+margin:5px 0;
+}
+
+.precio{
+font-size:18px;
+font-weight:bold;
+color:#2e7d32;
+margin:8px 0;
+}
+
+/* WHATSAPP */
+.btn-wpp{
+display:block;
+margin:10px;
+background:#25D366;
+color:white;
+text-align:center;
+padding:10px;
+border-radius:8px;
 text-decoration:none;
 font-weight:bold;
-box-shadow:0 4px 12px rgba(0,0,0,.25);
-z-index:9999;
+font-size:14px;
+box-shadow:0 2px 6px rgba(0,0,0,.15);
 }
 
 </style>
@@ -155,26 +128,22 @@ z-index:9999;
 
 <body>
 
-<a href="carrito.html" class="btn-carrito-global">🛒 Carrito</a>
-<a class="volver-home" href="index.html">← Inicio</a>
-
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
-<header>
-<h1 id="titulo"></h1>
-</header>
+<h1>Resultados de búsqueda</h1>
 
-<div class="buscador">
-<input type="text" id="buscadorCat" placeholder="Buscar producto en esta categoría...">
-</div>
+<a class="volver" href="index.html">← Volver al inicio</a>
 
-<div id="productos" class="productos"></div>
+<div id="resultados"></div>
 
 <script>
 
-/* =========================
-   NORMALIZAR TEXTO
-========================= */
+const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+
+const params = new URLSearchParams(window.location.search);
+const texto = (params.get("q") || "").toLowerCase().trim();
+
+/* NORMALIZAR TEXTO */
 function normalizar(texto) {
 return (texto || "")
 .toString()
@@ -183,124 +152,95 @@ return (texto || "")
 .replace(/[\u0300-\u036f]/g, "");
 }
 
-/* =========================
-   CATEGORÍA
-========================= */
-const categoria = new URLSearchParams(window.location.search).get("cat");
-document.getElementById("titulo").textContent = categoria;
-
-const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
-
-let productosGlobal = [];
-
-/* =========================
-   CARGA DE DATOS
-========================= */
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
-productosGlobal = data.filter(p => p.Categoria === categoria);
-render(productosGlobal);
+const palabras = normalizar(texto).split(" ").filter(p => p.length > 0);
 
-/* ENTER + INPUT SEARCH */
-document.getElementById("buscadorCat").addEventListener("input", filtrarCategoria);
+const encontrados = data.filter(p => {
 
-document.getElementById("buscadorCat").addEventListener("keydown", function(e) {
-if (e.key === "Enter") {
-filtrarCategoria();
+const nombre = normalizar(p.Nombre);
+const categoria = normalizar(p.Categoria);
+const descripcion = normalizar(p["Descripción"] || p["Descripcion"]);
+
+return palabras.some(word =>
+nombre.includes(word) ||
+categoria.includes(word) ||
+descripcion.includes(word)
+);
+
+});
+
+const contenedor = document.getElementById("resultados");
+
+if(encontrados.length === 0){
+contenedor.innerHTML = "<h2 style='text-align:center'>No se encontraron productos</h2>";
+return;
 }
-});
 
-});
+contenedor.innerHTML = encontrados.map(p => {
 
-/* =========================
-   RENDER
-========================= */
-function render(lista){
+const codigo = (p.Código || p.Codigo || p.ID || "").toString().trim();
+const nombre = p.Nombre || "Producto";
 
-const contenedor = document.getElementById("productos");
+const foto =
+p.Foto || p["Foto 1"] || p["Foto2"] || "https://via.placeholder.com/300";
 
-contenedor.innerHTML = lista.map(p => {
+const precio = p.Precio || "0";
+const descripcion = p["Descripción"] || p["Descripcion"] || "";
+const tamaño = p.Tamaño || "";
 
-const codigo = (p.Código || "").toString().trim();
-const foto = p["Foto 1"] || "https://via.placeholder.com/300";
+/* LINK CORRECTO GITHUB PAGES */
+const link = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
-const descripcion = (p.Descripción || "").trim();
-const tamaño = (p.Tamaño || "").trim();
-
-/* LINK PRODUCTO */
-const linkProducto = `producto.html?codigo=${encodeURIComponent(codigo)}`;
-
-/* MENSAJE WHATSAPP */
+/* WHATSAPP */
 const mensaje = `Hola, quiero información sobre:
 
-${p.Nombre || ""}
+${nombre}
 
-Precio: $${p.Precio || ""}
+Precio: $${precio}
 
 Código: ${codigo}
 
 Link:
-${linkProducto}`;
+${link}`;
 
 return `
-<div class="card">
+<div class="producto">
 
-<a href="${linkProducto}">
-<img src="${foto}">
+${p.Oferta && p.Oferta.toUpperCase() === "SI"
+? `<div class="oferta">OFERTA</div>` : ""}
+
+<a href="${link}">
+<img src="${foto}" alt="${nombre}">
 </a>
 
-<div class="info">
-
-<div class="nombre">${p.Nombre || ""}</div>
+<h3>${nombre}</h3>
 
 ${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
 
 ${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 
-<div class="precio">$${p.Precio || ""}</div>
+<div class="precio">$${precio}</div>
 
-<a class="btn"
+<a class="btn-wpp"
 target="_blank"
 href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 📲 WhatsApp
 </a>
 
 </div>
-</div>
 `;
 
 }).join("");
 
-}
-
-/* =========================
-   FILTRO CATEGORÍA
-========================= */
-function filtrarCategoria() {
-
-const texto = normalizar(document.getElementById("buscadorCat").value);
-
-const filtrados = productosGlobal.filter(p => {
-
-const nombre = normalizar(p.Nombre);
-const categoria = normalizar(p.Categoria);
-const descripcion = normalizar(p["Descripción"] || p["Descripcion"]);
-
-return nombre.includes(texto) ||
-categoria.includes(texto) ||
-descripcion.includes(texto);
-
 });
-
-render(filtrados);
-}
 
 /* BOTÓN SUBIR */
 window.addEventListener("scroll", function(){
-document.getElementById("btnArriba").style.display =
-window.scrollY > 200 ? "flex" : "none";
+const btn = document.getElementById("btnArriba");
+btn.style.display = window.scrollY > 200 ? "flex" : "none";
 });
 
 function irArriba(){
