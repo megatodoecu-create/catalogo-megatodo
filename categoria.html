@@ -186,6 +186,53 @@ fetch(url)
     render(productosGlobal);
 });
 
+/* =========================
+   NORMALIZAR TEXTO
+========================= */
+function normalizar(texto) {
+return (texto || "")
+.toString()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "");
+}
+
+/* =========================
+   BUSCADOR TIPO INDEX
+========================= */
+document.getElementById("buscadorCat").addEventListener("input", filtrarCategoria);
+
+document.getElementById("buscadorCat").addEventListener("keydown", function(e) {
+if (e.key === "Enter") {
+filtrarCategoria();
+}
+});
+
+function filtrarCategoria() {
+
+const texto = normalizar(document.getElementById("buscadorCat").value);
+const palabras = texto.split(" ").filter(p => p.length > 0);
+
+const filtrados = productosGlobal.filter(p => {
+
+const nombre = normalizar(p.Nombre);
+const categoria = normalizar(p.Categoria);
+const descripcion = normalizar(p["Descripción"] || p["Descripcion"]);
+
+return palabras.some(word =>
+nombre.includes(word) ||
+categoria.includes(word) ||
+descripcion.includes(word)
+);
+
+});
+
+render(filtrados);
+}
+
+/* =========================
+   RENDER
+========================= */
 function render(lista){
 
 const contenedor = document.getElementById("productos");
@@ -198,10 +245,8 @@ const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
 
-/* ✅ LINK ABSOLUTO SIEMPRE FUNCIONAL EN WHATSAPP */
 const linkProducto = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
-/* ✅ MENSAJE IGUAL AL PRODUCTO */
 const mensaje = `Hola, quiero información sobre:
 
 ${p.Nombre || ""}
@@ -213,7 +258,6 @@ Código: ${codigo}
 Link:
 ${linkProducto}`;
 
-/* HTML */
 return `
 <div class="card">
 
@@ -254,6 +298,7 @@ window.scrollY > 200 ? "flex" : "none";
 function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
 </script>
 
 </body>
