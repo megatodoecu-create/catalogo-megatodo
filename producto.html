@@ -291,8 +291,23 @@ document.getElementById("stock").textContent =
 : "Agotado";
 
 // DESCRIPCIÓN (solo si existe)
-document.getElementById("descripcion").textContent =
-productoActual.Descripción || "";
+const descripcion = productoActual.Descripción || "";
+const tamaño = productoActual.Tamaño || "";
+
+// DESCRIPCIÓN (solo si existe)
+if(descripcion && descripcion.trim() !== ""){
+    document.getElementById("descripcion").textContent = descripcion;
+} else {
+    document.getElementById("descripcion").style.display = "none";
+}
+
+// TAMAÑO (solo si existe)
+if(tamaño && tamaño.trim() !== ""){
+    const div = document.createElement("div");
+    div.className = "descripcion";
+    div.textContent = "Tamaño: " + tamaño;
+    document.querySelector(".info").appendChild(div);
+}
 
 // ETIQUETAS
 let etiquetas = "";
