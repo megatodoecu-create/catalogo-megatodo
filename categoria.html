@@ -54,26 +54,6 @@ border:1px solid #ccc;
 font-size:16px;
 }
 
-/* SUGERENCIAS */
-.sugerencias{
-max-width:500px;
-margin:0 auto;
-background:white;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-overflow:hidden;
-}
-
-.sugerencia{
-padding:10px;
-border-bottom:1px solid #eee;
-cursor:pointer;
-}
-
-.sugerencia:hover{
-background:#f5f5f5;
-}
-
 /* GRID */
 .productos{
 display:grid;
@@ -88,7 +68,6 @@ background:white;
 border-radius:12px;
 overflow:hidden;
 box-shadow:0 2px 8px rgba(0,0,0,.15);
-position:relative;
 transition:0.2s;
 }
 
@@ -96,7 +75,6 @@ transition:0.2s;
 transform:scale(1.02);
 }
 
-/* IMG */
 .card img{
 width:100%;
 height:240px;
@@ -123,6 +101,7 @@ font-weight:bold;
 margin-top:5px;
 }
 
+/* BOTÓN WHATSAPP */
 .btn{
 display:block;
 margin-top:10px;
@@ -161,7 +140,7 @@ background:#ff2a2a;
 color:white;
 padding:12px 18px;
 border-radius:50px;
-text-decoration:bold;
+text-decoration:none;
 font-weight:bold;
 box-shadow:0 4px 12px rgba(0,0,0,.25);
 z-index:9999;
@@ -183,7 +162,6 @@ z-index:9999;
 
 <div class="buscador">
 <input type="text" id="buscadorCat" placeholder="Buscar producto en esta categoría...">
-<div id="sugerencias"></div>
 </div>
 
 <div id="productos" class="productos"></div>
@@ -200,10 +178,8 @@ let productosGlobal = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
-
 productosGlobal = data.filter(p => p.Categoria === categoria);
 render(productosGlobal);
-
 });
 
 function render(lista){
@@ -215,25 +191,17 @@ contenedor.innerHTML = lista.map(p => {
 const codigo = p.Código || "";
 const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 
-/* ✅ SOLO SI EXISTE */
-const descripcion = p.Descripción && p.Descripción.trim() !== "" ? p.Descripción : "";
-const tamaño = p.Tamaño && p.Tamaño.trim() !== "" ? p.Tamaño : "";
+/* MENSAJE WHATSAPP PRO (CORRECTO) */
+const mensaje = `Hola, quiero información sobre:
 
-/* 🔥 WHATSAPP PRO */
-const mensaje = `
-Hola, quiero información sobre:
+${p.Nombre || ""}
 
-${p.Nombre}
+Precio: $${p.Precio || ""}
 
-Precio: $${p.Precio}
-
-Código: ${p.Código}
+Código: ${p.Código || ""}
 
 Link del producto:
-${window.location.origin}/producto.html?codigo=${p.Código}
-`;
-
-const wpp = `https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
+${window.location.origin}/producto.html?codigo=${p.Código || ""}`;
 
 return `
 <div class="card">
@@ -246,26 +214,11 @@ return `
 
 <div class="nombre">${p.Nombre || ""}</div>
 
-${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
-
-${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
-
 <div class="precio">$${p.Precio || ""}</div>
 
 <a class="btn"
 target="_blank"
-href="https://wa.me/593990924437?text=${encodeURIComponent(
-`Hola, quiero información sobre:
-
-${p.Nombre || ""}
-
-Precio: $${p.Precio || ""}
-
-Código: ${p.Código || ""}
-
-Link del producto:
-https://tu-dominio.com/producto.html?codigo=${p.Código || ""}`
-)}">
+href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 📲 WhatsApp
 </a>
 
@@ -274,39 +227,9 @@ https://tu-dominio.com/producto.html?codigo=${p.Código || ""}`
 `;
 
 }).join("");
-
 }
 
-// BUSCADOR
-document.getElementById("buscadorCat").addEventListener("input", function(){
-
-const texto = this.value.toLowerCase().trim();
-const sugerencias = document.getElementById("sugerencias");
-
-if(texto === ""){
-render(productosGlobal);
-sugerencias.innerHTML = "";
-return;
-}
-
-const filtrados = productosGlobal.filter(p =>
-(p.Nombre || "").toLowerCase().includes(texto)
-);
-
-render(filtrados);
-
-sugerencias.innerHTML = filtrados.slice(0,5).map(p => `
-<div class="sugerencia" onclick="ir('${p.Código}')">
-${p.Nombre}
-</div>
-`).join("");
-
-});
-
-function ir(codigo){
-window.location.href = "producto.html?codigo=" + codigo;
-}
-
+/* BOTÓN SUBIR */
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
