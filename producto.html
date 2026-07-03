@@ -308,31 +308,57 @@ document.getElementById("imgPrincipal").src = img.src;
 }
 
 // CARRITO
+// =====================
+// 🛒 CARRITO PRO NIVEL 2
+// =====================
+
 function getCart(){
-return JSON.parse(localStorage.getItem("cart")) || [];
+    return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
 function saveCart(cart){
-localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// agregar al carrito
+// agregar al carrito (PRO)
 document.getElementById("btnAddCart").addEventListener("click", function(e){
-e.preventDefault();
+    e.preventDefault();
 
-let cart = getCart();
+    if(!productoActual){
+        alert("Producto no cargado aún");
+        return;
+    }
 
-cart.push({
-codigo: productoActual.Código,
-nombre: productoActual.Nombre,
-precio: parseFloat(productoActual.Precio),
-imagen: productoActual["Foto 1"],
-cantidad: 1
-});
+    let cart = getCart();
 
-saveCart(cart);
+    const codigo = productoActual.Código;
 
-alert("Producto agregado al carrito 🛒");
+    // 🔥 verificar si ya existe
+    let index = cart.findIndex(item => item.codigo === codigo);
+
+    if(index !== -1){
+        cart[index].cantidad += 1;
+    } else {
+        cart.push({
+            codigo: codigo,
+            nombre: productoActual.Nombre,
+            precio: parseFloat(productoActual.Precio),
+            imagen: productoActual["Foto 1"],
+            cantidad: 1
+        });
+    }
+
+    saveCart(cart);
+
+    // feedback PRO
+    const btn = document.getElementById("btnAddCart");
+    btn.innerText = "✔ Agregado";
+    btn.style.background = "#28a745";
+
+    setTimeout(() => {
+        btn.innerText = "🛒 Agregar al carrito";
+        btn.style.background = "#ff2a2a";
+    }, 1200);
 });
 
 // BOTÓN SUBIR
