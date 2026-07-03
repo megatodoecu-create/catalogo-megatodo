@@ -156,6 +156,12 @@ color:#555;
 line-height:1.5;
 }
 
+.tamano{
+margin-top:10px;
+color:#555;
+font-weight:bold;
+}
+
 /* BOTONES */
 .btn{
 display:block;
@@ -189,9 +195,7 @@ grid-template-columns:1fr;
 
 <body>
 
-<!-- 🔥 BOTÓN VOLVER AL INICIO -->
 <a class="volver-home" href="index.html">← Inicio</a>
-
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <div class="contenedor">
@@ -223,6 +227,8 @@ grid-template-columns:1fr;
 
 <div class="descripcion" id="descripcion"></div>
 
+<div id="tamano" class="tamano"></div>
+
 <a id="wpp" class="btn btn-wpp" target="_blank">📲 WhatsApp</a>
 
 <a href="#" class="btn btn-carrito">🛒 Agregar al carrito</a>
@@ -251,20 +257,15 @@ document.body.innerHTML = "<h2 style='text-align:center'>Producto no encontrado<
 return;
 }
 
-// IMÁGENES
 const img1 = productoActual["Foto 1"];
 const img2 = productoActual["Foto 2"];
 const img3 = productoActual["Foto 3"];
 
-// PRINCIPAL
 document.getElementById("imgPrincipal").src = img1;
-
-// MINIATURAS
 document.getElementById("img1").src = img1;
 document.getElementById("img2").src = img2 || img1;
 document.getElementById("img3").src = img3 || img1;
 
-// INFO
 document.getElementById("nombre").textContent = productoActual.Nombre;
 document.getElementById("precio").textContent = "$" + productoActual.Precio;
 
@@ -272,19 +273,31 @@ if(productoActual["Precio Anterior"]){
 document.getElementById("precioAnt").textContent = "$" + productoActual["Precio Anterior"];
 }
 
+/* 🔥 STOCK CORREGIDO */
+const stockValue = (productoActual.Stock || "").toLowerCase().trim();
+
 document.getElementById("stock").textContent =
-productoActual.Stock > 0 ? "En stock" : "Agotado";
+(stockValue === "disponible" || stockValue === "si" || stockValue === "en stock")
+? "🟢 Disponible"
+: "🔴 Agotado";
 
+/* DESCRIPCIÓN SOLO SI EXISTE */
+const descripcion = (productoActual.Descripción || "").trim();
 document.getElementById("descripcion").textContent =
-productoActual.Descripción || "";
+descripcion ? descripcion : "";
 
-// ETIQUETAS
+/* TAMAÑO SOLO SI EXISTE */
+const tamaño = (productoActual.Tamaño || "").trim();
+document.getElementById("tamano").textContent =
+tamaño ? "📏 Tamaño: " + tamaño : "";
+
+/* ETIQUETAS */
 let etiquetas = "";
 if(productoActual.Oferta === "SI") etiquetas += `<span class="oferta">OFERTA</span>`;
 if(productoActual.Nuevo === "SI") etiquetas += `<span class="nuevo">NUEVO</span>`;
 document.getElementById("etiquetas").innerHTML = etiquetas;
 
-// WHATSAPP
+/* WHATSAPP */
 const link = window.location.href;
 
 const mensaje =
@@ -304,12 +317,10 @@ document.getElementById("wpp").href =
 
 });
 
-// CAMBIAR IMAGEN
 function cambiar(img){
 document.getElementById("imgPrincipal").src = img.src;
 }
 
-// SUBIR
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
