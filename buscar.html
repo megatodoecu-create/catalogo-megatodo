@@ -31,6 +31,31 @@ border-radius:8px;
 font-weight:bold;
 }
 
+/* CARRITO */
+.btn-carrito-global{
+position:fixed;
+top:15px;
+right:15px;
+background:#ff2a2a;
+color:white;
+padding:12px 18px;
+border-radius:50px;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 4px 12px rgba(0,0,0,.25);
+z-index:9999;
+}
+
+#cartCount{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 7px;
+border-radius:50%;
+margin-left:6px;
+font-weight:bold;
+}
+
 /* BOTÓN SUBIR */
 #btnArriba{
 position:fixed;
@@ -122,36 +147,30 @@ font-weight:bold;
 font-size:14px;
 box-shadow:0 2px 6px rgba(0,0,0,.15);
 }
-.btn-carrito-global{
-position:fixed;
-top:15px;
-right:15px;
+
+/* CARRITO BOTÓN */
+.btn-carrito{
+display:block;
+margin:10px;
 background:#ff2a2a;
 color:white;
-padding:12px 18px;
-border-radius:50px;
-text-decoration:none;
+text-align:center;
+padding:10px;
+border-radius:8px;
 font-weight:bold;
-box-shadow:0 4px 12px rgba(0,0,0,.25);
-z-index:9999;
+cursor:pointer;
+border:none;
 }
 
-#cartCount{
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
-}
 </style>
 </head>
 
 <body>
+
 <a href="carrito.html" class="btn-carrito-global">
 🛒 Carrito <span id="cartCount">0</span>
 </a>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <h1>Resultados de búsqueda</h1>
@@ -167,7 +186,7 @@ const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0
 const params = new URLSearchParams(window.location.search);
 const texto = (params.get("q") || "").toLowerCase().trim();
 
-/* NORMALIZAR TEXTO */
+/* NORMALIZAR */
 function normalizar(texto) {
 return (texto || "")
 .toString()
@@ -176,6 +195,22 @@ return (texto || "")
 .replace(/[\u0300-\u036f]/g, "");
 }
 
+/* CARRITO */
+function actualizarCarritoUI() {
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+document.getElementById("cartCount").textContent = carrito.length;
+}
+
+function agregarAlCarrito(producto) {
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+carrito.push(producto);
+localStorage.setItem("carrito", JSON.stringify(carrito));
+actualizarCarritoUI();
+}
+
+actualizarCarritoUI();
+
+/* FETCH */
 fetch(url)
 .then(res => res.json())
 .then(data => {
@@ -207,18 +242,13 @@ contenedor.innerHTML = encontrados.map(p => {
 
 const codigo = (p.Código || p.Codigo || p.ID || "").toString().trim();
 const nombre = p.Nombre || "Producto";
-
-const foto =
-p.Foto || p["Foto 1"] || p["Foto2"] || "https://via.placeholder.com/300";
-
+const foto = p.Foto || p["Foto 1"] || "https://via.placeholder.com/300";
 const precio = p.Precio || "0";
 const descripcion = p["Descripción"] || p["Descripcion"] || "";
 const tamaño = p.Tamaño || "";
 
-/* LINK CORRECTO GITHUB PAGES */
 const link = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
-/* WHATSAPP */
 const mensaje = `Hola, quiero información sobre:
 
 ${nombre}
@@ -237,7 +267,7 @@ ${p.Oferta && p.Oferta.toUpperCase() === "SI"
 ? `<div class="oferta">OFERTA</div>` : ""}
 
 <a href="${link}">
-<img src="${foto}" alt="${nombre}">
+<img src="${foto}">
 </a>
 
 <h3>${nombre}</h3>
@@ -253,6 +283,16 @@ target="_blank"
 href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 📲 WhatsApp
 </a>
+
+<button class="btn-carrito"
+onclick='agregarAlCarrito({
+codigo:"${codigo}",
+nombre:"${nombre}",
+precio:"${precio}",
+foto:"${foto}"
+})'>
+🛒 Agregar al carrito
+</button>
 
 </div>
 `;
@@ -270,12 +310,7 @@ btn.style.display = window.scrollY > 200 ? "flex" : "none";
 function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
-function actualizarCarritoUI() {
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-document.getElementById("cartCount").textContent = carrito.length;
-}
 
-actualizarCarritoUI();
 </script>
 
 </body>
