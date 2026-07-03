@@ -126,6 +126,39 @@ color:#777;
 margin:5px 0;
 }
 
+.horario{
+max-width:700px;
+margin:30px auto;
+padding:20px;
+background:white;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.horario h2{
+text-align:center;
+margin-top:0;
+margin-bottom:20px;
+color:#ff2a2a;
+}
+
+.fila{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 0;
+border-bottom:1px solid #eee;
+font-size:16px;
+}
+
+.fila:last-child{
+border-bottom:none;
+}
+
+.fila strong{
+color:#ff2a2a;
+}
+    
 #btnArriba{
 position:fixed;
 bottom:20px;
@@ -172,6 +205,22 @@ z-index:9999;
 <a class="categoria" href="categoria.html?cat=Cajas%20de%20Regalo">🎁 Regalos</a>
 <a class="categoria" href="categoria.html?cat=Coches%20de%20Bebé">👶 Bebé</a>
 
+</div>
+
+</div>
+
+<div class="horario">
+    <h2>🕒 Horario de atención</h2>
+
+    <div class="fila">
+        <span>Lunes a Sábado</span>
+        <strong>8:30 a 19:30</strong>
+    </div>
+
+    <div class="fila">
+        <span>Domingo</span>
+        <strong>9:30 a 18:30</strong>
+    </div>
 </div>
 
 <a href="https://wa.me/593990924437" target="_blank" class="whatsapp">💬</a>
