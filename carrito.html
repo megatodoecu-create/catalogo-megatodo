@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrito - Megatodo</title>
 
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:#333;
+}
+
+.volver{
+display:block;
+text-align:center;
+margin-bottom:15px;
+text-decoration:none;
+font-weight:bold;
+color:#ff2a2a;
+}
+
+.item{
+background:white;
+padding:15px;
+margin:10px 0;
+display:flex;
+align-items:center;
+gap:15px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.item img{
+width:80px;
+height:80px;
+object-fit:contain;
+}
+
+.btn{
+background:#ff2a2a;
+color:white;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.total{
+text-align:center;
+font-size:22px;
+margin-top:20px;
+font-weight:bold;
+}
+
+.btn-wpp{
+background:#25D366;
+color:white;
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+margin-top:20px;
+cursor:pointer;
+font-size:16px;
+}
+
+</style>
+</head>
+
+<body>
+
+<a class="volver" href="index.html">← Seguir comprando</a>
+
+<h1>🛒 Tu Carrito</h1>
+
+<div id="carrito"></div>
+
+<div class="total" id="total"></div>
+
+<button class="btn-wpp" onclick="enviarWhatsApp()">
+📲 Finalizar pedido por WhatsApp
+</button>
+
+<script>
+
+// obtener carrito
+function getCart(){
+return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+// guardar carrito
+function saveCart(cart){
+localStorage.setItem("cart", JSON.stringify(cart));
+render();
+}
+
+// mostrar carrito
+function render(){
+
+let cart = getCart();
+let cont = document.getElementById("carrito");
+
+if(cart.length === 0){
+cont.innerHTML = "<h3 style='text-align:center'>Carrito vacío</h3>";
+document.getElementById("total").textContent = "";
+return;
+}
+
+let total = 0;
+
+cont.innerHTML = cart.map((p,i)=>{
+total += p.precio * p.cantidad;
+
+return `
+<div class="item">
+<img src="${p.imagen}">
+<div style="flex:1">
+<b>${p.nombre}</b><br>
+$${p.precio} x ${p.cantidad}
+</div>
+
+<button class="btn" onclick="eliminar(${i})">Eliminar</button>
+</div>
+`;
+}).join("");
+
+document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
+}
+
+// eliminar producto
+function eliminar(index){
+let cart = getCart();
+cart.splice(index,1);
+saveCart(cart);
+}
+
+// WhatsApp pedido
+function enviarWhatsApp(){
+
+let cart = getCart();
+
+if(cart.length === 0){
+alert("El carrito está vacío");
+return;
+}
+
+let mensaje = "🛒 PEDIDO MEGATODO:%0A%0A";
+let total = 0;
+
+cart.forEach(p => {
+mensaje += `• ${p.nombre}%0A`;
+mensaje += `$${p.precio} x ${p.cantidad}%0A%0A`;
+total += p.precio * p.cantidad;
+});
+
+mensaje += `%0ATOTAL: $${total.toFixed(2)}%0A`;
+
+let url = "https://wa.me/593990924437?text=" + mensaje;
+
+window.open(url, "_blank");
+}
+
+// iniciar
+render();
+
+</script>
+
+</body>
+</html>
