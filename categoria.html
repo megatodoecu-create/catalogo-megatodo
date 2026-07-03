@@ -180,7 +180,9 @@ z-index:9999;
 
 <body>
 
-<a href="carrito.html" class="btn-carrito-global">🛒 Carrito</a>
+<a href="carrito.html" class="btn-carrito-global">
+🛒 Carrito <span id="cartCount">0</span>
+</a>
 <a class="volver-home" href="index.html">← Inicio</a>
 
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
@@ -376,7 +378,17 @@ window.scrollY > 200 ? "flex" : "none";
 function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
+function getCart(){
+return JSON.parse(localStorage.getItem("carrito")) || [];
+}
 
+function actualizarCarritoUI(){
+let carrito = getCart();
+let total = carrito.reduce((sum, p) => sum + (p.cantidad || 1), 0);
+document.getElementById("cartCount").textContent = total;
+}
+
+actualizarCarritoUI();
 </script>
 
 </body>
