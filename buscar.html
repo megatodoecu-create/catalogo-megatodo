@@ -186,12 +186,26 @@ const precio = p.Precio || "0";
 const descripcion = p["Descripción"] || p["Descripcion"] || "";
 const tamaño = p.Tamaño || "";
 
-const link = `producto.html?codigo=${codigo}`;
+const codigo = p.Código || p.Codigo || p.ID || "";
+const nombre = p.Nombre || "Producto";
+const precio = p.Precio || "0";
+const descripcion = p["Descripción"] || p["Descripcion"] || "";
+const tamaño = p.Tamaño || "";
 
-const mensaje = `🛍️ Producto:
+/* 🔥 LINK 100% FIJO Y CORRECTO */
+const link = `${window.location.origin}/producto.html?codigo=${codigo}`;
+
+/* 🔥 MENSAJE IGUAL QUE PRODUCTO (PRO) */
+const mensaje = `Hola, quiero información sobre:
+
 ${nombre}
-💰 Precio: $${precio}
-🔗 Ver producto: ${link}`;
+
+Precio: $${precio}
+
+Código: ${codigo}
+
+Link del producto:
+${link}`;
 
 return `
 <div class="producto">
