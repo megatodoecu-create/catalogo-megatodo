@@ -210,13 +210,20 @@ Cantidad: ${p.cantidad}
 document.getElementById("total").innerText = "Total: $" + total.toFixed(2);
 
 // WhatsApp pedido
-let mensaje = "🛒 Pedido Megatodo:%0A%0A";
+let mensaje = "🛒 Pedido Megatodo%0A%0A";
 
 cart.forEach(p => {
-mensaje += `${p.nombre} x${p.cantidad} - $${p.precio}%0A`;
+mensaje += 
+`--------------------%0A
+Producto: ${p.nombre}%0A
+Código: ${p.codigo || "N/A"}%0A
+Precio: $${p.precio}%0A
+Cantidad: ${p.cantidad}%0A
+Subtotal: $${(p.precio * p.cantidad).toFixed(2)}%0A
+--------------------%0A%0A`;
 });
 
-mensaje += `%0ATotal: $${total.toFixed(2)}`;
+mensaje += `TOTAL: $${total.toFixed(2)}`;
 
 document.getElementById("wpp").href =
 "https://wa.me/593990924437?text=" + mensaje;
