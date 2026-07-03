@@ -204,6 +204,9 @@ contenedor.innerHTML = lista.map(p => {
 const codigo = p.Código || p.Codigo || p.ID || "";
 const foto = p["Foto 1"] || p.Foto || "https://via.placeholder.com/300";
 
+const descripcion = (p.Descripción || "").trim();
+const tamaño = (p.Tamaño || "").trim();
+
 return `
 <div class="card">
 
@@ -213,9 +216,13 @@ return `
 
 <div class="info">
 
-<div class="nombre">${p.Nombre}</div>
+<div class="nombre">${p.Nombre || ""}</div>
 
-<div class="precio">$${p.Precio}</div>
+${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
+
+${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
+
+<div class="precio">$${p.Precio || ""}</div>
 
 <a class="btn"
 target="_blank"
