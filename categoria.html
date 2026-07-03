@@ -252,7 +252,20 @@ ${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 
 <div class="precio">$${p.Precio || ""}</div>
 
-<a class="btn" target="_blank" href="${wpp}">
+<a class="btn"
+target="_blank"
+href="https://wa.me/593990924437?text=${encodeURIComponent(
+`Hola, quiero información sobre:
+
+${p.Nombre || ""}
+
+Precio: $${p.Precio || ""}
+
+Código: ${p.Código || ""}
+
+Link del producto:
+producto.html?codigo=${p.Código || ""}`
+)}">
 📲 WhatsApp
 </a>
 
