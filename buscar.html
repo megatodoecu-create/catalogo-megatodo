@@ -67,6 +67,7 @@ text-align:center;
 position:relative;
 }
 
+/* 🔥 IMPORTANTE: ahora es link */
 .producto img{
 width:100%;
 height:280px;
@@ -169,7 +170,6 @@ return;
 contenedor.innerHTML = encontrados.map(p => {
 
 const codigo = p.Código || p.Codigo || p.ID || "";
-
 const nombre = p.Nombre || "Producto";
 
 const foto =
@@ -179,17 +179,17 @@ const precio = p.Precio || "0";
 const descripcion = p["Descripción"] || p["Descripcion"] || "";
 const tamaño = p.Tamaño || "";
 
-/* 🔥 LINK PRODUCTO */
-const link = `https://TU-DOMINIO.com/producto.html?codigo=${codigo}`;
+/* LINK PRODUCTO */
+const link = `producto.html?codigo=${codigo}`;
 
-/* WHATSAPP MEJORADO */
+/* WHATSAPP */
 const mensaje = `🛍️ Producto:
 ${nombre}
 💰 Precio: $${precio}
 🔗 Ver producto: ${link}`;
 
 return `
-<div class="producto">
+<a class="producto" href="${link}" style="text-decoration:none; color:inherit; display:block; position:relative;">
 
 ${p.Oferta && p.Oferta.toUpperCase() === "SI"
 ? `<div class="oferta">OFERTA</div>` : ""}
@@ -206,12 +206,14 @@ ${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 
 <a class="btn-wpp"
 target="_blank"
+onclick="event.stopPropagation()"
 href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 📲 WhatsApp
 </a>
 
-</div>
+</a>
 `;
+
 }).join("");
 
 });
