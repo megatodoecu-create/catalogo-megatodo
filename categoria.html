@@ -191,15 +191,14 @@ function render(lista){
 const contenedor = document.getElementById("productos");
 
 contenedor.innerHTML = lista.map(p => {
-
-const codigo = p.Código || "";
+const codigo = (p.Código || "").toString().trim();
 const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 
 const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
 
 /* 🔥 LINK CORRECTO (SIN FALLAR) */
-const linkProducto = `producto.html?codigo=${codigo}`;
+const linkProducto = `${window.location.origin}/producto.html?codigo=${codigo}`;
 
 /* 🔥 MENSAJE WHATSAPP IGUAL QUE PRODUCTO */
 const mensaje = `
@@ -212,7 +211,7 @@ Precio: $${p.Precio || ""}
 Código: ${codigo}
 
 Link del producto:
-producto.html?codigo=${codigo}
+${linkProducto}
 `;
 
 return `
