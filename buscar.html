@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resultados - Megatodo</title>
+<title>Categoría - Megatodo</title>
 
 <style>
 
@@ -11,27 +11,169 @@ body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f5f5f5;
+}
+
+.volver-home{
+position:fixed;
+top:15px;
+left:15px;
+background:#333;
+color:white;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+z-index:9999;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+header{
+background:#ff2a2a;
+color:white;
+text-align:center;
+padding:15px;
+font-size:20px;
+font-weight:bold;
+margin-top:60px;
+}
+
+.buscador{
+text-align:center;
+padding:15px;
+}
+
+.buscador input{
+width:90%;
+max-width:500px;
+padding:12px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+/* SUGERENCIAS */
+#sugerencias{
+width:90%;
+max-width:500px;
+margin:0 auto;
+background:white;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+position:relative;
+z-index:9999;
+}
+
+.sug-item{
+padding:10px;
+cursor:pointer;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+.sug-item:hover{
+background:#f5f5f5;
+}
+
+/* GRID */
+.productos{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
 padding:20px;
 }
 
-h1{
-text-align:center;
-color:#333;
+/* CARD */
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+transition:0.2s;
 }
 
-/* BOTÓN VOLVER */
-.volver{
-display:inline-block;
-margin:10px 0 20px;
-padding:10px 15px;
-background:#333;
+.card:hover{
+transform:scale(1.02);
+}
+
+.card img{
+width:100%;
+height:240px;
+object-fit:contain;
+background:white;
+cursor:pointer;
+}
+
+.info{
+padding:15px;
+}
+
+.nombre{
+font-size:16px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.precio{
+font-size:18px;
+color:#ff2a2a;
+font-weight:bold;
+margin-top:5px;
+}
+
+.descripcion{
+font-size:13px;
+color:#666;
+margin-top:5px;
+}
+
+.tamano{
+font-size:13px;
+color:#777;
+margin-top:5px;
+}
+
+.btn{
+display:block;
+margin-top:10px;
+background:#25D366;
 color:white;
-text-decoration:none;
+text-align:center;
+padding:10px;
 border-radius:8px;
+text-decoration:none;
 font-weight:bold;
 }
 
-/* CARRITO */
+.btn-carrito{
+display:block;
+margin-top:10px;
+background:#ff2a2a;
+color:white;
+text-align:center;
+padding:10px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+border:none;
+}
+
+#btnArriba{
+position:fixed;
+bottom:20px;
+left:20px;
+width:55px;
+height:55px;
+background:#ff2a2a;
+color:white;
+border-radius:50%;
+display:none;
+align-items:center;
+justify-content:center;
+font-size:22px;
+cursor:pointer;
+z-index:9999;
+}
+
 .btn-carrito-global{
 position:fixed;
 top:15px;
@@ -46,128 +188,6 @@ box-shadow:0 4px 12px rgba(0,0,0,.25);
 z-index:9999;
 }
 
-#cartCount{
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
-}
-
-/* BOTÓN SUBIR */
-#btnArriba{
-position:fixed;
-bottom:20px;
-left:20px;
-width:55px;
-height:55px;
-background:#ff2a2a;
-color:white;
-border-radius:50%;
-display:none;
-align-items:center;
-justify-content:center;
-font-size:22px;
-box-shadow:0 6px 15px rgba(0,0,0,.3);
-cursor:pointer;
-z-index:9999;
-}
-
-/* GRID */
-#resultados{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-max-width:1200px;
-margin:auto;
-}
-
-/* CARD */
-.producto{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 10px rgba(0,0,0,.12);
-text-align:center;
-position:relative;
-}
-
-.producto img{
-width:100%;
-height:240px;
-object-fit:contain;
-background:white;
-cursor:pointer;
-}
-
-.oferta{
-position:absolute;
-top:10px;
-left:10px;
-background:red;
-color:white;
-padding:5px 10px;
-border-radius:6px;
-font-size:12px;
-font-weight:bold;
-}
-
-.descripcion{
-font-size:13px;
-color:#666;
-margin:5px 0;
-}
-
-.tamano{
-font-size:12px;
-color:#777;
-margin:5px 0;
-}
-
-.precio{
-font-size:18px;
-font-weight:bold;
-color:#2e7d32;
-margin:8px 0;
-}
-
-/* WHATSAPP */
-.btn-wpp{
-display:block;
-margin:10px;
-background:#25D366;
-color:white;
-text-align:center;
-padding:10px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-font-size:14px;
-box-shadow:0 2px 6px rgba(0,0,0,.15);
-}
-
-/* CARRITO BOTÓN */
-.btn-carrito{
-display:block;
-margin:10px;
-background:#ff2a2a;
-color:white;
-text-align:center;
-padding:10px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-border:none;
-width: calc(100% - 20px);
-transition:0.2s;
-}
-
-.btn-carrito:hover{
-transform:scale(1.02);
-}
-
 </style>
 </head>
 
@@ -177,38 +197,59 @@ transform:scale(1.02);
 🛒 Carrito <span id="cartCount">0</span>
 </a>
 
+<a class="volver-home" href="index.html">← Inicio</a>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
-<h1>Resultados de búsqueda</h1>
+<header>
+<h1 id="titulo"></h1>
+</header>
 
-<a class="volver" href="index.html">← Volver al inicio</a>
+<div class="buscador">
+<input type="text" id="buscadorCat" placeholder="Buscar producto en esta categoría...">
+</div>
 
-<div id="resultados"></div>
+<div id="sugerencias"></div>
+
+<div id="productos" class="productos"></div>
 
 <script>
 
-const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
-
-const params = new URLSearchParams(window.location.search);
-const texto = (params.get("q") || "").toLowerCase().trim();
-
-/* NORMALIZAR */
-function normalizar(texto) {
+function normalizar(texto){
 return (texto || "")
 .toString()
 .toLowerCase()
 .normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "");
+.replace(/[\u0300-\u036f]/g,"");
 }
 
-/* CARRITO */
-function actualizarCarritoUI() {
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const categoria = new URLSearchParams(window.location.search).get("cat");
+document.getElementById("titulo").textContent = categoria;
+
+const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+
+let productosGlobal = [];
+
+fetch(url)
+.then(res => res.json())
+.then(data=>{
+productosGlobal = data.filter(p => p.Categoria === categoria);
+render(productosGlobal);
+});
+
+/* ================= CARRITO ================= */
+
+function getCart(){
+return JSON.parse(localStorage.getItem("carrito")) || [];
+}
+
+function actualizarCarritoUI(){
+let carrito = getCart();
 document.getElementById("cartCount").textContent = carrito.length;
 }
 
-function agregarAlCarrito(producto) {
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+function agregarAlCarrito(producto){
+let carrito = getCart();
 carrito.push(producto);
 localStorage.setItem("carrito", JSON.stringify(carrito));
 actualizarCarritoUI();
@@ -216,96 +257,109 @@ actualizarCarritoUI();
 
 actualizarCarritoUI();
 
-/* FETCH */
-fetch(url)
-.then(res => res.json())
-.then(data => {
+/* ================= BUSCADOR ================= */
 
-const palabras = normalizar(texto).split(" ").filter(p => p.length > 0);
-
-const encontrados = data.filter(p => {
-
-const nombre = normalizar(p.Nombre);
-const categoria = normalizar(p.Categoria);
-const descripcion = normalizar(p["Descripción"] || p["Descripcion"]);
-
-return palabras.some(word =>
-nombre.includes(word) ||
-categoria.includes(word) ||
-descripcion.includes(word)
-);
-
+document.getElementById("buscadorCat").addEventListener("input", function(){
+mostrarSugerencias(this.value);
+filtrarCategoria();
 });
 
-const contenedor = document.getElementById("resultados");
+function mostrarSugerencias(valor){
+const texto = normalizar(valor);
+const cont = document.getElementById("sugerencias");
 
-if(encontrados.length === 0){
-contenedor.innerHTML = "<h2 style='text-align:center'>No se encontraron productos</h2>";
+if(!texto){
+cont.innerHTML = "";
 return;
 }
 
-contenedor.innerHTML = encontrados.map(p => {
+const sugeridos = productosGlobal.filter(p=>{
+return normalizar(p.Nombre).includes(texto);
+}).slice(0,5);
 
-const codigo = (p.Código || p.Codigo || p.ID || "").toString().trim();
-const nombre = p.Nombre || "Producto";
-const foto = p.Foto || p["Foto 1"] || "https://via.placeholder.com/300";
-const precio = p.Precio || "0";
-const descripcion = p["Descripción"] || p["Descripcion"] || "";
-const tamaño = p.Tamaño || "";
+cont.innerHTML = sugeridos.map(p=>`
+<div class="sug-item"
+onclick="document.getElementById('buscadorCat').value='${p.Nombre}';
+filtrarCategoria();
+document.getElementById('sugerencias').innerHTML='';">
+${p.Nombre}
+</div>
+`).join("");
+}
 
-const link = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
+function filtrarCategoria(){
 
-const mensaje = `Hola, quiero información sobre:
+const texto = normalizar(document.getElementById("buscadorCat").value);
+const palabras = texto.split(" ").filter(p=>p.length>0);
 
-${nombre}
+const filtrados = productosGlobal.filter(p=>{
+const nombre = normalizar(p.Nombre);
+const desc = normalizar(p["Descripción"]||"");
 
-Precio: $${precio}
+return palabras.some(w=>nombre.includes(w)||desc.includes(w));
+});
 
-Código: ${codigo}
+render(filtrados);
+}
 
-Link:
-${link}`;
+/* ================= RENDER ================= */
+
+function render(lista){
+
+const contenedor = document.getElementById("productos");
+
+contenedor.innerHTML = lista.map(p=>{
+
+const codigo = (p.Código || "").toString().trim();
+const foto = p["Foto 1"] || "https://via.placeholder.com/300";
+
+const link = `producto.html?codigo=${encodeURIComponent(codigo)}`;
+
+const mensaje = `Hola quiero info:\n${p.Nombre}\n$${p.Precio}\n${codigo}`;
 
 return `
-<div class="producto">
-
-${p.Oferta && p.Oferta.toUpperCase() === "SI"
-? `<div class="oferta">OFERTA</div>` : ""}
+<div class="card">
 
 <a href="${link}">
 <img src="${foto}">
 </a>
 
-<h3>${nombre}</h3>
+<div class="info">
 
-${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
+<div class="nombre">${p.Nombre || ""}</div>
 
-${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
+<div class="precio">$${p.Precio || ""}</div>
 
-<div class="precio">$${precio}</div>
-
-<a class="btn-wpp"
+<a class="btn"
 target="_blank"
 href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 📲 WhatsApp
 </a>
 
+<button class="btn-carrito" onclick='agregarAlCarrito({
+codigo:"${codigo}",
+nombre:"${p.Nombre || ""}",
+precio:"${p.Precio || ""}",
+foto:"${foto}"
+})'>
+🛒 Agregar al carrito
+</button>
 
+</div>
 </div>
 `;
 
 }).join("");
+}
 
-});
-
-/* BOTÓN SUBIR */
-window.addEventListener("scroll", function(){
-const btn = document.getElementById("btnArriba");
-btn.style.display = window.scrollY > 200 ? "flex" : "none";
+/* BOTÓN ARRIBA */
+window.addEventListener("scroll",()=>{
+document.getElementById("btnArriba").style.display =
+window.scrollY>200?"flex":"none";
 });
 
 function irArriba(){
-window.scrollTo({ top: 0, behavior: "smooth" });
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
 </script>
