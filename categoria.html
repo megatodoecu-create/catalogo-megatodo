@@ -182,8 +182,8 @@ let productosGlobal = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
-productosGlobal = data.filter(p => p.Categoria === categoria);
-render(productosGlobal);
+    productosGlobal = data.filter(p => p.Categoria === categoria);
+    render(productosGlobal);
 });
 
 function render(lista){
@@ -191,18 +191,18 @@ function render(lista){
 const contenedor = document.getElementById("productos");
 
 contenedor.innerHTML = lista.map(p => {
+
 const codigo = (p.Código || "").toString().trim();
 const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 
 const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
 
-/* 🔥 LINK CORRECTO (SIN FALLAR) */
+/* ✅ LINK ABSOLUTO SIEMPRE FUNCIONAL EN WHATSAPP */
 const linkProducto = `${window.location.origin}/producto.html?codigo=${codigo}`;
 
-/* 🔥 MENSAJE WHATSAPP IGUAL QUE PRODUCTO */
-const mensaje = `
-Hola, quiero información sobre:
+/* ✅ MENSAJE IGUAL AL PRODUCTO */
+const mensaje = `Hola, quiero información sobre:
 
 ${p.Nombre || ""}
 
@@ -210,10 +210,10 @@ Precio: $${p.Precio || ""}
 
 Código: ${codigo}
 
-Link del producto:
-${linkProducto}
-`;
+Link:
+${linkProducto}`;
 
+/* HTML */
 return `
 <div class="card">
 
@@ -245,6 +245,7 @@ href="https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}">
 
 }
 
+/* BOTÓN SUBIR */
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
@@ -253,7 +254,6 @@ window.scrollY > 200 ? "flex" : "none";
 function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 </script>
 
 </body>
