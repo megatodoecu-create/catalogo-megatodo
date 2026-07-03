@@ -106,6 +106,8 @@ border-radius:8px;
 text-decoration:none;
 font-weight:bold;
 }
+
+/* 🔥 CARRITO FLOTANTE */
 .btn-carrito-global{
 position:fixed;
 top:15px;
@@ -119,14 +121,26 @@ font-weight:bold;
 box-shadow:0 4px 12px rgba(0,0,0,.25);
 z-index:9999;
 }
-  
+
+#cartCount{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 7px;
+border-radius:50%;
+margin-left:6px;
+font-weight:bold;
+}
 </style>
 </head>
 
 <body>
+
+<!-- 🔥 CARRITO FLOTANTE -->
 <a href="carrito.html" class="btn-carrito-global">
 🛒 Carrito <span id="cartCount">0</span>
 </a>
+
 <header>🛒 Tu Carrito</header>
 
 <a class="volver" href="index.html">← Seguir comprando</a>
@@ -148,6 +162,15 @@ function saveCart(cart){
 localStorage.setItem("carrito", JSON.stringify(cart));
 }
 
+/* 🔥 ACTUALIZAR ICONO */
+function actualizarCarritoUI() {
+    let cart = getCart();
+    let total = cart.reduce((sum, p) => sum + (p.cantidad || 0), 0);
+
+    const el = document.getElementById("cartCount");
+    if (el) el.textContent = total;
+}
+
 function render(){
 
 let cart = getCart();
@@ -157,6 +180,7 @@ if(cart.length === 0){
 cont.innerHTML = "<h3 style='text-align:center'>Carrito vacío</h3>";
 document.getElementById("total").innerText = "";
 document.getElementById("wpp").style.display = "none";
+actualizarCarritoUI();
 return;
 }
 
@@ -198,6 +222,9 @@ document.getElementById("wpp").href =
 "https://wa.me/593990924437?text=" + mensaje;
 
 document.getElementById("wpp").style.display = "block";
+
+/* 🔥 actualizar contador */
+actualizarCarritoUI();
 }
 
 function eliminar(index){
@@ -206,16 +233,7 @@ cart.splice(index,1);
 saveCart(cart);
 render();
 }
-function actualizarCarritoUI() {
-    let carrito = getCart();
 
-    let totalItems = carrito.reduce((sum, p) => sum + (p.cantidad || 1), 0);
-
-    const el = document.getElementById("cartCount");
-    if (el) el.textContent = totalItems;
-}
-
-actualizarCarritoUI();  
 render();
 
 </script>
