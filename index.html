@@ -220,11 +220,17 @@ ${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
 `;
 }).join("");
 
-/* 🔥 BUSCADOR (AQUÍ YA FUNCIONA) */
+/* 🔥 BUSCADOR ARREGLADO */
 const input = document.getElementById("buscadorGlobal");
 const resultados = document.getElementById("resultadosBusqueda");
 
 input.addEventListener("input", function () {
+
+    if (!productos || productos.length === 0) {
+        resultados.innerHTML = "<div class='resultado'>Cargando productos...</div>";
+        return;
+    }
+
     const texto = this.value.toLowerCase().trim();
 
     if (texto === "") {
@@ -232,20 +238,29 @@ input.addEventListener("input", function () {
         return;
     }
 
-    const filtrados = productos.filter(p =>
-        (p.Nombre || "").toLowerCase().includes(texto) ||
-        (p.Código || "").toLowerCase().includes(texto)
-    );
+    const filtrados = productos.filter(p => {
 
-    resultados.innerHTML = filtrados.slice(0, 10).map(p => {
-        return `
+        const nombre = (p.Nombre || "").toLowerCase();
+        const codigo = (p.Código || "").toLowerCase();
+        const descripcion = (p.Descripción || "").toLowerCase();
+
+        return nombre.includes(texto) ||
+               codigo.includes(texto) ||
+               descripcion.includes(texto);
+    });
+
+    if (filtrados.length === 0) {
+        resultados.innerHTML = "<div class='resultado'>No se encontraron productos</div>";
+        return;
+    }
+
+    resultados.innerHTML = filtrados.slice(0, 10).map(p => `
         <div class="resultado">
             <a href="producto.html?codigo=${p.Código}">
-                ${p.Nombre}
+                ${p.Nombre || "Sin nombre"}
             </a>
         </div>
-        `;
-    }).join("");
+    `).join("");
 });
 
 input.addEventListener("keypress", function (e) {
