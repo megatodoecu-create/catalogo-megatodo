@@ -206,6 +206,17 @@ transform:scale(1.05);
 
 <body>
 <a href="carrito.html" class="btn-carrito-global">🛒 Carrito</a>
+    <span id="cartCount" style="
+background:red;
+color:white;
+font-size:12px;
+padding:3px 7px;
+border-radius:50%;
+margin-left:6px;
+font-weight:bold;
+">
+0
+</span>
 <a class="volver-home" href="index.html">← Inicio</a>
 
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
@@ -340,17 +351,16 @@ function cambiar(img){
 document.getElementById("imgPrincipal").src = img.src;
 }
 
-// CARRITO
-// =====================
+
 // 🛒 CARRITO PRO NIVEL 2
 // =====================
 
 function getCart(){
-    return JSON.parse(localStorage.getItem("cart")) || [];
+    return JSON.parse(localStorage.getItem("carrito")) || [];
 }
 
 function saveCart(cart){
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("carrito", JSON.stringify(cart));
 }
 
 // agregar al carrito (PRO)
@@ -403,7 +413,14 @@ window.scrollY > 200 ? "flex" : "none";
 function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
+function actualizarCarritoUI() {
+    let carrito = getCart();
+    let total = carrito.reduce((sum, p) => sum + p.cantidad, 0);
 
+    const el = document.getElementById("cartCount");
+    if (el) el.textContent = total;
+}
+actualizarCarritoUI();
 </script>
 
 </body>
