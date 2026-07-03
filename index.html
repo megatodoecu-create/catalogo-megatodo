@@ -165,33 +165,20 @@ margin:30px auto 15px;
 font-size:26px;
 font-weight:bold;
 color:white;
-
-/* 🎨 BANNER PRO */
 background: linear-gradient(135deg, #ff2a8a, #ff5fb0);
 padding:18px 20px;
 border-radius:15px;
 max-width:600px;
-
-/* ✨ efecto moderno */
 box-shadow:0 6px 18px rgba(255,42,138,0.35);
 letter-spacing:1px;
-
-/* animación suave */
 opacity:0;
 transform: translateY(10px);
 animation: aparecerBanner 0.8s ease forwards;
 }
 
-/* ✨ animación */
 @keyframes aparecerBanner{
-from{
-opacity:0;
-transform: translateY(15px);
-}
-to{
-opacity:1;
-transform: translateY(0);
-}
+from{opacity:0;transform: translateY(15px);}
+to{opacity:1;transform: translateY(0);}
 }
 
 .btn-carrito-global{
@@ -212,7 +199,7 @@ transition:0.2s;
 .btn-carrito-global:hover{
 transform:scale(1.05);
 }
-    
+
 #btnArriba{
 position:fixed;
 bottom:20px;
@@ -252,14 +239,32 @@ transition:0.2s;
 .btn-wpp-flotante:hover{
 transform:scale(1.1);
 }
-    
+
+/* 🔥 CONTADOR CARRITO */
+#cartCount{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 7px;
+border-radius:50%;
+margin-left:6px;
+font-weight:bold;
+position:relative;
+top:-10px;
+}
+
 </style>
 
 </head>
 
 <body>
+
 <a href="https://wa.me/593990924437" target="_blank" class="btn-wpp-flotante">💬</a>
-<a href="carrito.html" class="btn-carrito-global">🛒 Carrito</a>
+
+<a href="carrito.html" class="btn-carrito-global">
+🛒 Carrito <span id="cartCount">0</span>
+</a>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <img src="logo-megatodo.jpg" class="logo">
@@ -274,10 +279,9 @@ transform:scale(1.1);
 <div id="productosNuevos" class="productos-grid"></div>
 </div>
 
-
 <h2 class="titulo-categorias">ELIGE UNA CATEGORÍA</h2>
-<div class="categorias">
 
+<div class="categorias">
 <a class="categoria" href="categoria.html?cat=Artículos%20de%20Belleza">✨ Belleza</a>
 <a class="categoria" href="categoria.html?cat=Juguetes">🧸 Juguetes</a>
 <a class="categoria" href="categoria.html?cat=Bazar">🏠 Bazar</a>
@@ -287,19 +291,19 @@ transform:scale(1.1);
 </div>
 
 <div class="horario">
-    <h2>🕒 Horario de atención</h2>
+<h2>🕒 Horario de atención</h2>
 
-    <div class="fila">
-        <span>Lunes a Sábado</span>
-        <strong>8:30 a 19:30</strong>
-    </div>
-
-    <div class="fila">
-        <span>Domingo</span>
-        <strong>9:30 a 18:30</strong>
-    </div>
+<div class="fila">
+<span>Lunes a Sábado</span>
+<strong>8:30 a 19:30</strong>
 </div>
 
+<div class="fila">
+<span>Domingo</span>
+<strong>9:30 a 18:30</strong>
+</div>
+
+</div>
 
 <script>
 
@@ -325,77 +329,14 @@ p["Foto 2"] ||
 p["Foto 3"] ||
 "https://via.placeholder.com/300";
 
-const descripcion = p["Descripción"] || "";
-const tamaño = p["Tamaño"] || "";
-
 return `
 <a href="producto.html?codigo=${p.Código || ''}" class="producto-nuevo">
-
 <img src="${foto}">
-
 <h3>${p.Nombre || ""}</h3>
-
-${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
-
-${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
-
 <p><b>$${p.Precio || ""}</b></p>
-
 </a>
 `;
 }).join("");
-
-/* 🔥 BUSCADOR ARREGLADO */
-const input = document.getElementById("buscadorGlobal");
-const resultados = document.getElementById("resultadosBusqueda");
-
-input.addEventListener("input", function () {
-
-    if (!productos || productos.length === 0) {
-        resultados.innerHTML = "<div class='resultado'>Cargando productos...</div>";
-        return;
-    }
-
-    const texto = this.value.toLowerCase().trim();
-
-    if (texto === "") {
-        resultados.innerHTML = "";
-        return;
-    }
-
-    const filtrados = productos.filter(p => {
-
-        const nombre = (p.Nombre || "").toLowerCase();
-        const codigo = (p.Código || "").toLowerCase();
-        const descripcion = (p.Descripción || "").toLowerCase();
-
-        return nombre.includes(texto) ||
-               codigo.includes(texto) ||
-               descripcion.includes(texto);
-    });
-
-    if (filtrados.length === 0) {
-        resultados.innerHTML = "<div class='resultado'>No se encontraron productos</div>";
-        return;
-    }
-
-    resultados.innerHTML = filtrados.slice(0, 10).map(p => `
-        <div class="resultado">
-            <a href="producto.html?codigo=${p.Código}">
-                ${p.Nombre || "Sin nombre"}
-            </a>
-        </div>
-    `).join("");
-});
-
-input.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        const texto = input.value.trim();
-        if (texto !== "") {
-            window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
-        }
-    }
-});
 
 });
 
@@ -409,47 +350,20 @@ function irArriba(){
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-</script>
-<script>
+/* 🛒 CARRITO GLOBAL (IMPORTANTE) */
 function getCart(){
-    return JSON.parse(localStorage.getItem("carrito")) || [];
+return JSON.parse(localStorage.getItem("carrito")) || [];
 }
 
 function actualizarCarritoUI(){
-    let cart = getCart();
-
-    // suma cantidades
-    let total = cart.reduce((sum, p) => sum + (p.cantidad || 1), 0);
-
-    let el = document.getElementById("cartCount");
-
-    // si no existe el span, lo crea automáticamente
-    if(!el){
-        const btn = document.querySelector(".btn-carrito-global");
-        if(btn){
-            const span = document.createElement("span");
-            span.id = "cartCount";
-            span.style.background = "red";
-            span.style.color = "white";
-            span.style.fontSize = "12px";
-            span.style.padding = "3px 7px";
-            span.style.borderRadius = "50%";
-            span.style.marginLeft = "6px";
-            span.style.fontWeight = "bold";
-            span.textContent = total;
-
-            btn.appendChild(span);
-        }
-    } else {
-        el.textContent = total;
-    }
+let carrito = getCart();
+let total = carrito.reduce((sum, p) => sum + p.cantidad, 0);
+document.getElementById("cartCount").textContent = total;
 }
 
-// actualizar al cargar
-document.addEventListener("DOMContentLoaded", actualizarCarritoUI);
+actualizarCarritoUI();
 
-// actualizar cuando cambie el carrito en otras páginas
-window.addEventListener("storage", actualizarCarritoUI);
 </script>
+
 </body>
 </html>
