@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Categoría - Megatodo</title>
+<title>Producto - Megatodo</title>
 
 <style>
 
@@ -13,7 +13,7 @@ font-family:Arial,sans-serif;
 background:#f5f5f5;
 }
 
-/* 🔥 BOTÓN VOLVER INICIO */
+/* 🔥 BOTÓN VOLVER (PRO FLOTANTE) */
 .volver-home{
 position:fixed;
 top:15px;
@@ -26,114 +26,11 @@ text-decoration:none;
 font-weight:bold;
 z-index:9999;
 box-shadow:0 2px 10px rgba(0,0,0,.2);
-}
-
-/* HEADER */
-header{
-background:#ff2a2a;
-color:white;
-text-align:center;
-padding:15px;
-font-size:20px;
-font-weight:bold;
-margin-top:60px;
-}
-
-/* 🔎 BUSCADOR */
-.buscador{
-text-align:center;
-padding:15px;
-}
-
-.buscador input{
-width:90%;
-max-width:500px;
-padding:12px;
-border-radius:10px;
-border:1px solid #ccc;
-font-size:16px;
-}
-
-/* SUGERENCIAS */
-.sugerencias{
-max-width:500px;
-margin:0 auto;
-background:white;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-overflow:hidden;
-}
-
-.sugerencia{
-padding:10px;
-border-bottom:1px solid #eee;
-cursor:pointer;
-}
-
-.sugerencia:hover{
-background:#f5f5f5;
-}
-
-/* GRID */
-.productos{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:20px;
-}
-
-/* CARD */
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-position:relative;
 transition:0.2s;
 }
 
-.card:hover{
-transform:scale(1.02);
-}
-
-/* IMAGEN */
-.card img{
-width:100%;
-height:240px;
-object-fit:contain;
-background:white;
-cursor:pointer;
-}
-
-/* INFO */
-.info{
-padding:15px;
-}
-
-.nombre{
-font-size:16px;
-font-weight:bold;
-margin-bottom:5px;
-}
-
-.precio{
-font-size:18px;
-color:#ff2a2a;
-font-weight:bold;
-margin-top:5px;
-}
-
-/* WHATSAPP */
-.btn{
-display:block;
-margin-top:10px;
-background:#25D366;
-color:white;
-text-align:center;
-padding:10px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
+.volver-home:hover{
+transform:scale(1.05);
 }
 
 /* BOTÓN SUBIR */
@@ -154,117 +51,265 @@ cursor:pointer;
 z-index:9999;
 }
 
+/* CONTENEDOR PRINCIPAL */
+.contenedor{
+max-width:1100px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+padding:20px;
+}
+
+/* GALERÍA */
+.galeria{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.galeria img{
+width:100%;
+height:400px;
+object-fit:contain;
+border-radius:10px;
+background:white;
+}
+
+/* MINIATURAS */
+.miniaturas{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.miniaturas img{
+width:80px;
+height:80px;
+object-fit:contain;
+border-radius:8px;
+cursor:pointer;
+border:2px solid transparent;
+}
+
+.miniaturas img:hover{
+border:2px solid #ff2a2a;
+}
+
+/* INFO */
+.info{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.titulo{
+font-size:24px;
+font-weight:bold;
+}
+
+.precio{
+font-size:28px;
+color:#ff2a2a;
+font-weight:bold;
+margin:10px 0;
+}
+
+.precio-anterior{
+text-decoration:line-through;
+color:#888;
+margin-left:10px;
+font-size:16px;
+}
+
+.oferta{
+display:inline-block;
+background:red;
+color:white;
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+margin-bottom:10px;
+}
+
+.nuevo{
+display:inline-block;
+background:green;
+color:white;
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+margin-bottom:10px;
+margin-left:5px;
+}
+
+.stock{
+margin:10px 0;
+font-weight:bold;
+}
+
+.descripcion{
+margin-top:15px;
+color:#555;
+line-height:1.5;
+}
+
+/* BOTONES */
+.btn{
+display:block;
+margin-top:15px;
+padding:12px;
+text-align:center;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.btn-wpp{
+background:#25D366;
+color:white;
+}
+
+.btn-carrito{
+background:#ff2a2a;
+color:white;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+.contenedor{
+grid-template-columns:1fr;
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 BOTÓN INICIO -->
+<!-- 🔥 BOTÓN VOLVER AL INICIO -->
 <a class="volver-home" href="index.html">← Inicio</a>
 
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
-<header>
-<h1 id="titulo"></h1>
-</header>
+<div class="contenedor">
 
-<!-- 🔎 BUSCADOR -->
-<div class="buscador">
-<input type="text" id="buscadorCat" placeholder="Buscar producto en esta categoría...">
-<div id="sugerencias"></div>
+<!-- GALERÍA -->
+<div class="galeria">
+<img id="imgPrincipal" src="" alt="producto">
+
+<div class="miniaturas">
+<img id="img1" onclick="cambiar(this)">
+<img id="img2" onclick="cambiar(this)">
+<img id="img3" onclick="cambiar(this)">
+</div>
 </div>
 
-<div id="productos" class="productos"></div>
+<!-- INFO -->
+<div class="info">
+
+<div id="etiquetas"></div>
+
+<div class="titulo" id="nombre"></div>
+
+<div>
+<span class="precio" id="precio"></span>
+<span class="precio-anterior" id="precioAnt"></span>
+</div>
+
+<div class="stock" id="stock"></div>
+
+<div class="descripcion" id="descripcion"></div>
+
+<a id="wpp" class="btn btn-wpp" target="_blank">📲 WhatsApp</a>
+
+<a href="#" class="btn btn-carrito">🛒 Agregar al carrito</a>
+
+</div>
+
+</div>
 
 <script>
 
-const categoria = new URLSearchParams(window.location.search).get("cat");
-document.getElementById("titulo").textContent = categoria;
-
 const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
-let productosGlobal = [];
+const params = new URLSearchParams(window.location.search);
+const codigo = params.get("codigo");
+
+let productoActual = null;
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
-productosGlobal = data.filter(p => p.Categoria === categoria);
-render(productosGlobal);
+productoActual = data.find(p => p.Código === codigo);
 
-});
-
-// 🔥 RENDER PRODUCTOS
-function render(lista){
-
-const contenedor = document.getElementById("productos");
-
-contenedor.innerHTML = lista.map(p => {
-
-const codigo = p.Código || p.Codigo || p.ID || "";
-const foto = p["Foto 1"] || p.Foto || "https://via.placeholder.com/300";
-
-return `
-<div class="card">
-
-<a href="producto.html?codigo=${codigo}">
-<img src="${foto}" alt="${p.Nombre}">
-</a>
-
-<div class="info">
-
-<div class="nombre">${p.Nombre}</div>
-
-<div class="precio">$${p.Precio}</div>
-
-<a class="btn"
-target="_blank"
-href="https://wa.me/593990924437?text=${encodeURIComponent(p.Nombre)}">
-📲 WhatsApp
-</a>
-
-</div>
-</div>
-`;
-}).join("");
-
-}
-
-// 🔎 BUSCADOR SOLO EN CATEGORÍA
-document.getElementById("buscadorCat").addEventListener("input", function(){
-
-const texto = this.value.toLowerCase().trim();
-const sugerencias = document.getElementById("sugerencias");
-
-if(texto === ""){
-render(productosGlobal);
-sugerencias.innerHTML = "";
+if(!productoActual){
+document.body.innerHTML = "<h2 style='text-align:center'>Producto no encontrado</h2>";
 return;
 }
 
-// SOLO BUSCA DENTRO DE ESTA CATEGORÍA
-const filtrados = productosGlobal.filter(p =>
-(p.Nombre || "").toLowerCase().includes(texto)
-);
+// IMÁGENES
+const img1 = productoActual["Foto 1"];
+const img2 = productoActual["Foto 2"];
+const img3 = productoActual["Foto 3"];
 
-// RENDER
-render(filtrados);
+// PRINCIPAL
+document.getElementById("imgPrincipal").src = img1;
 
-// SUGERENCIAS (TOP 5)
-sugerencias.innerHTML = filtrados.slice(0,5).map(p => `
-<div class="sugerencia" onclick="ir('${p.Código}')">
-${p.Nombre}
-</div>
-`).join("");
+// MINIATURAS
+document.getElementById("img1").src = img1;
+document.getElementById("img2").src = img2 || img1;
+document.getElementById("img3").src = img3 || img1;
+
+// INFO
+document.getElementById("nombre").textContent = productoActual.Nombre;
+document.getElementById("precio").textContent = "$" + productoActual.Precio;
+
+if(productoActual["Precio Anterior"]){
+document.getElementById("precioAnt").textContent = "$" + productoActual["Precio Anterior"];
+}
+
+document.getElementById("stock").textContent =
+productoActual.Stock > 0 ? "En stock" : "Agotado";
+
+document.getElementById("descripcion").textContent =
+productoActual.Descripción || "";
+
+// ETIQUETAS
+let etiquetas = "";
+if(productoActual.Oferta === "SI") etiquetas += `<span class="oferta">OFERTA</span>`;
+if(productoActual.Nuevo === "SI") etiquetas += `<span class="nuevo">NUEVO</span>`;
+document.getElementById("etiquetas").innerHTML = etiquetas;
+
+// WHATSAPP
+const link = window.location.href;
+
+const mensaje =
+`Hola, quiero información sobre:
+
+${productoActual.Nombre}
+
+Precio: $${productoActual.Precio}
+
+Código: ${productoActual.Código}
+
+Link del producto:
+${link}`;
+
+document.getElementById("wpp").href =
+`https://wa.me/593990924437?text=${encodeURIComponent(mensaje)}`;
 
 });
 
-// IR A PRODUCTO
-function ir(codigo){
-window.location.href = "producto.html?codigo=" + codigo;
+// CAMBIAR IMAGEN
+function cambiar(img){
+document.getElementById("imgPrincipal").src = img.src;
 }
 
-// BOTÓN SUBIR
+// SUBIR
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
