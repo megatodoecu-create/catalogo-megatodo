@@ -51,6 +51,30 @@ border:1px solid #ccc;
 font-size:16px;
 }
 
+/* 🔥 SUGERENCIAS */
+#sugerencias{
+width:90%;
+max-width:500px;
+margin:0 auto;
+background:white;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+position:relative;
+z-index:9999;
+}
+
+.sug-item{
+padding:10px;
+cursor:pointer;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+.sug-item:hover{
+background:#f5f5f5;
+}
+
+/* GRID */
 .productos{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -58,6 +82,7 @@ gap:20px;
 padding:20px;
 }
 
+/* CARD */
 .card{
 background:white;
 border-radius:12px;
@@ -168,10 +193,27 @@ z-index:9999;
 <input type="text" id="buscadorCat" placeholder="Buscar producto en esta categoría...">
 </div>
 
+<!-- 🔥 SUGERENCIAS -->
+<div id="sugerencias"></div>
+
 <div id="productos" class="productos"></div>
 
 <script>
 
+/* =========================
+   NORMALIZAR TEXTO
+========================= */
+function normalizar(texto) {
+return (texto || "")
+.toString()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "");
+}
+
+/* =========================
+   CATEGORÍA
+========================= */
 const categoria = new URLSearchParams(window.location.search).get("cat");
 document.getElementById("titulo").textContent = categoria;
 
@@ -187,28 +229,64 @@ fetch(url)
 });
 
 /* =========================
-   NORMALIZAR TEXTO
+   ENTER + INPUT
 ========================= */
-function normalizar(texto) {
-return (texto || "")
-.toString()
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "");
-}
+document.getElementById("buscadorCat").addEventListener("input", function() {
 
-/* =========================
-   BUSCADOR TIPO INDEX
-========================= */
-document.getElementById("buscadorCat").addEventListener("input", filtrarCategoria);
+mostrarSugerencias(this.value);
+filtrarCategoria();
+
+});
 
 document.getElementById("buscadorCat").addEventListener("keydown", function(e) {
 if (e.key === "Enter") {
 filtrarCategoria();
+document.getElementById("sugerencias").innerHTML = "";
 }
 });
 
-function filtrarCategoria() {
+/* =========================
+   SUGERENCIAS
+========================= */
+function mostrarSugerencias(valor){
+
+const texto = normalizar(valor);
+const cont = document.getElementById("sugerencias");
+
+if(!texto){
+cont.innerHTML = "";
+return;
+}
+
+const sugeridos = productosGlobal.filter(p => {
+
+const nombre = normalizar(p.Nombre);
+const categoria = normalizar(p.Categoria);
+
+return nombre.includes(texto) || categoria.includes(texto);
+
+}).slice(0,5);
+
+cont.innerHTML = sugeridos.map(p => {
+
+return `
+<div class="sug-item" onclick="
+document.getElementById('buscadorCat').value='${p.Nombre}';
+document.getElementById('sugerencias').innerHTML='';
+filtrarCategoria();
+">
+${p.Nombre}
+</div>
+`;
+
+}).join("");
+
+}
+
+/* =========================
+   FILTRO PRINCIPAL
+========================= */
+function filtrarCategoria(){
 
 const texto = normalizar(document.getElementById("buscadorCat").value);
 const palabras = texto.split(" ").filter(p => p.length > 0);
