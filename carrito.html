@@ -155,11 +155,11 @@ font-weight:bold;
 <script>
 
 function getCart(){
-return JSON.parse(localStorage.getItem("carrito")) || [];
+    return JSON.parse(localStorage.getItem("carrito")) || [];
 }
 
 function saveCart(cart){
-localStorage.setItem("carrito", JSON.stringify(cart));
+    localStorage.setItem("carrito", JSON.stringify(cart));
 }
 
 /* 🔥 ACTUALIZAR ICONO */
