@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carrito - Megatodo</title>
+<title>Carrito PRO - Megatodo</title>
 
 <style>
 
@@ -28,6 +28,7 @@ font-weight:bold;
 color:#ff2a2a;
 }
 
+/* ITEM */
 .item{
 background:white;
 padding:15px;
@@ -45,13 +46,34 @@ height:80px;
 object-fit:contain;
 }
 
+.info{
+flex:1;
+}
+
+.nombre{
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.controles{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:5px;
+}
+
 .btn{
 background:#ff2a2a;
 color:white;
-padding:8px 12px;
 border:none;
+padding:6px 10px;
 border-radius:6px;
 cursor:pointer;
+font-weight:bold;
+}
+
+.btn-minus{
+background:#333;
 }
 
 .total{
@@ -81,30 +103,44 @@ font-size:16px;
 
 <a class="volver" href="index.html">← Seguir comprando</a>
 
-<h1>🛒 Tu Carrito</h1>
+<h1>🛒 Carrito PRO</h1>
 
 <div id="carrito"></div>
 
 <div class="total" id="total"></div>
 
 <button class="btn-wpp" onclick="enviarWhatsApp()">
-📲 Finalizar pedido por WhatsApp
+📲 Finalizar pedido
 </button>
 
 <script>
 
-// obtener carrito
 function getCart(){
 return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
-// guardar carrito
 function saveCart(cart){
 localStorage.setItem("cart", JSON.stringify(cart));
 render();
 }
 
-// mostrar carrito
+// 🧠 AGREGAR LÓGICA PRO (SIN DUPLICADOS)
+function addItem(p){
+
+let cart = getCart();
+
+let exist = cart.find(x => x.codigo === p.codigo);
+
+if(exist){
+exist.cantidad += 1;
+} else {
+cart.push(p);
+}
+
+saveCart(cart);
+}
+
+// RENDER
 function render(){
 
 let cart = getCart();
@@ -124,12 +160,24 @@ total += p.precio * p.cantidad;
 return `
 <div class="item">
 <img src="${p.imagen}">
-<div style="flex:1">
-<b>${p.nombre}</b><br>
-$${p.precio} x ${p.cantidad}
+
+<div class="info">
+<div class="nombre">${p.nombre}</div>
+<div>$${p.precio}</div>
+
+<div class="controles">
+
+<button class="btn btn-minus" onclick="menos('${p.codigo}')">-</button>
+
+<span>${p.cantidad}</span>
+
+<button class="btn" onclick="mas('${p.codigo}')">+</button>
+
+<button class="btn" onclick="eliminar('${p.codigo}')">🗑</button>
+
+</div>
 </div>
 
-<button class="btn" onclick="eliminar(${i})">Eliminar</button>
 </div>
 `;
 }).join("");
@@ -137,27 +185,50 @@ $${p.precio} x ${p.cantidad}
 document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
 }
 
-// eliminar producto
-function eliminar(index){
+// +++
+function mas(codigo){
 let cart = getCart();
-cart.splice(index,1);
+let p = cart.find(x => x.codigo === codigo);
+if(p) p.cantidad++;
 saveCart(cart);
 }
 
-// WhatsApp pedido
+// ---
+function menos(codigo){
+let cart = getCart();
+let p = cart.find(x => x.codigo === codigo);
+
+if(p){
+p.cantidad--;
+if(p.cantidad <= 0){
+cart = cart.filter(x => x.codigo !== codigo);
+}
+}
+
+saveCart(cart);
+}
+
+// eliminar
+function eliminar(codigo){
+let cart = getCart();
+cart = cart.filter(x => x.codigo !== codigo);
+saveCart(cart);
+}
+
+// WhatsApp
 function enviarWhatsApp(){
 
 let cart = getCart();
 
 if(cart.length === 0){
-alert("El carrito está vacío");
+alert("Carrito vacío");
 return;
 }
 
 let mensaje = "🛒 PEDIDO MEGATODO:%0A%0A";
 let total = 0;
 
-cart.forEach(p => {
+cart.forEach(p=>{
 mensaje += `• ${p.nombre}%0A`;
 mensaje += `$${p.precio} x ${p.cantidad}%0A%0A`;
 total += p.precio * p.cantidad;
@@ -165,12 +236,9 @@ total += p.precio * p.cantidad;
 
 mensaje += `%0ATOTAL: $${total.toFixed(2)}%0A`;
 
-let url = "https://wa.me/593990924437?text=" + mensaje;
-
-window.open(url, "_blank");
+window.open("https://wa.me/593990924437?text=" + mensaje, "_blank");
 }
 
-// iniciar
 render();
 
 </script>
