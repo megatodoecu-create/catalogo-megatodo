@@ -199,10 +199,7 @@ const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
 
 /* ✅ LINK ABSOLUTO SIEMPRE FUNCIONAL EN WHATSAPP */
-const linkProducto = new URL(
-    `producto.html?codigo=${encodeURIComponent(codigo)}`,
-    window.location.href
-).href;
+const linkProducto = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
 /* ✅ MENSAJE IGUAL AL PRODUCTO */
 const mensaje = `Hola, quiero información sobre:
