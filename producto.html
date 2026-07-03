@@ -156,12 +156,6 @@ color:#555;
 line-height:1.5;
 }
 
-.tamano{
-margin-top:10px;
-color:#555;
-font-weight:bold;
-}
-
 /* BOTONES */
 .btn{
 display:block;
@@ -183,7 +177,6 @@ background:#ff2a2a;
 color:white;
 }
 
-/* RESPONSIVE */
 @media(max-width:900px){
 .contenedor{
 grid-template-columns:1fr;
@@ -196,11 +189,11 @@ grid-template-columns:1fr;
 <body>
 
 <a class="volver-home" href="index.html">← Inicio</a>
+
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
 <div class="contenedor">
 
-<!-- GALERÍA -->
 <div class="galeria">
 <img id="imgPrincipal" src="" alt="producto">
 
@@ -211,7 +204,6 @@ grid-template-columns:1fr;
 </div>
 </div>
 
-<!-- INFO -->
 <div class="info">
 
 <div id="etiquetas"></div>
@@ -227,11 +219,9 @@ grid-template-columns:1fr;
 
 <div class="descripcion" id="descripcion"></div>
 
-<div id="tamano" class="tamano"></div>
-
 <a id="wpp" class="btn btn-wpp" target="_blank">📲 WhatsApp</a>
 
-<a href="#" class="btn btn-carrito">🛒 Agregar al carrito</a>
+<a href="#" class="btn btn-carrito" id="btnAddCart">🛒 Agregar al carrito</a>
 
 </div>
 
@@ -257,6 +247,7 @@ document.body.innerHTML = "<h2 style='text-align:center'>Producto no encontrado<
 return;
 }
 
+// IMÁGENES
 const img1 = productoActual["Foto 1"];
 const img2 = productoActual["Foto 2"];
 const img3 = productoActual["Foto 3"];
@@ -266,6 +257,7 @@ document.getElementById("img1").src = img1;
 document.getElementById("img2").src = img2 || img1;
 document.getElementById("img3").src = img3 || img1;
 
+// INFO
 document.getElementById("nombre").textContent = productoActual.Nombre;
 document.getElementById("precio").textContent = "$" + productoActual.Precio;
 
@@ -273,31 +265,24 @@ if(productoActual["Precio Anterior"]){
 document.getElementById("precioAnt").textContent = "$" + productoActual["Precio Anterior"];
 }
 
-/* 🔥 STOCK CORREGIDO */
-const stockValue = (productoActual.Stock || "").toLowerCase().trim();
-
+// 🔥 FIX STOCK (DISPONIBLE / AGOTADO)
+let stockTexto = (productoActual.Stock || "").toLowerCase();
 document.getElementById("stock").textContent =
-(stockValue === "disponible" || stockValue === "si" || stockValue === "en stock")
-? "🟢 Disponible"
-: "🔴 Agotado";
+(stockTexto.includes("disponible") || stockTexto.includes("si") || stockTexto.includes("1"))
+? "Disponible"
+: "Agotado";
 
-/* DESCRIPCIÓN SOLO SI EXISTE */
-const descripcion = (productoActual.Descripción || "").trim();
+// DESCRIPCIÓN (solo si existe)
 document.getElementById("descripcion").textContent =
-descripcion ? descripcion : "";
+productoActual.Descripción || "";
 
-/* TAMAÑO SOLO SI EXISTE */
-const tamaño = (productoActual.Tamaño || "").trim();
-document.getElementById("tamano").textContent =
-tamaño ? "📏 Tamaño: " + tamaño : "";
-
-/* ETIQUETAS */
+// ETIQUETAS
 let etiquetas = "";
 if(productoActual.Oferta === "SI") etiquetas += `<span class="oferta">OFERTA</span>`;
 if(productoActual.Nuevo === "SI") etiquetas += `<span class="nuevo">NUEVO</span>`;
 document.getElementById("etiquetas").innerHTML = etiquetas;
 
-/* WHATSAPP */
+// WHATSAPP
 const link = window.location.href;
 
 const mensaje =
@@ -309,7 +294,7 @@ Precio: $${productoActual.Precio}
 
 Código: ${productoActual.Código}
 
-Link del producto:
+Link:
 ${link}`;
 
 document.getElementById("wpp").href =
@@ -317,10 +302,40 @@ document.getElementById("wpp").href =
 
 });
 
+// CAMBIAR IMAGEN
 function cambiar(img){
 document.getElementById("imgPrincipal").src = img.src;
 }
 
+// CARRITO
+function getCart(){
+return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function saveCart(cart){
+localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// agregar al carrito
+document.getElementById("btnAddCart").addEventListener("click", function(e){
+e.preventDefault();
+
+let cart = getCart();
+
+cart.push({
+codigo: productoActual.Código,
+nombre: productoActual.Nombre,
+precio: parseFloat(productoActual.Precio),
+imagen: productoActual["Foto 1"],
+cantidad: 1
+});
+
+saveCart(cart);
+
+alert("Producto agregado al carrito 🛒");
+});
+
+// BOTÓN SUBIR
 window.addEventListener("scroll", function(){
 document.getElementById("btnArriba").style.display =
 window.scrollY > 200 ? "flex" : "none";
