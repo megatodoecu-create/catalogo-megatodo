@@ -176,7 +176,7 @@ return;
 
 contenedor.innerHTML = encontrados.map(p => {
 
-const codigo = p.Código || p.Codigo || p.ID || "";
+const codigo = (p.Código || p.Codigo || p.ID || "").toString().trim();
 const nombre = p.Nombre || "Producto";
 
 const foto =
@@ -186,15 +186,8 @@ const precio = p.Precio || "0";
 const descripcion = p["Descripción"] || p["Descripcion"] || "";
 const tamaño = p.Tamaño || "";
 
-const codigo = p.Código || p.Codigo || p.ID || "";
-const nombre = p.Nombre || "Producto";
-const precio = p.Precio || "0";
-const descripcion = p["Descripción"] || p["Descripcion"] || "";
-const tamaño = p.Tamaño || "";
-
 /* 🔥 LINK 100% FIJO Y CORRECTO */
-const link = `${window.location.origin}/producto.html?codigo=${codigo}`;
-
+const link = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 /* 🔥 MENSAJE IGUAL QUE PRODUCTO (PRO) */
 const mensaje = `Hola, quiero información sobre:
 
