@@ -171,14 +171,6 @@ border-radius:15px;
 max-width:600px;
 box-shadow:0 6px 18px rgba(255,42,138,0.35);
 letter-spacing:1px;
-opacity:0;
-transform: translateY(10px);
-animation: aparecerBanner 0.8s ease forwards;
-}
-
-@keyframes aparecerBanner{
-from{opacity:0;transform: translateY(15px);}
-to{opacity:1;transform: translateY(0);}
 }
 
 .btn-carrito-global{
@@ -193,11 +185,16 @@ text-decoration:none;
 font-weight:bold;
 box-shadow:0 4px 12px rgba(0,0,0,.25);
 z-index:9999;
-transition:0.2s;
 }
 
-.btn-carrito-global:hover{
-transform:scale(1.05);
+#cartCount{
+background:red;
+color:white;
+font-size:12px;
+padding:3px 7px;
+border-radius:50%;
+margin-left:6px;
+font-weight:bold;
 }
 
 #btnArriba{
@@ -233,33 +230,14 @@ font-size:28px;
 text-decoration:none;
 box-shadow:0 4px 12px rgba(0,0,0,.3);
 z-index:9999;
-transition:0.2s;
-}
-
-.btn-wpp-flotante:hover{
-transform:scale(1.1);
-}
-
-/* 🔥 CONTADOR CARRITO */
-#cartCount{
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
-position:relative;
-top:-10px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<a href="https://wa.me/593990924437" target="_blank" class="btn-wpp-flotante">💬</a>
+<a href="https://wa.me/593990924437" class="btn-wpp-flotante">💬</a>
 
 <a href="carrito.html" class="btn-carrito-global">
 🛒 Carrito <span id="cartCount">0</span>
@@ -292,17 +270,8 @@ top:-10px;
 
 <div class="horario">
 <h2>🕒 Horario de atención</h2>
-
-<div class="fila">
-<span>Lunes a Sábado</span>
-<strong>8:30 a 19:30</strong>
-</div>
-
-<div class="fila">
-<span>Domingo</span>
-<strong>9:30 a 18:30</strong>
-</div>
-
+<div class="fila"><span>Lunes a Sábado</span><strong>8:30 a 19:30</strong></div>
+<div class="fila"><span>Domingo</span><strong>9:30 a 18:30</strong></div>
 </div>
 
 <script>
@@ -329,28 +298,54 @@ p["Foto 2"] ||
 p["Foto 3"] ||
 "https://via.placeholder.com/300";
 
+const descripcion = p["Descripción"] || "";
+const tamaño = p["Tamaño"] || "";
+
 return `
 <a href="producto.html?codigo=${p.Código || ''}" class="producto-nuevo">
+
 <img src="${foto}">
 <h3>${p.Nombre || ""}</h3>
+
+${descripcion ? `<div class="descripcion">${descripcion}</div>` : ""}
+${tamaño ? `<div class="tamano">Tamaño: ${tamaño}</div>` : ""}
+
 <p><b>$${p.Precio || ""}</b></p>
+
 </a>
 `;
 }).join("");
 
-});
 
-/* BOTÓN SUBIR */
-window.addEventListener("scroll", () => {
-document.getElementById("btnArriba").style.display =
-window.scrollY > 200 ? "flex" : "none";
-});
+/* BUSCADOR */
+const input = document.getElementById("buscadorGlobal");
+const resultados = document.getElementById("resultadosBusqueda");
 
-function irArriba(){
-window.scrollTo({ top: 0, behavior: "smooth" });
+input.addEventListener("input", function () {
+
+const texto = this.value.toLowerCase().trim();
+
+if(texto === ""){
+resultados.innerHTML = "";
+return;
 }
 
-/* 🛒 CARRITO GLOBAL (IMPORTANTE) */
+const filtrados = productos.filter(p =>
+(p.Nombre || "").toLowerCase().includes(texto)
+);
+
+resultados.innerHTML = filtrados.slice(0,10).map(p => `
+<div class="resultado">
+<a href="producto.html?codigo=${p.Código}">
+${p.Nombre}
+</a>
+</div>
+`).join("");
+});
+
+});
+
+/* CARRITO */
 function getCart(){
 return JSON.parse(localStorage.getItem("carrito")) || [];
 }
@@ -362,6 +357,16 @@ document.getElementById("cartCount").textContent = total;
 }
 
 actualizarCarritoUI();
+
+/* BOTÓN SUBIR */
+window.addEventListener("scroll", () => {
+document.getElementById("btnArriba").style.display =
+window.scrollY > 200 ? "flex" : "none";
+});
+
+function irArriba(){
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 </script>
 
