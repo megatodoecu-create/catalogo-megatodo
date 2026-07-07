@@ -154,22 +154,17 @@ margin-left:5px;
 
 
 
-.btn-wpp-flotante{
+.btn{
 
-position:fixed;
-bottom:20px;
-right:20px;
-width:60px;
-height:60px;
+display:block;
+margin-top:10px;
 background:#25D366;
 color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
+text-align:center;
+padding:10px;
+border-radius:8px;
 text-decoration:none;
-z-index:9999;
+font-weight:bold;
 
 }
 
@@ -182,8 +177,11 @@ z-index:9999;
 <body>
 
 
-<a href="https://wa.me/593990924437" target="_blank" class="btn-wpp-flotante">
-💬
+<a 
+class="btn"
+target="_blank"
+href="https://wa.me/593990924437?text=${mensaje}">
+📲 WhatsApp
 </a>
 
 
