@@ -148,6 +148,12 @@ color:#555;
 line-height:1.5;
 }
 
+.stock{
+margin-top:15px;
+color:#555;
+font-weight:bold;
+}
+  
 /* BOTONES */
 .btn{
 display:block;
@@ -277,7 +283,39 @@ if(productoActual["Precio Anterior"]){
 document.getElementById("precioAnt").textContent = "$" + productoActual["Precio Anterior"];
 }
 
-document.getElementById("descripcion").textContent = productoActual.Descripción || "";
+// DESCRIPCIÓN (solo aparece si existe en Excel)
+if(productoActual["Descripción"] && productoActual["Descripción"].trim()!=""){
+
+document.getElementById("descripcion").innerHTML =
+"<b>Descripción:</b><br>" + productoActual["Descripción"];
+
+}else{
+
+document.getElementById("descripcion").innerHTML = "";
+
+}
+
+
+// TAMAÑO (solo aparece si existe en Excel)
+if(productoActual["Tamaño"] && productoActual["Tamaño"].trim()!=""){
+
+document.getElementById("descripcion").innerHTML +=
+"<br><br><b>📏 Tamaño:</b> " + productoActual["Tamaño"];
+
+}
+
+
+// STOCK (solo aparece si existe en Excel)
+if(productoActual["Stock"] && productoActual["Stock"].trim()!=""){
+
+document.getElementById("stock").innerHTML =
+"Stock: " + productoActual["Stock"];
+
+}else{
+
+document.getElementById("stock").innerHTML = "";
+
+}
 
 let etiquetas = "";
 if(productoActual.Oferta === "SI") etiquetas += `<span class="oferta">OFERTA</span>`;
