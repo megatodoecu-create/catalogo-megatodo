@@ -251,3 +251,316 @@ mostrarResultados();
 
 });
 
+function mostrarResultados(){
+
+const params = new URLSearchParams(window.location.search);
+
+let busqueda = params.get("q") || "";
+
+
+document.getElementById("buscar").value = busqueda;
+
+
+busqueda = normalizar(busqueda);
+
+
+
+const contenedor = document.getElementById("productos");
+
+
+
+if(!busqueda){
+
+contenedor.innerHTML = `
+<div class="sin-resultados">
+Escribe un producto para buscar
+</div>
+`;
+
+return;
+
+}
+
+
+
+const encontrados = productos.filter(p=>{
+
+
+return (
+
+normalizar(p.Nombre).includes(busqueda)
+
+||
+
+normalizar(p.Código).includes(busqueda)
+
+||
+
+normalizar(p.Codigo).includes(busqueda)
+
+||
+
+normalizar(p.Categoria).includes(busqueda)
+
+||
+
+normalizar(p["Descripción"]).includes(busqueda)
+
+);
+
+
+});
+
+
+
+document.getElementById("tituloBusqueda").innerHTML =
+"Resultados para: " + busqueda;
+
+
+
+if(encontrados.length===0){
+
+contenedor.innerHTML=`
+
+<div class="sin-resultados">
+
+No encontramos productos con esa búsqueda
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+
+contenedor.innerHTML = encontrados.map(p=>{
+
+
+let foto = 
+p["Foto 1"] ||
+p["Foto 2"] ||
+p["Foto 3"] ||
+"https://via.placeholder.com/300";
+
+
+
+let descripcion="";
+
+if(p["Descripción"] && p["Descripción"].trim()!=""){
+
+descripcion=`
+
+<p class="descripcion">
+${p["Descripción"]}
+</p>
+
+`;
+
+}
+
+
+
+let tamano="";
+
+if(p["Tamaño"] && p["Tamaño"].trim()!=""){
+
+tamano=`
+
+<p class="tamano">
+📏 ${p["Tamaño"]}
+</p>
+
+`;
+
+}
+
+
+
+let precio="";
+
+if(p.Precio && p.Precio.trim()!=""){
+
+precio=`
+
+<p class="precio">
+$${p.Precio}
+</p>
+
+`;
+
+}
+
+
+
+
+let codigo = p.Código || p.Codigo || "";
+
+
+
+let mensaje = encodeURIComponent(
+
+"Hola Megatodo, deseo consultar este producto:\n\n"+
+
+"Producto: "+(p.Nombre || "")+
+"\nCódigo: "+codigo+
+"\nPrecio: $"+(p.Precio || "")+
+"\n\nGracias."
+
+);
+
+
+
+
+return `
+
+
+<a class="producto" href="producto.html?codigo=${codigo}">
+
+
+<img src="${foto}">
+
+
+<h3>${p.Nombre || ""}</h3>
+
+
+${precio}
+
+
+${tamano}
+
+
+${descripcion}
+
+
+<a 
+
+href="https://wa.me/593990924437?text=${mensaje}"
+
+target="_blank"
+
+onclick="event.stopPropagation();"
+
+style="display:inline-block;
+background:#25D366;
+color:white;
+padding:8px 15px;
+border-radius:20px;
+text-decoration:none;
+margin-top:10px;">
+
+💬 WhatsApp
+
+</a>
+
+
+
+</a>
+
+
+`;
+
+
+}).join("");
+
+
+
+}
+
+
+
+
+document.getElementById("buscar").addEventListener("keypress",function(e){
+
+
+if(e.key==="Enter"){
+
+
+let texto=this.value.trim();
+
+
+if(texto){
+
+
+window.location.href =
+"buscar.html?q="+encodeURIComponent(texto);
+
+
+}
+
+
+}
+
+
+});
+
+
+
+
+document.getElementById("buscar").addEventListener("input",function(){
+
+
+if(this.value.trim()==""){
+
+window.history.pushState(
+"",
+"",
+"buscar.html"
+);
+
+
+mostrarResultados();
+
+
+}
+
+
+});
+
+
+
+// ACTUALIZAR CARRITO
+
+function getCart(){
+
+return JSON.parse(localStorage.getItem("carrito")) || [];
+
+}
+
+
+
+function actualizarCarritoUI(){
+
+let carrito=getCart();
+
+
+let cantidad=carrito.reduce(
+
+(sum,p)=>sum+(p.cantidad || 0),
+
+0
+
+);
+
+
+
+document.getElementById("cartCount").textContent=cantidad;
+
+
+}
+
+
+
+actualizarCarritoUI();
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
