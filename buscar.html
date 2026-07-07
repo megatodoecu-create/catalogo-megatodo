@@ -177,13 +177,6 @@ font-weight:bold;
 <body>
 
 
-<a 
-class="btn"
-target="_blank"
-href="https://wa.me/593990924437?text=${mensaje}">
-📲 WhatsApp
-</a>
-
 
 <a href="carrito.html" class="btn-carrito-global">
 🛒 Carrito <span id="cartCount">0</span>
@@ -434,26 +427,14 @@ ${descripcion}
 
 
 <a 
-
+class="btn"
 href="https://wa.me/593990924437?text=${mensaje}"
-
 target="_blank"
+onclick="event.stopPropagation();">
 
-onclick="event.stopPropagation();"
-
-style="display:inline-block;
-background:#25D366;
-color:white;
-padding:8px 15px;
-border-radius:20px;
-text-decoration:none;
-margin-top:10px;">
-
-💬 WhatsApp
+📲 WhatsApp
 
 </a>
-
-
 
 </a>
 
