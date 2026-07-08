@@ -91,6 +91,34 @@ box-shadow:0 2px 8px rgba(0,0,0,.15);
 transition:0.2s;
 }
 
+/* ETIQUETAS OFERTA Y NUEVO */
+
+.imagen-producto{
+position:relative;
+}
+
+.etiqueta{
+position:absolute;
+left:10px;
+padding:5px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+color:white;
+z-index:10;
+box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+
+.etiqueta.oferta{
+top:10px;
+background:#ff2a2a;
+}
+
+.etiqueta.nuevo{
+top:45px;
+background:#2ecc71;
+}
+   
 .card:hover{
 transform:scale(1.02);
 }
@@ -324,6 +352,18 @@ const foto = p["Foto 1"] || "https://via.placeholder.com/300";
 
 const descripcion = (p.Descripción || "").trim();
 const tamaño = (p.Tamaño || "").trim();
+const oferta = (p.Oferta || "").toString().trim().toUpperCase() === "SI";
+const nuevo = (p.Nuevo || "").toString().trim().toUpperCase() === "SI";
+
+let etiquetas = "";
+
+if(oferta){
+etiquetas += `<div class="etiqueta oferta">OFERTA</div>`;
+}
+
+if(nuevo){
+etiquetas += `<div class="etiqueta nuevo">NUEVO</div>`;
+}
 
 const linkProducto = `https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
@@ -341,9 +381,15 @@ ${linkProducto}`;
 return `
 <div class="card">
 
+<div class="imagen-producto">
+
+${etiquetas}
+
 <a href="${linkProducto}">
 <img src="${foto}">
 </a>
+
+</div>
 
 <div class="info">
 
