@@ -267,14 +267,37 @@ document.body.innerHTML = "<h2 style='text-align:center'>Producto no encontrado<
 return;
 }
 
-const img1 = productoActual["Foto 1"];
-const img2 = productoActual["Foto 2"];
-const img3 = productoActual["Foto 3"];
+const img1 = (productoActual["Foto 1"] || "").trim();
+const img2 = (productoActual["Foto 2"] || "").trim();
+const img3 = (productoActual["Foto 3"] || "").trim();
 
-document.getElementById("imgPrincipal").src = img1;
-document.getElementById("img1").src = img1;
-document.getElementById("img2").src = img2 || img1;
-document.getElementById("img3").src = img3 || img1;
+const imgPrincipal = document.getElementById("imgPrincipal");
+const mini1 = document.getElementById("img1");
+const mini2 = document.getElementById("img2");
+const mini3 = document.getElementById("img3");
+
+imgPrincipal.src = img1;
+
+if(img1){
+    mini1.src = img1;
+    mini1.style.display = "block";
+}else{
+    mini1.style.display = "none";
+}
+
+if(img2){
+    mini2.src = img2;
+    mini2.style.display = "block";
+}else{
+    mini2.style.display = "none";
+}
+
+if(img3){
+    mini3.src = img3;
+    mini3.style.display = "block";
+}else{
+    mini3.style.display = "none";
+}
 
 document.getElementById("nombre").textContent = productoActual.Nombre;
 document.getElementById("precio").textContent = "$" + productoActual.Precio;
