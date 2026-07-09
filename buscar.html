@@ -445,20 +445,22 @@ etiquetas+=`<div class="etiqueta nuevo">NUEVO</div>`;
 }
 
 let codigo=p.Código || p.Codigo || "";
-
+let linkProducto=`https://megatodoecu-create.github.io/catalogo-megatodo/producto.html?codigo=${encodeURIComponent(codigo)}`;
 
 
 let mensaje=encodeURIComponent(
 
-"Hola Megatodo, deseo consultar este producto:\n\n"+
+"Hola, quiero información sobre:\n\n"+
 
-"Producto: "+(p.Nombre || "")+
+(p.Nombre || "")+
 
-"\nCódigo: "+codigo+
+"\n\nPrecio: $"+(p.Precio || "")+
 
-"\nPrecio: $"+(p.Precio || "")+
+"\n\nCódigo: "+codigo+
 
-"\n\nGracias."
+"\n\nLink:\n"+
+
+linkProducto
 
 );
 
