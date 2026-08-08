@@ -3,406 +3,967 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Megatodo</title>
 
 <style>
 
+/* =========================
+   ESTILO GENERAL
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f5f5;
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#fafafa;
+    color:#333;
+}
+
+/* =========================
+   LOGO / ENCABEZADO
+========================= */
+
+.header{
+    background:white;
+    width:100%;
+    padding:10px 0 0;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
 }
 
 .logo{
-width:100%;
-display:block;
+    width:100%;
+    max-height:260px;
+    object-fit:contain;
+    display:block;
 }
 
-.buscador{
-padding:20px;
-text-align:center;
-}
-
-.buscador input{
-width:90%;
-max-width:600px;
-padding:15px;
-border-radius:10px;
-border:1px solid #ccc;
-font-size:16px;
-}
-
-#resultadosBusqueda{
-max-width:600px;
-margin:10px auto;
-background:white;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-overflow:hidden;
-}
-
-.resultado{
-padding:12px;
-border-bottom:1px solid #eee;
-}
-
-.resultado a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-display:block;
-}
-
-.categorias{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-padding:20px;
-}
-
-.categoria{
-background:white;
-padding:20px;
-border-radius:10px;
-text-align:center;
-text-decoration:none;
-color:#333;
-font-weight:bold;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-.nuevos{
-padding:25px;
-margin:20px;
-background:linear-gradient(135deg,#ffe4ec,#fff0f5);
-border-radius:20px;
-}
-
-.nuevos h2{
-text-align:center;
-font-size:28px;
-color:#d63384;
-}
-
-.productos-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-}
-
-.producto-nuevo{
-background:white;
-border-radius:15px;
-padding:15px;
-text-align:center;
-text-decoration:none;
-color:#000;
-box-shadow:0 4px 15px rgba(214,51,132,.15);
-display:block;
-transition:0.2s;
-}
-
-.producto-nuevo:hover{
-transform:scale(1.03);
-}
-
-.producto-nuevo img{
-width:100%;
-height:180px;
-object-fit:contain;
-background:white;
-border-radius:10px;
-}
-
-.descripcion{
-font-size:13px;
-color:#666;
-margin:6px 0;
-}
-
-.tamano{
-font-size:13px;
-color:#777;
-margin:5px 0;
-}
-
-.horario{
-max-width:700px;
-margin:30px auto;
-padding:20px;
-background:white;
-border-radius:15px;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-.horario h2{
-text-align:center;
-margin-top:0;
-margin-bottom:20px;
-color:#ff2a2a;
-}
-
-.fila{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 0;
-border-bottom:1px solid #eee;
-font-size:16px;
-}
-
-.fila:last-child{
-border-bottom:none;
-}
-
-.fila strong{
-color:#ff2a2a;
-}
-
-.titulo-categorias{
-text-align:center;
-margin:30px auto 15px;
-font-size:26px;
-font-weight:bold;
-color:white;
-background: linear-gradient(135deg, #ff2a8a, #ff5fb0);
-padding:18px 20px;
-border-radius:15px;
-max-width:600px;
-box-shadow:0 6px 18px rgba(255,42,138,0.35);
-letter-spacing:1px;
-opacity:0;
-transform: translateY(10px);
-animation: aparecerBanner 0.8s ease forwards;
-}
-
-@keyframes aparecerBanner{
-from{opacity:0;transform: translateY(15px);}
-to{opacity:1;transform: translateY(0);}
-}
+/* =========================
+   BOTÓN CARRITO
+========================= */
 
 .btn-carrito-global{
-position:fixed;
-top:15px;
-right:15px;
-background:#ff2a2a;
-color:white;
-padding:12px 18px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-box-shadow:0 4px 12px rgba(0,0,0,.25);
-z-index:9999;
-transition:0.2s;
+    position:fixed;
+    top:18px;
+    right:18px;
+    background:#ff2a8a;
+    color:white;
+    padding:11px 17px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:15px;
+    box-shadow:0 5px 15px rgba(255,42,138,.30);
+    z-index:9999;
+    transition:.25s;
 }
 
 .btn-carrito-global:hover{
-transform:scale(1.05);
-}
-
-#btnArriba{
-position:fixed;
-bottom:20px;
-left:20px;
-width:55px;
-height:55px;
-background:#ff2a2a;
-color:white;
-border-radius:50%;
-display:none;
-align-items:center;
-justify-content:center;
-font-size:22px;
-cursor:pointer;
-z-index:9999;
-}
-
-.btn-wpp-flotante{
-position:fixed;
-bottom:20px;
-right:20px;
-width:60px;
-height:60px;
-background:#25D366;
-color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-text-decoration:none;
-box-shadow:0 4px 12px rgba(0,0,0,.3);
-z-index:9999;
-transition:0.2s;
-}
-
-.btn-wpp-flotante:hover{
-transform:scale(1.1);
+    transform:translateY(-2px);
+    box-shadow:0 7px 18px rgba(255,42,138,.40);
 }
 
 #cartCount{
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
+    background:white;
+    color:#ff2a8a;
+    font-size:12px;
+    min-width:21px;
+    height:21px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    margin-left:5px;
+    font-weight:bold;
+}
+
+/* =========================
+   BUSCADOR
+========================= */
+
+.buscador{
+    padding:25px 15px 15px;
+    text-align:center;
+    background:white;
+}
+
+.buscador-contenedor{
+    width:100%;
+    max-width:700px;
+    margin:auto;
+    position:relative;
+}
+
+.buscador input{
+    width:100%;
+    padding:16px 52px 16px 20px;
+    border-radius:30px;
+    border:2px solid #f3c5d9;
+    background:#fff;
+    font-size:16px;
+    outline:none;
+    box-shadow:0 4px 15px rgba(0,0,0,.07);
+    transition:.25s;
+}
+
+.buscador input:focus{
+    border-color:#ff5eaa;
+    box-shadow:0 5px 20px rgba(255,94,170,.18);
+}
+
+.icono-busqueda{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:22px;
+}
+
+/* =========================
+   RESULTADOS DEL BUSCADOR
+========================= */
+
+#resultadosBusqueda{
+    max-width:700px;
+    margin:8px auto 0;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+    overflow:hidden;
+    text-align:left;
+    position:relative;
+    z-index:20;
+}
+
+.resultado{
+    padding:14px 18px;
+    border-bottom:1px solid #f1f1f1;
+}
+
+.resultado:last-child{
+    border-bottom:none;
+}
+
+.resultado a{
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+    display:block;
+}
+
+.resultado a:hover{
+    color:#ff2a8a;
+}
+
+/* =========================
+   NUEVOS INGRESOS
+========================= */
+
+.nuevos{
+    margin:25px auto;
+    max-width:1250px;
+    padding:30px;
+    background:linear-gradient(135deg,#ffe4ec,#fff7fa);
+    border-radius:25px;
+    box-shadow:0 5px 20px rgba(214,51,132,.08);
+}
+
+.nuevos-titulo{
+    text-align:center;
+    margin:0 0 8px;
+    color:#d63384;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.nuevos-subtitulo{
+    text-align:center;
+    color:#777;
+    margin:0 0 25px;
+    font-size:14px;
+}
+
+.productos-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.producto-nuevo{
+    background:white;
+    border-radius:18px;
+    padding:14px;
+    text-align:center;
+    text-decoration:none;
+    color:#222;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    display:block;
+    transition:.25s;
+    overflow:hidden;
+}
+
+.producto-nuevo:hover{
+    transform:translateY(-5px);
+    box-shadow:0 9px 25px rgba(0,0,0,.13);
+}
+
+.producto-imagen{
+    width:100%;
+    height:200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.producto-nuevo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.producto-nuevo h3{
+    font-size:15px;
+    margin:13px 5px 7px;
+    line-height:1.3;
+}
+
+.precio{
+    margin:0;
+    color:#d63384;
+    font-size:19px;
+    font-weight:bold;
+}
+
+/* =========================
+   TÍTULO CATEGORÍAS
+========================= */
+
+.titulo-categorias{
+    text-align:center;
+    margin:35px auto 20px;
+    width:calc(100% - 30px);
+    max-width:700px;
+    font-size:27px;
+    font-weight:bold;
+    color:white;
+    background:linear-gradient(135deg,#ff2a8a,#ff67b3);
+    padding:17px 20px;
+    border-radius:18px;
+    box-shadow:0 7px 20px rgba(255,42,138,.25);
+    letter-spacing:.5px;
+    animation:aparecerBanner .8s ease;
+}
+
+@keyframes aparecerBanner{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   CATEGORÍAS
+========================= */
+
+.categorias{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    padding:5px 20px 25px;
+}
+
+.categoria{
+    min-height:105px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+    border-radius:20px;
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+    font-size:17px;
+    background:white;
+    box-shadow:0 5px 18px rgba(0,0,0,.09);
+    transition:.25s;
+    border:2px solid transparent;
+}
+
+.categoria:hover{
+    transform:translateY(-5px);
+    box-shadow:0 9px 24px rgba(0,0,0,.13);
+    border-color:#ffb6d5;
+}
+
+/* Colores suaves por categoría */
+
+.categoria:nth-child(1){
+    background:#fff0f6;
+}
+
+.categoria:nth-child(2){
+    background:#eef8ff;
+}
+
+.categoria:nth-child(3){
+    background:#f4efff;
+}
+
+.categoria:nth-child(4){
+    background:#fff8ed;
+}
+
+.categoria:nth-child(5){
+    background:#f7f0e8;
+}
+
+.categoria:nth-child(6){
+    background:#eefdff;
+}
+
+/* =========================
+   HORARIO
+========================= */
+
+.horario{
+    max-width:700px;
+    margin:25px auto 45px;
+    padding:25px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.horario h2{
+    text-align:center;
+    margin:0 0 20px;
+    color:#ff2a8a;
+    font-size:23px;
+}
+
+.fila{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 5px;
+    border-bottom:1px solid #eee;
+    font-size:16px;
+}
+
+.fila:last-child{
+    border-bottom:none;
+}
+
+.fila strong{
+    color:#ff2a8a;
+}
+
+/* =========================
+   WHATSAPP
+========================= */
+
+.btn-wpp-flotante{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:55px;
+    height:55px;
+    background:#25D366;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    text-decoration:none;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+    z-index:9999;
+    transition:.25s;
+}
+
+.btn-wpp-flotante:hover{
+    transform:scale(1.08);
+}
+
+/* =========================
+   BOTÓN SUBIR
+========================= */
+
+#btnArriba{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    width:50px;
+    height:50px;
+    background:#ff2a8a;
+    color:white;
+    border-radius:50%;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    cursor:pointer;
+    z-index:9999;
+    box-shadow:0 5px 15px rgba(0,0,0,.20);
+}
+
+/* =========================
+   RESPONSIVE TABLET
+========================= */
+
+@media(max-width:900px){
+
+    .productos-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .categorias{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* =========================
+   RESPONSIVE CELULAR
+========================= */
+
+@media(max-width:600px){
+
+    .logo{
+        max-height:190px;
+    }
+
+    .btn-carrito-global{
+        top:10px;
+        right:10px;
+        padding:9px 12px;
+        font-size:13px;
+    }
+
+    .buscador{
+        padding:18px 12px 10px;
+    }
+
+    .buscador input{
+        padding:14px 45px 14px 17px;
+        font-size:15px;
+    }
+
+    .nuevos{
+        margin:18px 10px;
+        padding:20px 12px;
+        border-radius:20px;
+    }
+
+    .nuevos-titulo{
+        font-size:24px;
+    }
+
+    .productos-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .producto-nuevo{
+        padding:9px;
+        border-radius:15px;
+    }
+
+    .producto-imagen{
+        height:145px;
+    }
+
+    .producto-nuevo h3{
+        font-size:13px;
+        margin:9px 3px 5px;
+    }
+
+    .precio{
+        font-size:17px;
+    }
+
+    .titulo-categorias{
+        font-size:21px;
+        padding:15px 10px;
+        margin-top:25px;
+    }
+
+    .categorias{
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+        padding:5px 12px 20px;
+    }
+
+    .categoria{
+        min-height:95px;
+        padding:13px 8px;
+        font-size:14px;
+        border-radius:16px;
+    }
+
+    .horario{
+        margin:20px 12px 35px;
+        padding:20px 15px;
+    }
+
+    .horario h2{
+        font-size:20px;
+    }
+
+    .fila{
+        font-size:14px;
+    }
+
+    .btn-wpp-flotante{
+        width:52px;
+        height:52px;
+        right:15px;
+        bottom:15px;
+        font-size:23px;
+    }
+
+    #btnArriba{
+        width:48px;
+        height:48px;
+        left:15px;
+        bottom:15px;
+    }
+
+}
+
+/* =========================
+   CELULAR MUY PEQUEÑO
+========================= */
+
+@media(max-width:380px){
+
+    .productos-grid{
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .producto-imagen{
+        height:125px;
+    }
+
+    .categoria{
+        font-size:13px;
+    }
+
 }
 
 </style>
-
 </head>
+
 
 <body>
 
-<a href="https://wa.me/593990924437" target="_blank" class="btn-wpp-flotante">💬</a>
+<!-- =========================
+     BOTÓN WHATSAPP
+========================= -->
+
+<a
+    href="https://wa.me/593990924437"
+    target="_blank"
+    class="btn-wpp-flotante"
+    aria-label="WhatsApp">
+    💬
+</a>
+
+
+<!-- =========================
+     CARRITO
+========================= -->
 
 <a href="carrito.html" class="btn-carrito-global">
-🛒 Carrito <span id="cartCount">0</span>
+    🛒 Carrito
+    <span id="cartCount">0</span>
 </a>
+
+
+<!-- =========================
+     BOTÓN SUBIR
+========================= -->
 
 <div id="btnArriba" onclick="irArriba()">⬆️</div>
 
-<img src="logo-megatodo.jpg" class="logo">
+
+<!-- =========================
+     ENCABEZADO / LOGO
+========================= -->
+
+<header class="header">
+    <img src="logo-megatodo.jpg" class="logo" alt="Megatodo">
+</header>
+
+
+<!-- =========================
+     BUSCADOR
+========================= -->
 
 <div class="buscador">
-<input type="text" id="buscadorGlobal" placeholder="Buscar productos...">
-<div id="resultadosBusqueda"></div>
+
+    <div class="buscador-contenedor">
+
+        <input
+            type="text"
+            id="buscadorGlobal"
+            placeholder="Buscar productos..."
+            autocomplete="off">
+
+        <span class="icono-busqueda">🔎</span>
+
+    </div>
+
+    <div id="resultadosBusqueda"></div>
+
 </div>
 
-<div class="nuevos">
-<h2>NUEVOS INGRESOS</h2>
-<div id="productosNuevos" class="productos-grid"></div>
-</div>
 
-<h2 class="titulo-categorias">ELIGE UNA CATEGORÍA</h2>
+<!-- =========================
+     NUEVOS INGRESOS
+========================= -->
+
+<section class="nuevos">
+
+    <h2 class="nuevos-titulo">
+        ✨ NUEVOS INGRESOS ✨
+    </h2>
+
+    <p class="nuevos-subtitulo">
+        Descubre nuestros productos recién llegados
+    </p>
+
+    <div
+        id="productosNuevos"
+        class="productos-grid">
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORÍAS
+========================= -->
+
+<h2 class="titulo-categorias">
+    ELIGE UNA CATEGORÍA
+</h2>
+
 
 <div class="categorias">
-<a class="categoria" href="categoria.html?cat=Artículos%20de%20Belleza">✨ Artículos de Belleza</a>
-<a class="categoria" href="categoria.html?cat=Juguetes">🧸 Juguetes</a>
-  <a class="categoria" href="categoria.html?cat=MonopatinesyCoches">🛴 Monopatines y Coches de Bebé</a>
-<a class="categoria" href="categoria.html?cat=Bazar">🏠 Bazar</a>
-<a class="categoria" href="categoria.html?cat=Peluches">🐻 Peluches</a>
-<a class="categoria" href="categoria.html?cat=CajasdeRegalo">🎁 Cajas y Fundas de Regalo</a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=Artículos%20de%20Belleza">
+        ✨ Artículos de Belleza
+    </a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=Juguetes">
+        🧸 Juguetes
+    </a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=MonopatinesyCoches">
+        🛴 Monopatines y Coches de Bebé
+    </a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=Bazar">
+        🏠 Bazar
+    </a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=Peluches">
+        🐻 Peluches
+    </a>
+
+    <a
+        class="categoria"
+        href="categoria.html?cat=CajasdeRegalo">
+        🎁 Cajas y Fundas de Regalo
+    </a>
 
 </div>
+
+
+<!-- =========================
+     HORARIO
+========================= -->
 
 <div class="horario">
-<h2>🕒 Horario de atención</h2>
 
-<div class="fila">
-<span>Lunes a Sábado</span>
-<strong>8:30 a 19:30</strong>
+    <h2>
+        🕒 Horario de atención
+    </h2>
+
+    <div class="fila">
+        <span>Lunes a Sábado</span>
+        <strong>8:30 a 19:30</strong>
+    </div>
+
+    <div class="fila">
+        <span>Domingo</span>
+        <strong>9:30 a 18:30</strong>
+    </div>
+
 </div>
 
-<div class="fila">
-<span>Domingo</span>
-<strong>9:30 a 18:30</strong>
-</div>
-
-</div>
 
 <script>
 
-const url = "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
+/* =========================
+   GOOGLE SHEETS
+========================= */
+
+const url =
+"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
 let productos = [];
 
+
+/* =========================
+   NORMALIZAR TEXTO
+========================= */
+
 function normalizar(texto){
-return (texto || "")
-.toString()
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "");
+
+    return (texto || "")
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
 }
+
+
+/* =========================
+   CARGAR PRODUCTOS
+========================= */
 
 fetch(url)
+
 .then(res => res.json())
+
 .then(data => {
 
-productos = data || [];
+    productos = data || [];
 
-const nuevos = productos.filter(p => (p.Nuevo || "").toUpperCase() === "SI");
+    const nuevos =
+        productos.filter(
+            p => (p.Nuevo || "").toUpperCase() === "SI"
+        );
 
-document.getElementById("productosNuevos").innerHTML =
-nuevos.slice(0,8).map(p => {
 
-const foto =
-p["Foto 1"] ||
-p["Foto 2"] ||
-p["Foto 3"] ||
-"https://via.placeholder.com/300";
+    document.getElementById("productosNuevos").innerHTML =
 
-return `
-<a href="producto.html?codigo=${p.Código || ''}" class="producto-nuevo">
-<img src="${foto}">
-<h3>${p.Nombre || ""}</h3>
-<p><b>$${p.Precio || ""}</b></p>
-</a>
-`;
-}).join("");
+        nuevos.slice(0,8).map(p => {
+
+            const foto =
+                p["Foto 1"] ||
+                p["Foto 2"] ||
+                p["Foto 3"] ||
+                "https://via.placeholder.com/300";
+
+
+            return `
+
+                <a
+                    href="producto.html?codigo=${p.Código || ''}"
+                    class="producto-nuevo">
+
+                    <div class="producto-imagen">
+
+                        <img
+                            src="${foto}"
+                            alt="${p.Nombre || 'Producto'}">
+
+                    </div>
+
+                    <h3>
+                        ${p.Nombre || ""}
+                    </h3>
+
+                    <p class="precio">
+                        $${p.Precio || ""}
+                    </p>
+
+                </a>
+
+            `;
+
+        }).join("");
+
 });
 
-/* BUSCADOR CORREGIDO */
-document.getElementById("buscadorGlobal").addEventListener("input", function(){
 
-const texto = normalizar(this.value);
-const resultados = document.getElementById("resultadosBusqueda");
+/* =========================
+   BUSCADOR
+========================= */
 
-if(!texto){
-resultados.innerHTML = "";
-return;
-}
+document
+.getElementById("buscadorGlobal")
+.addEventListener("input", function(){
 
-const filtrados = productos.filter(p => {
-return normalizar(p.Nombre).includes(texto) ||
-normalizar(p.Codigo).includes(texto) ||
-normalizar(p.Categoria).includes(texto) ||
-normalizar(p["Descripción"]).includes(texto);
+    const texto = normalizar(this.value);
+
+    const resultados =
+        document.getElementById("resultadosBusqueda");
+
+
+    if(!texto){
+
+        resultados.innerHTML = "";
+
+        return;
+
+    }
+
+
+    const filtrados = productos.filter(p => {
+
+        return (
+
+            normalizar(p.Nombre).includes(texto) ||
+
+            normalizar(p.Codigo).includes(texto) ||
+
+            normalizar(p.Categoría).includes(texto) ||
+
+            normalizar(p.Categoria).includes(texto) ||
+
+            normalizar(p["Descripción"]).includes(texto)
+
+        );
+
+    });
+
+
+    resultados.innerHTML =
+
+        filtrados.slice(0,10).map(p => `
+
+            <div class="resultado">
+
+                <a
+                    href="producto.html?codigo=${p.Código || ''}">
+
+                    ${p.Nombre || ""}
+
+                </a>
+
+            </div>
+
+        `).join("");
+
 });
 
-resultados.innerHTML = filtrados.slice(0,10).map(p => `
-<div class="resultado">
-<a href="producto.html?codigo=${p.Código}">
-${p.Nombre}
-</a>
-</div>
-`).join("");
+
+/* =========================
+   ENTER PARA BUSCAR
+========================= */
+
+document
+.getElementById("buscadorGlobal")
+.addEventListener("keypress", function(e){
+
+    if(e.key === "Enter"){
+
+        const texto = this.value.trim();
+
+        if(texto){
+
+            window.location.href =
+                "buscar.html?q=" +
+                encodeURIComponent(texto);
+
+        }
+
+    }
+
 });
 
-/* ENTER BUSCAR */
-document.getElementById("buscadorGlobal").addEventListener("keypress", function(e){
-if(e.key === "Enter"){
-const texto = this.value.trim();
-if(texto){
-window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
-}
-}
-});
 
-/* BOTÓN SUBIR */
+/* =========================
+   BOTÓN SUBIR
+========================= */
+
 window.addEventListener("scroll", () => {
-document.getElementById("btnArriba").style.display =
-window.scrollY > 200 ? "flex" : "none";
+
+    document.getElementById("btnArriba").style.display =
+
+        window.scrollY > 200
+        ? "flex"
+        : "none";
+
 });
+
 
 function irArriba(){
-window.scrollTo({ top: 0, behavior: "smooth" });
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
 }
 
-/* CARRITO GLOBAL */
+
+/* =========================
+   CARRITO GLOBAL
+========================= */
+
 function getCart(){
-return JSON.parse(localStorage.getItem("carrito")) || [];
+
+    return JSON.parse(
+        localStorage.getItem("carrito")
+    ) || [];
+
 }
+
 
 function actualizarCarritoUI(){
-let carrito = getCart();
-let total = carrito.reduce((sum, p) => sum + p.cantidad, 0);
-document.getElementById("cartCount").textContent = total;
+
+    let carrito = getCart();
+
+    let total =
+        carrito.reduce(
+            (sum,p) => sum + (Number(p.cantidad) || 0),
+            0
+        );
+
+
+    document.getElementById("cartCount")
+        .textContent = total;
+
 }
 
+
 actualizarCarritoUI();
+
 
 </script>
 
