@@ -1,249 +1,1126 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Carrito - Megatodo</title>
 
 <style>
+
+/* =========================
+   GENERAL
+========================= */
+
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f5f5;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#333;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
-background:#ff2a2a;
-color:white;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
+
+    margin:70px 15px 20px;
+
+    padding:22px 15px;
+
+    text-align:center;
+
+    background:linear-gradient(
+        135deg,
+        #ffe4ec,
+        #fff0f5,
+        #fce4ec
+    );
+
+    border-radius:18px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.08);
 }
 
-.volver{
-display:block;
-margin:15px auto;
-width:200px;
-text-align:center;
-padding:10px;
-background:#333;
-color:white;
-text-decoration:none;
-border-radius:8px;
+header h1{
+
+    margin:0;
+
+    color:#d63384;
+
+    font-size:28px;
+
 }
 
-.contenedor{
-max-width:900px;
-margin:auto;
-padding:20px;
-}
 
-.item{
-display:flex;
-gap:15px;
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-align-items:center;
-}
+/* =========================
+   BOTÓN CARRITO
+========================= */
 
-.item img{
-width:90px;
-height:90px;
-object-fit:contain;
-border-radius:8px;
-background:white;
-}
-
-.info{
-flex:1;
-}
-
-.nombre{
-font-weight:bold;
-}
-
-.precio{
-color:#ff2a2a;
-font-weight:bold;
-margin-top:5px;
-}
-
-.cantidad{
-margin-top:8px;
-}
-
-button{
-padding:5px 10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-.eliminar{
-background:#333;
-color:white;
-}
-
-.total{
-text-align:right;
-font-size:20px;
-font-weight:bold;
-margin-top:20px;
-}
-
-.whatsapp{
-display:block;
-margin-top:20px;
-background:#25D366;
-color:white;
-text-align:center;
-padding:12px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-}
-
-/* 🔥 CARRITO FLOTANTE */
 .btn-carrito-global{
-position:fixed;
-top:15px;
-right:15px;
-background:#ff2a2a;
-color:white;
-padding:12px 18px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-box-shadow:0 4px 12px rgba(0,0,0,.25);
-z-index:9999;
+
+    position:fixed;
+
+    top:15px;
+    right:15px;
+
+    background:#d63384;
+
+    color:white;
+
+    padding:11px 16px;
+
+    border-radius:50px;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.20);
+
+    z-index:9999;
+
 }
+
+
+/* =========================
+   CONTADOR
+========================= */
 
 #cartCount{
-background:red;
-color:white;
-font-size:12px;
-padding:3px 7px;
-border-radius:50%;
-margin-left:6px;
-font-weight:bold;
+
+    background:white;
+
+    color:#d63384;
+
+    font-size:12px;
+
+    padding:3px 7px;
+
+    border-radius:50%;
+
+    margin-left:6px;
+
+    font-weight:bold;
+
 }
+
+
+/* =========================
+   VOLVER
+========================= */
+
+.volver{
+
+    display:block;
+
+    margin:15px auto;
+
+    width:220px;
+
+    box-sizing:border-box;
+
+    text-align:center;
+
+    padding:11px;
+
+    background:#333;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.contenedor{
+
+    max-width:900px;
+
+    margin:auto;
+
+    padding:15px 20px;
+
+}
+
+
+/* =========================
+   ITEM
+========================= */
+
+.item{
+
+    display:flex;
+
+    gap:15px;
+
+    background:white;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.10);
+
+    align-items:center;
+
+}
+
+
+/* =========================
+   IMAGEN
+========================= */
+
+.item img{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    border-radius:10px;
+
+    background:white;
+
+    flex-shrink:0;
+
+}
+
+
+/* =========================
+   INFORMACIÓN
+========================= */
+
+.info{
+
+    flex:1;
+
+}
+
+
+.nombre{
+
+    font-weight:bold;
+
+    font-size:16px;
+
+}
+
+
+.codigo{
+
+    font-size:12px;
+
+    color:#777;
+
+    margin-top:5px;
+
+}
+
+
+.precio{
+
+    color:#d63384;
+
+    font-weight:bold;
+
+    font-size:18px;
+
+    margin-top:7px;
+
+}
+
+
+/* =========================
+   CANTIDAD
+========================= */
+
+.cantidad{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:10px;
+
+}
+
+
+.cantidad button{
+
+    width:32px;
+
+    height:32px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+.btn-menos{
+
+    background:#eee;
+
+    color:#333;
+
+}
+
+
+.btn-mas{
+
+    background:#d63384;
+
+    color:white;
+
+}
+
+
+.numero{
+
+    min-width:25px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================
+   SUBTOTAL
+========================= */
+
+.subtotal{
+
+    margin-top:8px;
+
+    font-size:14px;
+
+    color:#555;
+
+}
+
+
+/* =========================
+   ELIMINAR
+========================= */
+
+.eliminar{
+
+    margin-top:10px;
+
+    background:#333;
+
+    color:white;
+
+    border:none;
+
+    padding:7px 12px;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================
+   TOTAL
+========================= */
+
+.total{
+
+    text-align:right;
+
+    font-size:23px;
+
+    color:#d63384;
+
+    font-weight:bold;
+
+    margin-top:15px;
+
+}
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+.whatsapp{
+
+    display:block;
+
+    margin-top:20px;
+
+    background:#25D366;
+
+    color:white;
+
+    text-align:center;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.10);
+
+}
+
+
+/* =========================
+   CARRITO VACÍO
+========================= */
+
+.carrito-vacio{
+
+    background:white;
+
+    padding:50px 20px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.08);
+
+}
+
+
+.carrito-vacio h2{
+
+    color:#d63384;
+
+    margin-top:0;
+
+}
+
+
+/* =========================
+   BOTÓN ARRIBA
+========================= */
+
+#btnArriba{
+
+    position:fixed;
+
+    bottom:20px;
+    left:20px;
+
+    width:50px;
+    height:50px;
+
+    background:#d63384;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:21px;
+
+    cursor:pointer;
+
+    z-index:9999;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.20);
+
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width:600px){
+
+    .btn-carrito-global{
+
+        top:10px;
+        right:10px;
+
+        padding:9px 12px;
+
+        font-size:13px;
+
+    }
+
+
+    header{
+
+        margin-top:60px;
+
+        margin-left:10px;
+
+        margin-right:10px;
+
+        padding:18px 10px;
+
+    }
+
+
+    header h1{
+
+        font-size:23px;
+
+    }
+
+
+    .contenedor{
+
+        padding:10px;
+
+    }
+
+
+    .item{
+
+        gap:10px;
+
+        padding:11px;
+
+        align-items:flex-start;
+
+    }
+
+
+    .item img{
+
+        width:85px;
+
+        height:85px;
+
+    }
+
+
+    .nombre{
+
+        font-size:14px;
+
+    }
+
+
+    .precio{
+
+        font-size:16px;
+
+    }
+
+
+    .codigo{
+
+        font-size:11px;
+
+    }
+
+
+    .subtotal{
+
+        font-size:13px;
+
+    }
+
+
+    .total{
+
+        font-size:20px;
+
+    }
+
+
+    .volver{
+
+        width:90%;
+
+    }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- 🔥 CARRITO FLOTANTE -->
-<a href="carrito.html" class="btn-carrito-global">
-🛒 Carrito <span id="cartCount">0</span>
+
+<!-- =========================
+     CARRITO FLOTANTE
+========================= -->
+
+<a
+    href="carrito.html"
+    class="btn-carrito-global">
+
+    🛒 Carrito
+
+    <span id="cartCount">
+        0
+    </span>
+
 </a>
 
-<header>🛒 Tu Carrito</header>
 
-<a class="volver" href="index.html">← Seguir comprando</a>
+<!-- =========================
+     HEADER
+========================= -->
 
-<div class="contenedor" id="carrito"></div>
+<header>
+
+    <h1>
+        🛒 Tu Carrito
+    </h1>
+
+</header>
+
+
+<!-- =========================
+     SEGUIR COMPRANDO
+========================= -->
+
+<a
+    class="volver"
+    href="index.html">
+
+    ← Seguir comprando
+
+</a>
+
+
+<!-- =========================
+     PRODUCTOS
+========================= -->
+
+<div
+    class="contenedor"
+    id="carrito">
+
+</div>
+
+
+<!-- =========================
+     TOTAL
+========================= -->
 
 <div class="contenedor">
-<div class="total" id="total"></div>
-<a id="wpp" class="whatsapp" target="_blank">Pedir por WhatsApp</a>
+
+    <div
+        class="total"
+        id="total">
+    </div>
+
+
+    <a
+        id="wpp"
+        class="whatsapp"
+        target="_blank">
+
+        📲 Pedir por WhatsApp
+
+    </a>
+
 </div>
+
+
+<!-- =========================
+     BOTÓN ARRIBA
+========================= -->
+
+<div
+    id="btnArriba"
+    onclick="irArriba()">
+
+    ⬆️
+
+</div>
+
 
 <script>
 
+
+/* =====================================================
+   OBTENER CARRITO
+===================================================== */
+
 function getCart(){
-    return JSON.parse(localStorage.getItem("carrito")) || [];
+
+    return JSON.parse(
+        localStorage.getItem("carrito")
+    ) || [];
+
 }
+
+
+/* =====================================================
+   GUARDAR CARRITO
+===================================================== */
 
 function saveCart(cart){
-    localStorage.setItem("carrito", JSON.stringify(cart));
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(cart)
+    );
+
 }
 
-/* 🔥 ACTUALIZAR ICONO */
-function actualizarCarritoUI() {
-    let cart = getCart();
-    let total = cart.reduce((sum, p) => sum + (p.cantidad || 0), 0);
 
-    const el = document.getElementById("cartCount");
-    if (el) el.textContent = total;
+/* =====================================================
+   ACTUALIZAR CONTADOR
+===================================================== */
+
+function actualizarCarritoUI(){
+
+    const cart =
+        getCart();
+
+
+    const total =
+        cart.reduce(
+            (sum,p) =>
+                sum +
+                (Number(p.cantidad) || 0),
+            0
+        );
+
+
+    const el =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    if(el){
+
+        el.textContent =
+            total;
+
+    }
+
 }
+
+
+/* =====================================================
+   RENDERIZAR CARRITO
+===================================================== */
 
 function render(){
 
-let cart = getCart();
-let cont = document.getElementById("carrito");
+    const cart =
+        getCart();
 
-if(cart.length === 0){
-cont.innerHTML = "<h3 style='text-align:center'>Carrito vacío</h3>";
-document.getElementById("total").innerText = "";
-document.getElementById("wpp").style.display = "none";
-actualizarCarritoUI();
-return;
-}
 
-let total = 0;
+    const cont =
+        document.getElementById(
+            "carrito"
+        );
 
-cont.innerHTML = cart.map((p, i) => {
 
-total += p.precio * p.cantidad;
+    /* =========================
+       CARRITO VACÍO
+    ========================= */
 
-return `
-<div class="item">
-<img src="${p.imagen}">
-<div class="info">
-<div class="nombre">${p.nombre}</div>
-<div class="precio">$${p.precio}</div>
+    if(cart.length === 0){
 
-<div class="cantidad">
-Cantidad: ${p.cantidad}
-</div>
+        cont.innerHTML = `
 
-<button class="eliminar" onclick="eliminar(${i})">Eliminar</button>
-</div>
-</div>
+            <div class="carrito-vacio">
+
+                <h2>
+                    🛒 Tu carrito está vacío
+                </h2>
+
+                <p>
+                    Agrega productos para
+                    realizar tu pedido.
+                </p>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "total"
+        ).innerText = "";
+
+
+        document.getElementById(
+            "wpp"
+        ).style.display = "none";
+
+
+        actualizarCarritoUI();
+
+        return;
+
+    }
+
+
+    /* =========================
+       TOTAL
+    ========================= */
+
+    let total = 0;
+
+
+    /* =========================
+       PRODUCTOS
+    ========================= */
+
+    cont.innerHTML = cart.map(
+        (p,index) => {
+
+
+        const precio =
+            Number(p.precio) || 0;
+
+
+        const cantidad =
+            Number(p.cantidad) || 1;
+
+
+        const subtotal =
+            precio * cantidad;
+
+
+        total += subtotal;
+
+
+        return `
+
+            <div class="item">
+
+
+                <img
+                    src="${p.imagen || "https://via.placeholder.com/300"}"
+                    alt="${p.nombre || "Producto"}">
+
+
+                <div class="info">
+
+
+                    <div class="nombre">
+
+                        ${p.nombre || ""}
+
+                    </div>
+
+
+                    <div class="codigo">
+
+                        Código:
+                        ${p.codigo || "N/A"}
+
+                    </div>
+
+
+                    <div class="precio">
+
+                        $${precio.toFixed(2)}
+
+                    </div>
+
+
+                    <div class="cantidad">
+
+
+                        <button
+                            class="btn-menos"
+                            onclick="cambiarCantidad(${index},-1)">
+
+                            −
+
+                        </button>
+
+
+                        <span class="numero">
+
+                            ${cantidad}
+
+                        </span>
+
+
+                        <button
+                            class="btn-mas"
+                            onclick="cambiarCantidad(${index},1)">
+
+                            +
+
+                        </button>
+
+
+                    </div>
+
+
+                    <div class="subtotal">
+
+                        Subtotal:
+                        <strong>
+                            $${subtotal.toFixed(2)}
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        class="eliminar"
+                        onclick="eliminar(${index})">
+
+                        🗑️ Eliminar
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        `;
+
+    }).join("");
+
+
+    /* =========================
+       MOSTRAR TOTAL
+    ========================= */
+
+    document.getElementById(
+        "total"
+    ).innerText =
+        "Total: $" +
+        total.toFixed(2);
+
+
+    /* =========================
+       WHATSAPP
+    ========================= */
+
+    let mensaje =
+        "🛒 Pedido Megatodo\n\n";
+
+
+    cart.forEach(p => {
+
+        const precio =
+            Number(p.precio) || 0;
+
+
+        const cantidad =
+            Number(p.cantidad) || 1;
+
+
+        const subtotal =
+            precio * cantidad;
+
+
+        mensaje +=
+`
+--------------------
+Producto: ${p.nombre || ""}
+Código: ${p.codigo || "N/A"}
+Precio: $${precio.toFixed(2)}
+Cantidad: ${cantidad}
+Subtotal: $${subtotal.toFixed(2)}
+--------------------
+
 `;
-}).join("");
 
-document.getElementById("total").innerText = "Total: $" + total.toFixed(2);
+    });
 
-// WhatsApp pedido
-let mensaje = "🛒 Pedido Megatodo%0A%0A";
 
-cart.forEach(p => {
-mensaje += 
-`--------------------%0A
-Producto: ${p.nombre}%0A
-Código: ${p.codigo || "N/A"}%0A
-Precio: $${p.precio}%0A
-Cantidad: ${p.cantidad}%0A
-Subtotal: $${(p.precio * p.cantidad).toFixed(2)}%0A
---------------------%0A%0A`;
-});
+    mensaje +=
+        `TOTAL: $${total.toFixed(2)}`;
 
-mensaje += `TOTAL: $${total.toFixed(2)}`;
 
-document.getElementById("wpp").href =
-"https://wa.me/593990924437?text=" + mensaje;
+    const numeroWhatsApp =
+        "593990924437";
 
-document.getElementById("wpp").style.display = "block";
 
-/* 🔥 actualizar contador */
-actualizarCarritoUI();
+    document.getElementById(
+        "wpp"
+    ).href =
+        "https://wa.me/" +
+        numeroWhatsApp +
+        "?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    document.getElementById(
+        "wpp"
+    ).style.display =
+        "block";
+
+
+    /* =========================
+       ACTUALIZAR CONTADOR
+    ========================= */
+
+    actualizarCarritoUI();
+
 }
+
+
+/* =====================================================
+   CAMBIAR CANTIDAD
+===================================================== */
+
+function cambiarCantidad(
+    index,
+    cambio
+){
+
+    const cart =
+        getCart();
+
+
+    if(!cart[index]){
+        return;
+    }
+
+
+    cart[index].cantidad =
+        (Number(
+            cart[index].cantidad
+        ) || 1)
+        +
+        cambio;
+
+
+    /* No permitimos 0 */
+
+    if(cart[index].cantidad < 1){
+
+        cart[index].cantidad = 1;
+
+    }
+
+
+    saveCart(cart);
+
+    render();
+
+}
+
+
+/* =====================================================
+   ELIMINAR
+===================================================== */
 
 function eliminar(index){
-let cart = getCart();
-cart.splice(index,1);
-saveCart(cart);
-render();
+
+    const cart =
+        getCart();
+
+
+    cart.splice(
+        index,
+        1
+    );
+
+
+    saveCart(cart);
+
+    render();
+
 }
 
+
+/* =====================================================
+   BOTÓN ARRIBA
+===================================================== */
+
+window.addEventListener(
+    "scroll",
+    function(){
+
+        const boton =
+            document.getElementById(
+                "btnArriba"
+            );
+
+
+        boton.style.display =
+            window.scrollY > 200
+            ? "flex"
+            : "none";
+
+    }
+);
+
+
+/* =====================================================
+   IR ARRIBA
+===================================================== */
+
+function irArriba(){
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
 render();
+
+actualizarCarritoUI();
+
 
 </script>
 
+
 </body>
+
 </html>
