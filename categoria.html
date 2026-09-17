@@ -262,25 +262,19 @@ body{
 
 
 .btn-menu:hover{
-
     transform:translateY(-2px);
-
 }
 
 
 .btn-menu-icono{
-
     font-size:20px;
     line-height:1;
-
 }
 
 
 .menu-flecha{
-
     font-size:17px;
     transition:.25s;
-
 }
 
 
@@ -327,9 +321,7 @@ body{
 
 
 .menu-categorias.abierto .menu-flecha{
-
     transform:rotate(180deg);
-
 }
 
 
@@ -433,9 +425,7 @@ body{
 
 
 .buscador-header input:focus{
-
     border-color:var(--rosa);
-
 }
 
 
@@ -782,7 +772,7 @@ body{
 
 
 /* =====================================================
-   TARJETA
+   TARJETA PRODUCTO
 ===================================================== */
 
 .producto-card{
@@ -806,8 +796,6 @@ body{
 
     transition:.25s;
 
-    cursor:pointer;
-
 }
 
 
@@ -817,6 +805,17 @@ body{
 
     box-shadow:
         0 8px 20px rgba(232,59,131,.15);
+
+}
+
+
+.producto-enlace{
+
+    display:block;
+
+    color:inherit;
+
+    text-decoration:none;
 
 }
 
@@ -845,6 +844,14 @@ body{
     height:100%;
 
     object-fit:contain;
+
+}
+
+
+.sin-foto{
+
+    font-size:45px;
+    opacity:.45;
 
 }
 
@@ -901,12 +908,50 @@ body{
 
     line-height:1.2;
 
-    min-height:34px;
+}
+
+
+.producto-detalle{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:5px;
+
+    margin:4px 5px;
+
+    color:#59627c;
+
+    font-size:12px;
+
+    line-height:1.3;
 
 }
 
 
-.producto-precio{
+.producto-descripcion{
+
+    margin:7px 5px 9px;
+
+    color:#626b83;
+
+    font-size:12px;
+
+    line-height:1.35;
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:3;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+
+}
+
+
+.producto-footer{
 
     display:flex;
 
@@ -915,6 +960,15 @@ body{
     justify-content:space-between;
 
     gap:8px;
+
+    margin-top:8px;
+
+}
+
+
+.producto-precio{
+
+    min-width:0;
 
 }
 
@@ -944,7 +998,7 @@ body{
 
 
 /* =====================================================
-   BOTONES DEL PRODUCTO
+   BOTONES PRODUCTO
 ===================================================== */
 
 .botones-producto{
@@ -989,9 +1043,7 @@ body{
 
 
 .btn-wpp-producto{
-
     background:#20c968;
-
 }
 
 
@@ -1417,6 +1469,11 @@ body{
 
     background:#fafafa;
 
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
 }
 
 
@@ -1694,10 +1751,7 @@ body{
 
 
     .productos-grid{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
+        grid-template-columns:repeat(3,1fr);
     }
 
 
@@ -1726,16 +1780,12 @@ body{
 
 
     .marca-megatodo{
-
         width:130px;
-
     }
 
 
     .logo-megatodo{
-
         height:31px;
-
     }
 
 
@@ -1934,9 +1984,34 @@ body{
 
         font-size:12px;
 
-        min-height:30px;
-
         margin:8px 3px 5px;
+
+    }
+
+
+    .producto-detalle{
+
+        font-size:10px;
+
+        margin:4px 3px;
+
+    }
+
+
+    .producto-descripcion{
+
+        font-size:10px;
+
+        margin:6px 3px 8px;
+
+        -webkit-line-clamp:3;
+
+    }
+
+
+    .producto-footer{
+
+        gap:5px;
 
     }
 
@@ -2030,6 +2105,17 @@ body{
         height:135px;
     }
 
+
+    .btn-wpp-producto,
+    .btn-carrito-producto{
+
+        width:32px;
+        height:32px;
+
+        font-size:15px;
+
+    }
+
 }
 
 </style>
@@ -2048,13 +2134,13 @@ body{
 
 
     <!-- LOGO -->
+
     <div class="marca-megatodo">
 
         <a
             href="index.html"
             class="logo-enlace"
             aria-label="Ir al inicio">
-
 
             <div class="logo-megatodo">
 
@@ -2077,15 +2163,14 @@ body{
 
             <div class="sonrisa-megatodo"></div>
 
-
         </a>
 
 
         <!-- MENÚ -->
+
         <div
             class="menu-categorias"
             id="menuCategorias">
-
 
             <button
                 class="btn-menu"
@@ -2136,21 +2221,19 @@ body{
                 </a>
 
 
-                <a href="categoria.html?cat=Cajas%20de%20Regalo">
+                <!-- CORREGIDO -->
+
+                <a href="categoria.html?cat=CajasdeRegalo">
                     <span class="menu-icono">🎁</span>
                     <span>Cajas de Regalo</span>
                 </a>
 
 
-                <a href="categoria.html?cat=Coches%20de%20Bebé">
+                <!-- CORREGIDO -->
+
+                <a href="categoria.html?cat=MonopatinesyCoches">
                     <span class="menu-icono">👶</span>
-                    <span>Coches de Bebé</span>
-                </a>
-
-
-                <a href="categoria.html?cat=Monopatines">
-                    <span class="menu-icono">🛴</span>
-                    <span>Monopatines</span>
+                    <span>Monopatines y Coches</span>
                 </a>
 
 
@@ -2162,6 +2245,7 @@ body{
 
 
     <!-- BUSCADOR -->
+
     <div class="buscador-header">
 
         <input
@@ -2169,6 +2253,7 @@ body{
             id="buscadorGlobal"
             placeholder="Buscar productos..."
             autocomplete="off">
+
 
         <button
             type="button"
@@ -2185,6 +2270,7 @@ body{
 
 
     <!-- CARRITO -->
+
     <button
         class="btn-carrito-global"
         id="abrirCarrito"
@@ -2335,9 +2421,11 @@ body{
 
 
 <!-- WHATSAPP -->
+
 <a
     href="https://wa.me/593990924437"
     target="_blank"
+    rel="noopener"
     class="btn-wpp-flotante">
 
     💬
@@ -2347,6 +2435,7 @@ body{
 
 
 <!-- BOTÓN ARRIBA -->
+
 <div
     id="btnArriba"
     onclick="irArriba()">
@@ -2428,6 +2517,7 @@ body{
         <a
             href="#"
             target="_blank"
+            rel="noopener"
             id="btnWppCarrito"
             class="btn-wpp-carrito">
 
@@ -2460,23 +2550,36 @@ body{
 const URL_SHEET =
 "https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
 
-const WHATSAPP = "593990924437";
+const WHATSAPP =
+"593990924437";
 
 let productos = [];
 
 
 /* =====================================================
-   NORMALIZAR
+   NORMALIZAR TEXTO
 ===================================================== */
 
 function normalizar(texto){
 
-    return String(texto || "")
+    return String(texto ?? "")
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g,"")
-        .replace(/\s+/g," ")
         .trim();
+
+}
+
+
+/* =====================================================
+   NORMALIZAR CATEGORÍA
+   QUITA ESPACIOS, GUIONES Y _
+===================================================== */
+
+function normalizarCategoria(texto){
+
+    return normalizar(texto)
+        .replace(/[\s_-]/g,"");
 
 }
 
@@ -2487,7 +2590,7 @@ function normalizar(texto){
 
 function escaparHTML(texto){
 
-    return String(texto || "")
+    return String(texto ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -2498,25 +2601,26 @@ function escaparHTML(texto){
 
 
 /* =====================================================
-   DATOS DE CATEGORÍA
+   PARÁMETRO DE CATEGORÍA
 ===================================================== */
 
 const parametros =
-    new URLSearchParams(window.location.search);
+    new URLSearchParams(
+        window.location.search
+    );
+
 
 const categoriaURL =
     parametros.get("cat") || "";
 
-const categoriaNormalizada =
-    normalizar(categoriaURL);
-
 
 /* =====================================================
-   ALIAS DE CATEGORÍAS
-   ESTO SOLUCIONA DIFERENCIAS DE LA HOJA
+   CATEGORÍAS CANÓNICAS
 ===================================================== */
 
 const aliasCategorias = {
+
+    /* PELUCHES */
 
     "peluche":
         "peluches",
@@ -2524,102 +2628,345 @@ const aliasCategorias = {
     "peluches":
         "peluches",
 
+
+    /* COSMÉTICOS */
+
     "cosmetico":
         "cosmeticos",
 
     "cosmeticos":
         "cosmeticos",
 
-    "caja de regalo":
-        "cajas de regalo",
 
-    "cajas de regalo":
-        "cajas de regalo",
+    /* CAJAS DE REGALO */
 
-    "coche de bebe":
-        "coches de bebe",
+    "cajaderegalo":
+        "cajasderegalo",
 
-    "coches de bebe":
-        "coches de bebe",
+    "cajasderegalo":
+        "cajasderegalo",
 
-    "articulo de belleza":
-        "articulos de belleza",
 
-    "articulos de belleza":
-        "articulos de belleza",
+    /* COCHES */
+
+    "cochedebebe":
+        "monopatinesycoches",
+
+    "cochesdebebe":
+        "monopatinesycoches",
+
+
+    /* MONOPATINES */
 
     "monopatin":
-        "monopatines",
+        "monopatinesycoches",
 
     "monopatines":
-        "monopatines"
+        "monopatinesycoches",
+
+
+    /* CATEGORÍA REAL DEL EXCEL */
+
+    "monopatinesycoches":
+        "monopatinesycoches",
+
+
+    /* BELLEZA */
+
+    "articulodebelleza":
+        "articulosdebelleza",
+
+    "articulosdebelleza":
+        "articulosdebelleza"
 
 };
 
 
 function categoriaCanonica(valor){
 
-    const n = normalizar(valor);
+    const categoria =
+        normalizarCategoria(valor);
 
-    return aliasCategorias[n] || n;
+    return (
+        aliasCategorias[categoria] ||
+        categoria
+    );
 
 }
 
 
 const categoriaBuscada =
-    categoriaCanonica(categoriaURL);
+    categoriaCanonica(
+        categoriaURL
+    );
 
 
 /* =====================================================
-   TÍTULOS
+   NOMBRE BONITO DE CATEGORÍA
 ===================================================== */
+
+const nombresCategorias = {
+
+    "articulosdebelleza":
+        "Artículos de Belleza",
+
+    "juguetes":
+        "Juguetes",
+
+    "bazar":
+        "Bazar",
+
+    "peluches":
+        "Peluches",
+
+    "cosmeticos":
+        "Cosméticos",
+
+    "cajasderegalo":
+        "Cajas de Regalo",
+
+    "monopatinesycoches":
+        "Monopatines y Coches"
+
+};
+
+
+const nombreCategoria =
+    nombresCategorias[categoriaBuscada] ||
+    categoriaURL ||
+    "Productos";
+
 
 document.getElementById(
     "tituloCategoria"
 ).textContent =
-    categoriaURL || "Productos";
+    nombreCategoria;
 
 
 document.getElementById(
     "tituloProductos"
 ).textContent =
-    categoriaURL || "Productos";
+    nombreCategoria;
 
 
 /* =====================================================
-   OBTENER CATEGORÍA DE PRODUCTO
+   OBTENER CATEGORÍA DEL PRODUCTO
 ===================================================== */
 
 function obtenerCategoriaProducto(producto){
 
     return (
+
         producto.Categoria ??
+
         producto["Categoría"] ??
+
         producto.categoria ??
+
         producto["categoría"] ??
+
         ""
+
     );
 
 }
 
 
 /* =====================================================
-   FILTRAR CATEGORÍA
+   FILTRAR PRODUCTOS
 ===================================================== */
 
 function productosDeCategoria(){
 
-    return productos.filter(producto => {
+    return productos.filter(
+        producto => {
 
-        const categoriaProducto =
-            categoriaCanonica(
-                obtenerCategoriaProducto(producto)
+            const categoriaProducto =
+                categoriaCanonica(
+                    obtenerCategoriaProducto(
+                        producto
+                    )
+                );
+
+
+            return (
+                categoriaProducto ===
+                categoriaBuscada
             );
 
-        return categoriaProducto ===
-               categoriaBuscada;
+        }
+    );
 
-    });
+}
+
+
+/* =====================================================
+   OBTENER CÓDIGO
+===================================================== */
+
+function obtenerCodigo(producto){
+
+    return (
+
+        producto.Código ??
+
+        producto.Codigo ??
+
+        producto.codigo ??
+
+        ""
+
+    )
+    .toString()
+    .trim();
+
+}
+
+
+/* =====================================================
+   OBTENER FOTO
+===================================================== */
+
+function obtenerFoto(producto){
+
+    return (
+
+        producto["Foto 1"] ||
+
+        producto.Foto ||
+
+        producto.foto ||
+
+        producto["Foto 2"] ||
+
+        producto["Foto 3"] ||
+
+        ""
+
+    );
+
+}
+
+
+/* =====================================================
+   OBTENER TAMAÑO
+===================================================== */
+
+function obtenerTamano(producto){
+
+    return String(
+
+        producto.Tamaño ??
+
+        producto.Tamano ??
+
+        producto.tamaño ??
+
+        producto.tamano ??
+
+        ""
+
+    ).trim();
+
+}
+
+
+/* =====================================================
+   OBTENER DESCRIPCIÓN
+===================================================== */
+
+function obtenerDescripcion(producto){
+
+    return String(
+
+        producto.Descripción ??
+
+        producto.Descripcion ??
+
+        producto.descripción ??
+
+        producto.descripcion ??
+
+        ""
+
+    ).trim();
+
+}
+
+
+/* =====================================================
+   CONVERTIR PRECIO
+===================================================== */
+
+function precioNumero(valor){
+
+    let texto =
+        String(valor ?? "")
+        .trim()
+        .replace(/\$/g,"")
+        .replace(/\s/g,"");
+
+
+    if(
+        texto.includes(",") &&
+        texto.includes(".")
+    ){
+
+        if(
+            texto.lastIndexOf(",") >
+            texto.lastIndexOf(".")
+        ){
+
+            texto =
+                texto
+                .replace(/\./g,"")
+                .replace(",", ".");
+
+        }else{
+
+            texto =
+                texto.replace(/,/g,"");
+
+        }
+
+    }else{
+
+        texto =
+            texto.replace(",", ".");
+
+    }
+
+
+    const numero =
+        parseFloat(
+            texto.replace(
+                /[^0-9.-]/g,
+                ""
+            )
+        );
+
+
+    return Number.isFinite(numero)
+        ? numero
+        : 0;
+
+}
+
+
+/* =====================================================
+   URL DEL PRODUCTO
+===================================================== */
+
+function obtenerUrlProducto(codigo){
+
+    return new URL(
+
+        "producto.html?codigo=" +
+        encodeURIComponent(codigo),
+
+        window.location.href
+
+    ).href;
 
 }
 
@@ -2633,7 +2980,11 @@ fetch(URL_SHEET)
 .then(respuesta => {
 
     if(!respuesta.ok){
-        throw new Error("Error al cargar la hoja");
+
+        throw new Error(
+            "Error al cargar la hoja"
+        );
+
     }
 
     return respuesta.json();
@@ -2642,9 +2993,11 @@ fetch(URL_SHEET)
 
 .then(data => {
 
-    productos = Array.isArray(data)
+    productos =
+        Array.isArray(data)
         ? data
         : [];
+
 
     console.log(
         "Productos cargados:",
@@ -2659,17 +3012,20 @@ fetch(URL_SHEET)
 
 
     console.log(
-        "Categoría normalizada:",
+        "Categoría buscada:",
         categoriaBuscada
     );
 
 
     console.log(
-        "Categorías encontradas en la hoja:",
+        "Categorías encontradas:",
         [
             ...new Set(
                 productos.map(
-                    p => obtenerCategoriaProducto(p)
+                    producto =>
+                        obtenerCategoriaProducto(
+                            producto
+                        )
                 )
             )
         ]
@@ -2680,11 +3036,25 @@ fetch(URL_SHEET)
         productosDeCategoria()
     );
 
+
+    /* ACTUALIZAR SUGERENCIAS */
+
+    if(
+        buscador.value.trim()
+    ){
+
+        buscador.dispatchEvent(
+            new Event("input")
+        );
+
+    }
+
 })
 
 .catch(error => {
 
     console.error(error);
+
 
     document.getElementById(
         "productos"
@@ -2714,72 +3084,15 @@ fetch(URL_SHEET)
 
 
 /* =====================================================
-   OBTENER CÓDIGO
-===================================================== */
-
-function obtenerCodigo(producto){
-
-    return (
-        producto.Código ??
-        producto.Codigo ??
-        producto.codigo ??
-        ""
-    ).toString().trim();
-
-}
-
-
-/* =====================================================
-   OBTENER FOTO
-===================================================== */
-
-function obtenerFoto(producto){
-
-    return (
-        producto["Foto 1"] ||
-        producto.Foto ||
-        producto.foto ||
-        producto["Foto 2"] ||
-        producto["Foto 3"] ||
-        ""
-    );
-
-}
-
-
-/* =====================================================
-   PRECIO NUMÉRICO
-===================================================== */
-
-function precioNumero(valor){
-
-    let texto =
-        String(valor || "")
-        .replace(",", ".");
-
-    let numero =
-        parseFloat(
-            texto.replace(
-                /[^0-9.-]/g,
-                ""
-            )
-        );
-
-    return Number.isFinite(numero)
-        ? numero
-        : 0;
-
-}
-
-
-/* =====================================================
    MOSTRAR PRODUCTOS
 ===================================================== */
 
 function mostrarProductos(lista){
 
     const contenedor =
-        document.getElementById("productos");
+        document.getElementById(
+            "productos"
+        );
 
 
     if(!lista.length){
@@ -2799,8 +3112,9 @@ function mostrarProductos(lista){
                 </h3>
 
                 <p>
-                    Esta categoría no tiene productos disponibles
-                    con el nombre registrado actualmente.
+                    Esta categoría no tiene productos
+                    disponibles con el nombre registrado
+                    actualmente.
                 </p>
 
             </div>
@@ -2820,29 +3134,47 @@ function mostrarProductos(lista){
         const codigo =
             obtenerCodigo(producto);
 
+
         const nombre =
             producto.Nombre ||
             producto.nombre ||
             "Producto";
+
 
         const precio =
             producto.Precio ||
             producto.precio ||
             "";
 
+
         const precioAnterior =
             producto["Precio Anterior"] ||
             producto["Precio anterior"] ||
             "";
 
+
         const foto =
             obtenerFoto(producto);
 
+
+        const tamano =
+            obtenerTamano(producto);
+
+
+        const descripcion =
+            obtenerDescripcion(producto);
+
+
         const esNuevo =
-            normalizar(producto.Nuevo) === "si";
+            normalizar(
+                producto.Nuevo
+            ) === "si";
+
 
         const esOferta =
-            normalizar(producto.Oferta) === "si";
+            normalizar(
+                producto.Oferta
+            ) === "si";
 
 
         const tarjeta =
@@ -2853,29 +3185,9 @@ function mostrarProductos(lista){
             "producto-card";
 
 
-        /* =========================================
-           IR AL PRODUCTO
-        ========================================= */
-
-        tarjeta.addEventListener(
-            "click",
-            function(){
-
-                if(codigo){
-
-                    window.location.href =
-                        "producto.html?codigo=" +
-                        encodeURIComponent(codigo);
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
+        /* =================================================
            BADGES
-        ========================================= */
+        ================================================= */
 
         let badges = "";
 
@@ -2883,9 +3195,11 @@ function mostrarProductos(lista){
         if(esNuevo){
 
             badges += `
+
                 <span class="badge badge-nuevo">
                     NUEVO
                 </span>
+
             `;
 
         }
@@ -2894,86 +3208,174 @@ function mostrarProductos(lista){
         if(esOferta){
 
             badges += `
+
                 <span class="badge badge-oferta">
                     OFERTA
                 </span>
+
             `;
 
         }
 
 
-        /* =========================================
-           HTML TARJETA
-        ========================================= */
+        /* =================================================
+           TAMAÑO
+           SOLO APARECE SI EXISTE
+        ================================================= */
+
+        const htmlTamano =
+            tamano
+
+            ?
+
+            `
+
+            <div class="producto-detalle">
+
+                <span>📏</span>
+
+                <span>
+                    ${escaparHTML(tamano)}
+                </span>
+
+            </div>
+
+            `
+
+            :
+
+            "";
+
+
+        /* =================================================
+           DESCRIPCIÓN
+           SOLO APARECE SI EXISTE
+        ================================================= */
+
+        const htmlDescripcion =
+            descripcion
+
+            ?
+
+            `
+
+            <p class="producto-descripcion">
+
+                ${escaparHTML(descripcion)}
+
+            </p>
+
+            `
+
+            :
+
+            "";
+
+
+        /* =================================================
+           HTML
+        ================================================= */
 
         tarjeta.innerHTML = `
 
             ${badges}
 
 
-            <div class="producto-imagen">
-
-                ${
-                    foto
-
-                    ?
-
-                    `
-                    <img
-                        src="${escaparHTML(foto)}"
-                        alt="${escaparHTML(nombre)}"
-                        loading="lazy"
-                        onerror="this.style.display='none';">
-
-                    `
-
-                    :
-
-                    `
-                    <span
-                        style="
-                            font-size:45px;
-                            opacity:.45;
-                        ">
-
-                        🛍️
-
-                    </span>
-                    `
-                }
-
-            </div>
+            <a
+                href="${
+                    codigo
+                    ? "producto.html?codigo=" +
+                      encodeURIComponent(codigo)
+                    : "#"
+                }"
+                class="producto-enlace">
 
 
-            <h3>
-                ${escaparHTML(nombre)}
-            </h3>
-
-
-            <div class="producto-precio">
-
-
-                <div>
-
-                    <span class="precio">
-                        $${escaparHTML(precio)}
-                    </span>
-
+                <div class="producto-imagen">
 
                     ${
-                        esOferta && precioAnterior
+                        foto
 
                         ?
 
                         `
-                        <span class="precio-anterior">
-                            $${escaparHTML(precioAnterior)}
+
+                        <img
+                            src="${escaparHTML(foto)}"
+                            alt="${escaparHTML(nombre)}"
+                            loading="lazy"
+                            onerror="this.style.display='none';">
+
+                        `
+
+                        :
+
+                        `
+
+                        <span class="sin-foto">
+                            🛍️
                         </span>
+
+                        `
+
+                    }
+
+                </div>
+
+
+                <h3>
+                    ${escaparHTML(nombre)}
+                </h3>
+
+
+                ${htmlTamano}
+
+
+                ${htmlDescripcion}
+
+
+            </a>
+
+
+            <div class="producto-footer">
+
+
+                <div class="producto-precio">
+
+                    <span class="precio">
+
+                        ${
+                            precio
+                            ? "$" +
+                              escaparHTML(precio)
+                            : "Consultar"
+                        }
+
+                    </span>
+
+
+                    ${
+                        esOferta &&
+                        precioAnterior
+
+                        ?
+
+                        `
+
+                        <span class="precio-anterior">
+
+                            $${escaparHTML(
+                                precioAnterior
+                            )}
+
+                        </span>
+
                         `
 
                         :
 
                         ""
+
                     }
 
                 </div>
@@ -2981,8 +3383,6 @@ function mostrarProductos(lista){
 
                 <div class="botones-producto">
 
-
-                    <!-- WHATSAPP -->
 
                     <button
                         type="button"
@@ -2993,8 +3393,6 @@ function mostrarProductos(lista){
 
                     </button>
 
-
-                    <!-- CARRITO -->
 
                     <button
                         type="button"
@@ -3014,9 +3412,9 @@ function mostrarProductos(lista){
         `;
 
 
-        /* =========================================
-           BOTÓN WHATSAPP
-        ========================================= */
+        /* =================================================
+           WHATSAPP
+        ================================================= */
 
         const btnWpp =
             tarjeta.querySelector(
@@ -3032,41 +3430,51 @@ function mostrarProductos(lista){
                 e.stopPropagation();
 
 
+                if(!codigo){
+                    return;
+                }
+
+
                 const urlProducto =
-                    window.location.origin +
-                    window.location.pathname
-                        .replace(
-                            "categoria.html",
-                            "producto.html"
-                        ) +
-                    "?codigo=" +
-                    encodeURIComponent(codigo);
+                    obtenerUrlProducto(
+                        codigo
+                    );
 
 
                 const mensaje =
-                    `Hola Megatodo 👋\n\n` +
-                    `Estoy interesado en este producto:\n\n` +
-                    `${nombre}\n` +
-                    `Precio: $${precio}\n\n` +
-                    `${urlProducto}`;
+
+                    "Hola Megatodo 👋\n\n" +
+
+                    "Estoy interesado en este producto:\n\n" +
+
+                    nombre + "\n" +
+
+                    "Precio: $" +
+                    precio + "\n\n" +
+
+                    urlProducto;
 
 
                 window.open(
+
                     "https://wa.me/" +
                     WHATSAPP +
                     "?text=" +
-                    encodeURIComponent(mensaje),
+                    encodeURIComponent(
+                        mensaje
+                    ),
 
                     "_blank"
+
                 );
 
             }
         );
 
 
-        /* =========================================
-           BOTÓN CARRITO
-        ========================================= */
+        /* =================================================
+           CARRITO
+        ================================================= */
 
         const btnCarrito =
             tarjeta.querySelector(
@@ -3095,6 +3503,35 @@ function mostrarProductos(lista){
         );
 
     });
+
+}
+
+
+/* =====================================================
+   CARRITO
+===================================================== */
+
+function getCart(){
+
+    try{
+
+        const datos =
+            JSON.parse(
+                localStorage.getItem(
+                    "carrito"
+                )
+            );
+
+
+        return Array.isArray(datos)
+            ? datos
+            : [];
+
+    }catch(error){
+
+        return [];
+
+    }
 
 }
 
@@ -3135,7 +3572,11 @@ function agregarAlCarrito(producto){
     if(existente){
 
         existente.cantidad =
-            (Number(existente.cantidad) || 0) + 1;
+            (
+                Number(
+                    existente.cantidad
+                ) || 0
+            ) + 1;
 
     }else{
 
@@ -3145,10 +3586,12 @@ function agregarAlCarrito(producto){
 
             nombre:
                 producto.Nombre ||
+                producto.nombre ||
                 "Producto",
 
             precio:
                 producto.Precio ||
+                producto.precio ||
                 "0",
 
             cantidad:1,
@@ -3177,34 +3620,6 @@ function agregarAlCarrito(producto){
 
 
 /* =====================================================
-   CARRITO LOCALSTORAGE
-===================================================== */
-
-function getCart(){
-
-    try{
-
-        const datos =
-            JSON.parse(
-                localStorage.getItem(
-                    "carrito"
-                )
-            );
-
-        return Array.isArray(datos)
-            ? datos
-            : [];
-
-    }catch(error){
-
-        return [];
-
-    }
-
-}
-
-
-/* =====================================================
    CONTADOR
 ===================================================== */
 
@@ -3216,6 +3631,7 @@ function actualizarCarritoUI(){
 
     const cantidad =
         carrito.reduce(
+
             (total,item) => {
 
                 return total +
@@ -3228,6 +3644,7 @@ function actualizarCarritoUI(){
             },
 
             0
+
         );
 
 
@@ -3240,7 +3657,7 @@ function actualizarCarritoUI(){
 
 
 /* =====================================================
-   CARRITO ELEMENTOS
+   ELEMENTOS CARRITO
 ===================================================== */
 
 const abrirCarrito =
@@ -3248,30 +3665,36 @@ const abrirCarrito =
         "abrirCarrito"
     );
 
+
 const cerrarCarrito =
     document.getElementById(
         "cerrarCarrito"
     );
+
 
 const carritoPanel =
     document.getElementById(
         "carritoPanel"
     );
 
+
 const carritoOverlay =
     document.getElementById(
         "carritoOverlay"
     );
+
 
 const carritoContenido =
     document.getElementById(
         "carritoContenido"
     );
 
+
 const carritoTotal =
     document.getElementById(
         "carritoTotal"
     );
+
 
 const btnWppCarrito =
     document.getElementById(
@@ -3280,7 +3703,7 @@ const btnWppCarrito =
 
 
 /* =====================================================
-   ABRIR CARRITO
+   ABRIR
 ===================================================== */
 
 function abrirPanelCarrito(){
@@ -3305,7 +3728,7 @@ function abrirPanelCarrito(){
 
 
 /* =====================================================
-   CERRAR CARRITO
+   CERRAR
 ===================================================== */
 
 function cerrarPanelCarrito(){
@@ -3428,7 +3851,9 @@ function renderizarCarrito(){
 
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             item.className =
@@ -3445,14 +3870,17 @@ function renderizarCarrito(){
                         ?
 
                         `
+
                         <img
                             src="${escaparHTML(foto)}"
                             alt="${escaparHTML(nombre)}">
+
                         `
 
                         :
 
                         `
+
                         <span
                             style="
                                 display:flex;
@@ -3466,7 +3894,9 @@ function renderizarCarrito(){
                             🛍️
 
                         </span>
+
                         `
+
                     }
 
                 </div>
@@ -3475,18 +3905,24 @@ function renderizarCarrito(){
                 <div class="carrito-item-info">
 
                     <div class="carrito-item-nombre">
+
                         ${escaparHTML(nombre)}
+
                     </div>
 
 
                     <div class="carrito-item-precio">
+
                         $${precio.toFixed(2)}
+
                     </div>
 
 
                     <div class="carrito-item-cantidad">
 
+
                         <button
+                            type="button"
                             class="cantidad-btn"
                             data-index="${index}"
                             data-cambio="-1">
@@ -3497,11 +3933,14 @@ function renderizarCarrito(){
 
 
                         <span class="cantidad-numero">
+
                             ${cantidad}
+
                         </span>
 
 
                         <button
+                            type="button"
                             class="cantidad-btn"
                             data-index="${index}"
                             data-cambio="1">
@@ -3510,12 +3949,14 @@ function renderizarCarrito(){
 
                         </button>
 
+
                     </div>
 
                 </div>
 
 
                 <button
+                    type="button"
                     class="eliminar-item"
                     data-index="${index}">
 
@@ -3528,28 +3969,30 @@ function renderizarCarrito(){
 
             item.querySelectorAll(
                 ".cantidad-btn"
-            ).forEach(btn => {
+            ).forEach(
+                btn => {
 
-                btn.addEventListener(
-                    "click",
-                    function(){
+                    btn.addEventListener(
+                        "click",
+                        function(){
 
-                        cambiarCantidadCarrito(
+                            cambiarCantidadCarrito(
 
-                            Number(
-                                this.dataset.index
-                            ),
+                                Number(
+                                    this.dataset.index
+                                ),
 
-                            Number(
-                                this.dataset.cambio
-                            )
+                                Number(
+                                    this.dataset.cambio
+                                )
 
-                        );
+                            );
 
-                    }
-                );
+                        }
+                    );
 
-            });
+                }
+            );
 
 
             item.querySelector(
@@ -3577,7 +4020,8 @@ function renderizarCarrito(){
 
 
     carritoTotal.textContent =
-        "$" + total.toFixed(2);
+        "$" +
+        total.toFixed(2);
 
 
     actualizarWhatsAppCarrito();
@@ -3586,7 +4030,7 @@ function renderizarCarrito(){
 
 
 /* =====================================================
-   WHATSAPP DEL CARRITO
+   WHATSAPP CARRITO
 ===================================================== */
 
 function actualizarWhatsAppCarrito(){
@@ -3607,7 +4051,9 @@ function actualizarWhatsAppCarrito(){
 
 
     let mensaje =
+
         "Hola Megatodo 👋\n\n" +
+
         "Quiero realizar la siguiente compra:\n\n";
 
 
@@ -3616,6 +4062,7 @@ function actualizarWhatsAppCarrito(){
 
     carrito.forEach(
         producto => {
+
 
             const precio =
                 precioNumero(
@@ -3634,37 +4081,46 @@ function actualizarWhatsAppCarrito(){
 
 
             const urlProducto =
-                window.location.origin +
-                window.location.pathname
-                    .replace(
-                        "categoria.html",
-                        "producto.html"
-                    ) +
-                "?codigo=" +
-                encodeURIComponent(
+                obtenerUrlProducto(
                     producto.codigo || ""
                 );
 
 
             mensaje +=
-                `🛍️ ${producto.nombre}\n` +
-                `Cantidad: ${cantidad}\n` +
-                `Precio: $${precio.toFixed(2)}\n` +
-                `${urlProducto}\n\n`;
+
+                "🛍️ " +
+                (producto.nombre || "Producto") +
+                "\n" +
+
+                "Cantidad: " +
+                cantidad +
+                "\n" +
+
+                "Precio: $" +
+                precio.toFixed(2) +
+                "\n" +
+
+                urlProducto +
+                "\n\n";
 
         }
     );
 
 
     mensaje +=
-        `TOTAL: $${total.toFixed(2)}`;
+
+        "TOTAL: $" +
+        total.toFixed(2);
 
 
     btnWppCarrito.href =
+
         "https://wa.me/" +
         WHATSAPP +
         "?text=" +
-        encodeURIComponent(mensaje);
+        encodeURIComponent(
+            mensaje
+        );
 
 }
 
@@ -3688,6 +4144,7 @@ function cambiarCantidadCarrito(
 
 
     carrito[index].cantidad =
+
         (
             Number(
                 carrito[index].cantidad
@@ -3785,69 +4242,97 @@ buscador.addEventListener(
 
 
         const filtrados =
-            productos.filter(producto => {
+            productos.filter(
+                producto => {
 
 
-                const nombre =
-                    normalizar(
-                        producto.Nombre
-                    );
+                    const nombre =
+                        normalizar(
+                            producto.Nombre
+                        );
 
 
-                const codigo =
-                    normalizar(
-                        obtenerCodigo(producto)
-                    );
+                    const codigo =
+                        normalizar(
+                            obtenerCodigo(
+                                producto
+                            )
+                        );
 
 
-                const categoria =
-                    normalizar(
-                        obtenerCategoriaProducto(
-                            producto
+                    const categoria =
+                        normalizar(
+                            obtenerCategoriaProducto(
+                                producto
+                            )
+                        );
+
+
+                    return (
+
+                        nombre.includes(
+                            texto
                         )
+
+                        ||
+
+                        codigo.includes(
+                            texto
+                        )
+
+                        ||
+
+                        categoria.includes(
+                            texto
+                        )
+
                     );
 
-
-                return (
-                    nombre.includes(texto) ||
-                    codigo.includes(texto) ||
-                    categoria.includes(texto)
-                );
-
-            });
+                }
+            );
 
 
         resultados.innerHTML =
 
             filtrados
                 .slice(0,10)
-                .map(producto => {
-
-                    const codigo =
-                        obtenerCodigo(
-                            producto
-                        );
+                .map(
+                    producto => {
 
 
-                    return `
+                        const codigo =
+                            obtenerCodigo(
+                                producto
+                            );
 
-                        <div class="resultado">
 
-                            <a
-                                href="producto.html?codigo=${encodeURIComponent(codigo)}">
+                        return `
 
-                                ${escaparHTML(
-                                    producto.Nombre ||
-                                    "Producto"
-                                )}
+                            <div class="resultado">
 
-                            </a>
+                                <a
+                                    href="
+                                    producto.html?codigo=${
+                                        encodeURIComponent(
+                                            codigo
+                                        )
+                                    }">
 
-                        </div>
+                                    ${
+                                        escaparHTML(
+                                            producto.Nombre ||
+                                            "Producto"
+                                        )
+                                    }
 
-                    `;
+                                </a>
 
-                })
+                            </div>
+
+                        `;
+
+                    }
+                )
                 .join("");
 
     }
@@ -3855,7 +4340,7 @@ buscador.addEventListener(
 
 
 /* =====================================================
-   ENTER
+   ENTER BUSCADOR
 ===================================================== */
 
 buscador.addEventListener(
@@ -3956,6 +4441,7 @@ btnMenuCategorias.addEventListener(
 
         e.stopPropagation();
 
+
         menuCategorias.classList.toggle(
             "abierto"
         );
@@ -3993,6 +4479,7 @@ window.addEventListener(
     function(){
 
         actualizarCarritoUI();
+
 
         if(
             carritoPanel.classList.contains(
@@ -4033,8 +4520,11 @@ window.addEventListener(
 
 
         boton.style.display =
+
             window.scrollY > 250
+
             ? "flex"
+
             : "none";
 
     }
@@ -4067,4 +4557,5 @@ actualizarCarritoUI();
 </script>
 
 </body>
+
 </html>
