@@ -8,7 +8,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Megatodo</title>
+<title>Megatodo | Todo lo que necesitas</title>
 
 
 <style>
@@ -34,22 +34,45 @@ body{
 
 
 /* =====================================================
+   COLORES IDENTIDAD MEGATODO
+===================================================== */
+
+:root{
+
+    --rosa:#E83B83;
+    --morado:#7867B7;
+    --lavanda:#9690D0;
+    --naranja:#F2A52B;
+    --celeste:#08A5C6;
+    --turquesa:#63BBAE;
+    --azul:#18234B;
+    --rosa-claro:#FFF5FA;
+    --rosa-suave:#FDE4EF;
+
+}
+
+
+/* =====================================================
    ENCABEZADO
 ===================================================== */
 
 .header{
 
     position:sticky;
+
     top:0;
 
     z-index:9000;
 
     width:100%;
-    height:88px;
 
-    background:rgba(255,248,252,.97);
+    min-height:125px;
 
-    border-bottom:1px solid #f5d7e7;
+    background:
+        rgba(255,250,252,.98);
+
+    border-bottom:
+        1px solid #f3d8e5;
 
     display:flex;
 
@@ -57,8 +80,193 @@ body{
 
     padding:10px 24px;
 
+    gap:22px;
+
     box-shadow:
-        0 3px 15px rgba(255,42,138,.08);
+        0 4px 18px rgba(232,59,131,.08);
+
+}
+
+
+/* =====================================================
+   MARCA MEGATODO
+===================================================== */
+
+.marca-megatodo{
+
+    flex-shrink:0;
+
+    width:270px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+}
+
+
+/* =====================================================
+   LOGO TEXTO
+===================================================== */
+
+.logo-megatodo{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    height:49px;
+
+    line-height:1;
+
+    white-space:nowrap;
+
+}
+
+
+/* LETRAS */
+
+.logo-letra{
+
+    font-family:
+        Arial Rounded MT Bold,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size:48px;
+
+    font-weight:900;
+
+    letter-spacing:-4px;
+
+}
+
+
+/* COLORES DEL LOGO */
+
+.logo-m{
+    color:var(--rosa);
+}
+
+.logo-e{
+    color:var(--morado);
+}
+
+.logo-g{
+    color:var(--lavanda);
+}
+
+.logo-a{
+    color:var(--naranja);
+}
+
+.logo-t{
+    color:var(--rosa);
+}
+
+.logo-o1{
+    color:var(--celeste);
+}
+
+.logo-d{
+    color:var(--celeste);
+}
+
+.logo-o2{
+    color:var(--turquesa);
+}
+
+
+/* =====================================================
+   ESLOGAN
+===================================================== */
+
+.eslogan{
+
+    margin:2px 0 5px 8px;
+
+    font-size:15px;
+
+    color:var(--azul);
+
+    font-weight:500;
+
+    letter-spacing:.2px;
+
+}
+
+
+/* =====================================================
+   SONRISA MEGATODO
+===================================================== */
+
+.sonrisa-megatodo{
+
+    position:relative;
+
+    width:68px;
+
+    height:25px;
+
+    margin-left:92px;
+
+    margin-bottom:7px;
+
+}
+
+
+/* arco */
+
+.sonrisa-megatodo:before{
+
+    content:"";
+
+    position:absolute;
+
+    left:5px;
+
+    top:0;
+
+    width:54px;
+
+    height:22px;
+
+    border-bottom:
+        5px solid var(--rosa);
+
+    border-radius:
+        0 0 50px 50px;
+
+}
+
+
+/* punto izquierdo */
+
+.sonrisa-megatodo:after{
+
+    content:"";
+
+    position:absolute;
+
+    left:2px;
+
+    top:-2px;
+
+    width:11px;
+
+    height:11px;
+
+    border-radius:50%;
+
+    background:var(--rosa);
+
+    box-shadow:
+        53px 0 0 var(--rosa);
 
 }
 
@@ -76,23 +284,28 @@ body{
 }
 
 
-/* BOTÓN PRINCIPAL */
+/* BOTÓN */
 
 .btn-menu{
 
-    height:50px;
+    height:38px;
 
-    padding:0 20px;
+    padding:0 15px;
 
     border:0;
 
-    border-radius:30px;
+    border-radius:22px;
 
-    background:#f52b8a;
+    background:
+        linear-gradient(
+            135deg,
+            var(--rosa),
+            #f05b9b
+        );
 
     color:white;
 
-    font-size:17px;
+    font-size:14px;
 
     font-weight:bold;
 
@@ -102,43 +315,40 @@ body{
 
     justify-content:center;
 
-    gap:12px;
+    gap:8px;
 
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px rgba(245,43,138,.25);
+        0 4px 12px rgba(232,59,131,.22);
 
     transition:.2s;
 
 }
+
 
 .btn-menu:hover{
 
     transform:translateY(-2px);
 
     box-shadow:
-        0 7px 18px rgba(245,43,138,.32);
+        0 7px 17px rgba(232,59,131,.30);
 
 }
 
 
-/* ICONO */
-
 .btn-menu-icono{
 
-    font-size:25px;
+    font-size:20px;
 
     line-height:1;
 
 }
 
 
-/* FLECHA */
-
 .menu-flecha{
 
-    font-size:20px;
+    font-size:17px;
 
     transition:.25s;
 
@@ -153,20 +363,22 @@ body{
 
     position:absolute;
 
-    top:59px;
+    top:46px;
 
     left:0;
 
-    width:225px;
+    width:235px;
 
     background:white;
 
-    border-radius:0 0 17px 17px;
+    border-radius:
+        0 0 17px 17px;
 
     box-shadow:
         0 10px 28px rgba(0,0,0,.14);
 
-    border:1px solid #f6d7e8;
+    border:
+        1px solid #f3d7e4;
 
     overflow:hidden;
 
@@ -183,7 +395,7 @@ body{
 }
 
 
-/* CUANDO ESTÁ ABIERTO */
+/* ABIERTO */
 
 .menu-categorias.abierto
 .menu-desplegable{
@@ -206,7 +418,7 @@ body{
 
 
 /* =====================================================
-   OPCIONES DEL MENÚ
+   OPCIONES MENÚ
 ===================================================== */
 
 .menu-desplegable a{
@@ -217,23 +429,25 @@ body{
 
     gap:12px;
 
-    min-height:44px;
+    min-height:45px;
 
     padding:9px 16px;
 
     text-decoration:none;
 
-    color:#18234b;
+    color:var(--azul);
 
     font-size:14px;
 
     font-weight:bold;
 
-    border-bottom:1px solid #f5edf1;
+    border-bottom:
+        1px solid #f5edf1;
 
     transition:.2s;
 
 }
+
 
 .menu-desplegable a:last-child{
 
@@ -241,18 +455,17 @@ body{
 
 }
 
+
 .menu-desplegable a:hover{
 
     background:#fff0f7;
 
-    color:#f52b8a;
+    color:var(--rosa);
 
-    padding-left:20px;
+    padding-left:21px;
 
 }
 
-
-/* ICONO CATEGORÍA */
 
 .menu-icono{
 
@@ -288,7 +501,7 @@ body{
 
     width:100%;
 
-    height:46px;
+    height:47px;
 
     padding:
         0 58px
@@ -296,7 +509,8 @@ body{
 
     border-radius:30px;
 
-    border:2px solid #f4a9cf;
+    border:
+        2px solid #e9afd0;
 
     background:white;
 
@@ -307,14 +521,18 @@ body{
     font-size:14px;
 
     box-shadow:
-        0 3px 12px rgba(255,42,138,.06);
+        0 3px 12px rgba(232,59,131,.06);
 
 }
 
 
 .buscador-header input:focus{
 
-    border-color:#f52b8a;
+    border-color:
+        var(--rosa);
+
+    box-shadow:
+        0 3px 15px rgba(232,59,131,.12);
 
 }
 
@@ -327,15 +545,20 @@ body{
 
     right:3px;
 
-    width:40px;
+    width:41px;
 
-    height:40px;
+    height:41px;
 
     border:0;
 
     border-radius:50%;
 
-    background:#f52b8a;
+    background:
+        linear-gradient(
+            135deg,
+            var(--rosa),
+            var(--morado)
+        );
 
     color:white;
 
@@ -354,7 +577,7 @@ body{
 
     position:absolute;
 
-    top:52px;
+    top:53px;
 
     left:0;
 
@@ -378,7 +601,8 @@ body{
 
     padding:13px 17px;
 
-    border-bottom:1px solid #f1e8ed;
+    border-bottom:
+        1px solid #f1e8ed;
 
 }
 
@@ -394,7 +618,7 @@ body{
 
     text-decoration:none;
 
-    color:#18234b;
+    color:var(--azul);
 
     font-size:14px;
 
@@ -405,7 +629,7 @@ body{
 
 .resultado a:hover{
 
-    color:#f52b8a;
+    color:var(--rosa);
 
 }
 
@@ -426,7 +650,12 @@ body{
 
     border-radius:50%;
 
-    background:#f52b8a;
+    background:
+        linear-gradient(
+            135deg,
+            var(--celeste),
+            var(--turquesa)
+        );
 
     color:white;
 
@@ -443,7 +672,7 @@ body{
     flex-shrink:0;
 
     box-shadow:
-        0 5px 16px rgba(245,43,138,.28);
+        0 5px 16px rgba(8,165,198,.25);
 
     transition:.2s;
 
@@ -471,7 +700,7 @@ body{
 
     padding:0 5px;
 
-    background:#ff4c99;
+    background:var(--rosa);
 
     color:white;
 
@@ -510,24 +739,25 @@ body{
 
     radial-gradient(
         circle at 12% 20%,
-        rgba(255,255,255,.8) 0 70px,
+        rgba(255,255,255,.85) 0 70px,
         transparent 71px
     ),
 
     radial-gradient(
         circle at 88% 70%,
-        rgba(255,255,255,.55) 0 100px,
+        rgba(255,255,255,.65) 0 100px,
         transparent 101px
     ),
 
     linear-gradient(
         110deg,
-        #ffd7e9,
-        #ffeaf5,
-        #ffd0e7
+        #ffd8e9,
+        #f8e9f7,
+        #dff5f3
     );
 
-    border-radius:0 0 16px 16px;
+    border-radius:
+        0 0 18px 18px;
 
     position:relative;
 
@@ -554,7 +784,7 @@ body{
 
     left:18%;
 
-    color:#ed55a2;
+    color:var(--rosa);
 
     font-size:32px;
 
@@ -565,7 +795,7 @@ body{
 
 .hero-categorias:after{
 
-    content:"♥";
+    content:"✦";
 
     position:absolute;
 
@@ -573,9 +803,9 @@ body{
 
     right:27%;
 
-    color:#df43a0;
+    color:var(--celeste);
 
-    font-size:28px;
+    font-size:30px;
 
     transform:rotate(18deg);
 
@@ -599,7 +829,7 @@ body{
 
     font-weight:900;
 
-    color:#172552;
+    color:var(--azul);
 
     letter-spacing:.5px;
 
@@ -616,13 +846,13 @@ body{
 
     font-weight:1000;
 
-    color:#f52b8a;
+    color:var(--rosa);
 
     text-shadow:
 
         2px 2px 0 white,
 
-        4px 4px 0 #e96aac;
+        4px 4px 0 #e7a4c4;
 
 }
 
@@ -803,7 +1033,13 @@ body{
 
     border-radius:30px;
 
-    background:#f75ba4;
+    background:
+        linear-gradient(
+            90deg,
+            var(--rosa),
+            var(--morado),
+            var(--celeste)
+        );
 
     color:white;
 
@@ -814,7 +1050,7 @@ body{
     font-weight:900;
 
     box-shadow:
-        0 5px 14px rgba(247,91,164,.20);
+        0 5px 14px rgba(232,59,131,.20);
 
 }
 
@@ -856,7 +1092,8 @@ body{
 
     background:white;
 
-    border:1px solid #f5c5df;
+    border:
+        1px solid #f2c4dc;
 
     border-radius:17px;
 
@@ -864,10 +1101,10 @@ body{
 
     text-decoration:none;
 
-    color:#172552;
+    color:var(--azul);
 
     box-shadow:
-        0 3px 13px rgba(245,43,138,.08);
+        0 3px 13px rgba(232,59,131,.08);
 
     overflow:hidden;
 
@@ -881,7 +1118,7 @@ body{
     transform:translateY(-4px);
 
     box-shadow:
-        0 8px 20px rgba(245,43,138,.15);
+        0 8px 20px rgba(232,59,131,.15);
 
 }
 
@@ -947,14 +1184,16 @@ body{
 
 .badge-nuevo{
 
-    background:#11b96b;
+    background:
+        #11b96b;
 
 }
 
 
 .badge-oferta{
 
-    background:#ff4c4c;
+    background:
+        #ff4c4c;
 
 }
 
@@ -991,7 +1230,7 @@ body{
 
 .precio{
 
-    color:#ee1781;
+    color:var(--rosa);
 
     font-size:20px;
 
@@ -1025,7 +1264,12 @@ body{
 
     border-radius:50%;
 
-    background:#f52b8a;
+    background:
+        linear-gradient(
+            135deg,
+            var(--rosa),
+            var(--morado)
+        );
 
     color:white;
 
@@ -1065,7 +1309,13 @@ body{
 
     padding:16px 25px;
 
-    background:#fff0f8;
+    background:
+        linear-gradient(
+            90deg,
+            #fff0f8,
+            #f6efff,
+            #ecfbfa
+        );
 
     display:flex;
 
@@ -1075,7 +1325,8 @@ body{
 
     gap:55px;
 
-    border-top:1px solid #f9d8e9;
+    border-top:
+        1px solid #f9d8e9;
 
 }
 
@@ -1099,7 +1350,7 @@ body{
 
 .beneficio-icono{
 
-    color:#f52b8a;
+    color:var(--rosa);
 
     font-size:27px;
 
@@ -1125,7 +1376,8 @@ body{
     box-shadow:
         0 5px 18px rgba(0,0,0,.07);
 
-    border:1px solid #f5dce8;
+    border:
+        1px solid #f5dce8;
 
 }
 
@@ -1136,7 +1388,7 @@ body{
 
     margin:0 0 15px;
 
-    color:#ed2581;
+    color:var(--rosa);
 
     font-size:20px;
 
@@ -1151,7 +1403,8 @@ body{
 
     padding:10px 5px;
 
-    border-bottom:1px solid #eee;
+    border-bottom:
+        1px solid #eee;
 
     font-size:14px;
 
@@ -1167,7 +1420,7 @@ body{
 
 .fila strong{
 
-    color:#ed2581;
+    color:var(--rosa);
 
 }
 
@@ -1239,7 +1492,12 @@ body{
 
     border-radius:50%;
 
-    background:#f52b8a;
+    background:
+        linear-gradient(
+            135deg,
+            var(--morado),
+            var(--rosa)
+        );
 
     color:white;
 
@@ -1323,16 +1581,16 @@ body{
 }
 
 
+/* =====================================================
+   HEADER CARRITO
+===================================================== */
+
 .carrito-panel.abierto{
 
     transform:translateX(0);
 
 }
 
-
-/* =====================================================
-   HEADER CARRITO
-===================================================== */
 
 .carrito-header{
 
@@ -1343,8 +1601,9 @@ body{
     background:
         linear-gradient(
             135deg,
-            #f52b8a,
-            #f65aa5
+            var(--rosa),
+            var(--morado),
+            var(--celeste)
         );
 
     color:white;
@@ -1426,7 +1685,8 @@ body{
 
     padding:13px 0;
 
-    border-bottom:1px solid #eee;
+    border-bottom:
+        1px solid #eee;
 
 }
 
@@ -1487,7 +1747,7 @@ body{
 
     font-weight:bold;
 
-    color:#172552;
+    color:var(--azul);
 
 }
 
@@ -1517,7 +1777,7 @@ body{
 
     background:#fff0f7;
 
-    color:#f52b8a;
+    color:var(--rosa);
 
     font-size:19px;
 
@@ -1584,7 +1844,7 @@ body{
 
     margin:0 0 7px;
 
-    color:#18234b;
+    color:var(--azul);
 
 }
 
@@ -1608,7 +1868,8 @@ body{
 
     background:white;
 
-    border-top:1px solid #eee;
+    border-top:
+        1px solid #eee;
 
     box-shadow:
         0 -4px 14px rgba(0,0,0,.06);
@@ -1644,7 +1905,7 @@ body{
 
     font-weight:900;
 
-    color:#ed1780;
+    color:var(--rosa);
 
 }
 
@@ -1694,11 +1955,11 @@ body{
 
     height:48px;
 
-    border:2px solid #f52b8a;
+    border:2px solid var(--rosa);
 
     background:white;
 
-    color:#f52b8a;
+    color:var(--rosa);
 
     border-radius:11px;
 
@@ -1716,6 +1977,31 @@ body{
 ===================================================== */
 
 @media(max-width:1000px){
+
+    .header{
+
+        min-height:115px;
+
+        padding:9px 15px;
+
+        gap:14px;
+
+    }
+
+
+    .marca-megatodo{
+
+        width:245px;
+
+    }
+
+
+    .logo-letra{
+
+        font-size:43px;
+
+    }
+
 
     .categorias{
 
@@ -1750,54 +2036,131 @@ body{
 
     .header{
 
-        height:70px;
+        min-height:105px;
 
-        padding:8px 10px;
+        height:auto;
+
+        padding:7px 9px;
+
+        gap:7px;
+
+        align-items:center;
+
+    }
+
+
+    /* MARCA */
+
+    .marca-megatodo{
+
+        width:130px;
+
+        align-items:flex-start;
+
+    }
+
+
+    .logo-megatodo{
+
+        height:31px;
+
+    }
+
+
+    .logo-letra{
+
+        font-size:29px;
+
+        letter-spacing:-3px;
+
+    }
+
+
+    .eslogan{
+
+        font-size:8px;
+
+        margin:
+            2px 0 2px 3px;
+
+    }
+
+
+    .sonrisa-megatodo{
+
+        transform:scale(.60);
+
+        transform-origin:left top;
+
+        width:68px;
+
+        height:18px;
+
+        margin-left:39px;
+
+        margin-bottom:-2px;
+
+    }
+
+
+    /* CATEGORÍAS */
+
+    .menu-categorias{
+
+        position:absolute;
+
+        left:9px;
+
+        bottom:5px;
 
     }
 
 
     .btn-menu{
 
-        height:43px;
+        height:28px;
 
-        padding:0 12px;
+        padding:0 10px;
 
-        font-size:13px;
+        font-size:10px;
 
-        gap:6px;
+        gap:5px;
 
     }
 
 
     .btn-menu-icono{
 
-        font-size:21px;
+        font-size:15px;
 
     }
 
 
     .menu-flecha{
 
-        font-size:16px;
+        font-size:13px;
 
     }
 
 
     .menu-desplegable{
 
-        top:52px;
+        top:34px;
+
+        left:0;
 
         width:215px;
 
     }
 
 
+    /* BUSCADOR */
+
     .buscador-header{
 
-        margin-left:7px;
+        margin-left:3px;
 
-        margin-right:7px;
+        margin-right:3px;
 
     }
 
@@ -1807,6 +2170,8 @@ body{
         height:40px;
 
         padding-left:13px;
+
+        padding-right:47px;
 
         font-size:12px;
 
@@ -1827,6 +2192,8 @@ body{
 
     }
 
+
+    /* CARRITO */
 
     .btn-carrito-global{
 
@@ -2052,16 +2419,25 @@ body{
 
 @media(max-width:400px){
 
-    .btn-menu{
+    .marca-megatodo{
 
-        padding:0 9px;
+        width:112px;
 
     }
 
 
-    .btn-menu span:nth-child(2){
+    .logo-letra{
 
-        display:none;
+        font-size:25px;
+
+        letter-spacing:-3px;
+
+    }
+
+
+    .eslogan{
+
+        font-size:7px;
 
     }
 
@@ -2104,153 +2480,185 @@ body{
 <header class="header">
 
 
-    <!-- ================================================
-         MENÚ CATEGORÍAS
-    ================================================= -->
+    <!-- =================================================
+         MARCA MEGATODO
+    ================================================== -->
 
-    <div
-        class="menu-categorias"
-        id="menuCategorias">
+    <div class="marca-megatodo">
 
 
-        <button
-            class="btn-menu"
-            id="btnMenuCategorias"
-            type="button">
+        <div class="logo-megatodo">
+
+            <span class="logo-letra logo-m">m</span>
+            <span class="logo-letra logo-e">e</span>
+            <span class="logo-letra logo-g">g</span>
+            <span class="logo-letra logo-a">a</span>
+            <span class="logo-letra logo-t">t</span>
+            <span class="logo-letra logo-o1">o</span>
+            <span class="logo-letra logo-d">d</span>
+            <span class="logo-letra logo-o2">o</span>
+
+        </div>
 
 
-            <span
-                class="btn-menu-icono">
+        <div class="eslogan">
 
-                ☰
+            Todo lo que necesitas
 
-            </span>
-
-
-            <span>
-
-                Categorías
-
-            </span>
+        </div>
 
 
-            <span
-                class="menu-flecha">
-
-               ⌄
-
-            </span>
+        <div class="sonrisa-megatodo">
+        </div>
 
 
-        </button>
-
-
-        <!-- ============================================
-             MENÚ DESPLEGABLE
-        ============================================= -->
+        <!-- =================================================
+             MENÚ CATEGORÍAS
+        ================================================== -->
 
         <div
-            class="menu-desplegable"
-            id="menuDesplegable">
+            class="menu-categorias"
+            id="menuCategorias">
 
 
-            <a
-                href="categoria.html?cat=Artículos%20de%20Belleza">
+            <button
+                class="btn-menu"
+                id="btnMenuCategorias"
+                type="button">
 
-                <span class="menu-icono">
-                    💄
+
+                <span
+                    class="btn-menu-icono">
+
+                    ☰
+
                 </span>
+
 
                 <span>
-                    Artículos de Belleza
+
+                    Categorías
+
                 </span>
 
-            </a>
 
+                <span
+                    class="menu-flecha">
 
-            <a
-                href="categoria.html?cat=Juguetes">
+                    ⌄
 
-                <span class="menu-icono">
-                    🧸
                 </span>
 
-                <span>
-                    Juguetes
-                </span>
 
-            </a>
+            </button>
 
 
-            <a
-                href="categoria.html?cat=Bazar">
+            <!-- MENÚ -->
 
-                <span class="menu-icono">
-                    🏠
-                </span>
-
-                <span>
-                    Bazar
-                </span>
-
-            </a>
+            <div
+                class="menu-desplegable"
+                id="menuDesplegable">
 
 
-            <a
-                href="categoria.html?cat=Peluches">
+                <a
+                    href="categoria.html?cat=Artículos%20de%20Belleza">
 
-                <span class="menu-icono">
-                    🐻
-                </span>
+                    <span class="menu-icono">
+                        💄
+                    </span>
 
-                <span>
-                    Peluches
-                </span>
+                    <span>
+                        Artículos de Belleza
+                    </span>
 
-            </a>
-
-
-            <a
-                href="categoria.html?cat=Cosméticos">
-
-                <span class="menu-icono">
-                    🧴
-                </span>
-
-                <span>
-                    Cosméticos
-                </span>
-
-            </a>
+                </a>
 
 
-            <a
-                href="categoria.html?cat=Cajas%20de%20Regalo">
+                <a
+                    href="categoria.html?cat=Juguetes">
 
-                <span class="menu-icono">
-                    🎁
-                </span>
+                    <span class="menu-icono">
+                        🧸
+                    </span>
 
-                <span>
-                    Cajas de Regalo
-                </span>
+                    <span>
+                        Juguetes
+                    </span>
 
-            </a>
+                </a>
 
 
-            <a
-                href="categoria.html?cat=Coches%20de%20Bebé">
+                <a
+                    href="categoria.html?cat=Bazar">
 
-                <span class="menu-icono">
-                    👶
-                </span>
+                    <span class="menu-icono">
+                        🏠
+                    </span>
 
-                <span>
-                    Coches de Bebé
-                </span>
+                    <span>
+                        Bazar
+                    </span>
 
-            </a>
+                </a>
 
+
+                <a
+                    href="categoria.html?cat=Peluches">
+
+                    <span class="menu-icono">
+                        🐻
+                    </span>
+
+                    <span>
+                        Peluches
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="categoria.html?cat=Cosméticos">
+
+                    <span class="menu-icono">
+                        🧴
+                    </span>
+
+                    <span>
+                        Cosméticos
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="categoria.html?cat=Cajas%20de%20Regalo">
+
+                    <span class="menu-icono">
+                        🎁
+                    </span>
+
+                    <span>
+                        Cajas de Regalo
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="categoria.html?cat=Coches%20de%20Bebé">
+
+                    <span class="menu-icono">
+                        👶
+                    </span>
+
+                    <span>
+                        Coches de Bebé
+                    </span>
+
+                </a>
+
+
+            </div>
 
         </div>
 
@@ -2361,172 +2769,103 @@ body{
         href="categoria.html?cat=Artículos%20de%20Belleza"
         class="categoria categoria-belleza">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             💄
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Artículos de<br>Belleza
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Juguetes"
         class="categoria categoria-juguetes">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             🧸
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Juguetes
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Bazar"
         class="categoria categoria-bazar">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             🏠
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Bazar
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Peluches"
         class="categoria categoria-peluches">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             🐻
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Peluches
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Cosméticos"
         class="categoria categoria-cosmeticos">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             🧴
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Cosméticos
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Cajas%20de%20Regalo"
         class="categoria categoria-regalo">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             🎁
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Cajas de<br>Regalo
-
         </span>
-
 
     </a>
-
 
 
     <a
         href="categoria.html?cat=Coches%20de%20Bebé"
         class="categoria categoria-coches">
 
-
-        <span
-            class="categoria-icono">
-
+        <span class="categoria-icono">
             👶
-
         </span>
 
-
-        <span
-            class="categoria-nombre">
-
+        <span class="categoria-nombre">
             Coches de<br>Bebé
-
         </span>
-
 
     </a>
 
@@ -2578,93 +2917,54 @@ body{
     class="beneficios">
 
 
-    <div
-        class="beneficio">
+    <div class="beneficio">
 
-
-        <span
-            class="beneficio-icono">
-
+        <span class="beneficio-icono">
             ⚡
-
         </span>
 
-
         <span>
-
             Rápido y fácil
-
         </span>
-
 
     </div>
 
 
+    <div class="beneficio">
 
-    <div
-        class="beneficio">
-
-
-        <span
-            class="beneficio-icono">
-
+        <span class="beneficio-icono">
             🛡️
-
         </span>
 
-
         <span>
-
             Seguro
-
         </span>
-
 
     </div>
 
 
+    <div class="beneficio">
 
-    <div
-        class="beneficio">
-
-
-        <span
-            class="beneficio-icono">
-
+        <span class="beneficio-icono">
             ♡
-
         </span>
-
 
         <span>
-
             Tu tienda de confianza
-
         </span>
-
 
     </div>
 
 
+    <div class="beneficio">
 
-    <div
-        class="beneficio">
-
-
-        <span
-            class="beneficio-icono">
-
+        <span class="beneficio-icono">
             🚚
-
         </span>
-
 
         <span>
-
             Envíos a todo el país
-
         </span>
-
 
     </div>
 
@@ -2682,51 +2982,32 @@ body{
 
 
     <h2>
-
         🕒 Horario de atención
-
     </h2>
 
 
-    <div
-        class="fila">
-
+    <div class="fila">
 
         <span>
-
             Lunes a Sábado
-
         </span>
 
-
         <strong>
-
             8:30 a 19:30
-
         </strong>
-
 
     </div>
 
 
-
-    <div
-        class="fila">
-
+    <div class="fila">
 
         <span>
-
             Domingo
-
         </span>
 
-
         <strong>
-
             9:30 a 18:30
-
         </strong>
-
 
     </div>
 
@@ -2903,7 +3184,6 @@ const url =
 let productos = [];
 
 
-
 /* =====================================================
    NORMALIZAR
 ===================================================== */
@@ -2917,7 +3197,6 @@ function normalizar(texto){
         .replace(/[\u0300-\u036f]/g,"");
 
 }
-
 
 
 /* =====================================================
@@ -2944,7 +3223,6 @@ fetch(url)
     );
 
 });
-
 
 
 /* =====================================================
@@ -3109,7 +3387,6 @@ function mostrarNuevos(){
 }
 
 
-
 /* =====================================================
    AGREGAR AL CARRITO
 ===================================================== */
@@ -3191,7 +3468,6 @@ function agregarProductoDesdeInicio(codigo){
     abrirPanelCarrito();
 
 }
-
 
 
 /* =====================================================
@@ -3286,7 +3562,6 @@ document
 );
 
 
-
 /* =====================================================
    ENTER BUSCADOR
 ===================================================== */
@@ -3317,7 +3592,6 @@ document
 );
 
 
-
 /* =====================================================
    MENÚ CATEGORÍAS
 ===================================================== */
@@ -3334,7 +3608,6 @@ const btnMenuCategorias =
     );
 
 
-
 /* ABRIR / CERRAR */
 
 btnMenuCategorias.addEventListener(
@@ -3349,7 +3622,6 @@ btnMenuCategorias.addEventListener(
 
     }
 );
-
 
 
 /* CERRAR AL HACER CLIC FUERA */
@@ -3372,7 +3644,6 @@ document.addEventListener(
 );
 
 
-
 /* =====================================================
    CARRITO
 ===================================================== */
@@ -3384,7 +3655,6 @@ function getCart(){
     ) || [];
 
 }
-
 
 
 function actualizarCarritoUI(){
@@ -3412,7 +3682,6 @@ function actualizarCarritoUI(){
 
 
 actualizarCarritoUI();
-
 
 
 /* =====================================================
@@ -3455,7 +3724,6 @@ const carritoTotal =
     );
 
 
-
 /* =====================================================
    ABRIR CARRITO
 ===================================================== */
@@ -3481,7 +3749,6 @@ function abrirPanelCarrito(){
 }
 
 
-
 /* =====================================================
    CERRAR CARRITO
 ===================================================== */
@@ -3504,7 +3771,6 @@ function cerrarPanelCarrito(){
 }
 
 
-
 abrirCarrito.addEventListener(
     "click",
     abrirPanelCarrito
@@ -3523,7 +3789,6 @@ carritoOverlay.addEventListener(
 );
 
 
-
 document.addEventListener(
     "keydown",
     function(e){
@@ -3536,7 +3801,6 @@ document.addEventListener(
 
     }
 );
-
 
 
 /* =====================================================
@@ -3591,7 +3855,6 @@ function renderizarCarrito(){
         return;
 
     }
-
 
 
     carritoContenido.innerHTML =
@@ -3725,7 +3988,6 @@ function renderizarCarrito(){
         ).join("");
 
 
-
     const total =
 
         carrito.reduce(
@@ -3765,7 +4027,6 @@ function renderizarCarrito(){
         "$" + total.toFixed(2);
 
 }
-
 
 
 /* =====================================================
@@ -3822,7 +4083,6 @@ function cambiarCantidadCarrito(
 }
 
 
-
 /* =====================================================
    ELIMINAR
 ===================================================== */
@@ -3852,7 +4112,6 @@ function eliminarDelCarrito(index){
 }
 
 
-
 /* =====================================================
    ACTUALIZAR CARRITO
 ===================================================== */
@@ -3878,7 +4137,6 @@ window.addEventListener(
 );
 
 
-
 /* =====================================================
    BOTÓN ARRIBA
 ===================================================== */
@@ -3901,7 +4159,6 @@ window.addEventListener(
 
     }
 );
-
 
 
 function irArriba(){
