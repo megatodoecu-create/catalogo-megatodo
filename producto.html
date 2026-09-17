@@ -82,10 +82,6 @@ body{
 
 /* =====================================================
    ENLACE DEL LOGO
-
-   IMPORTANTE:
-   Mantiene exactamente la estructura visual
-   del index.html.
 ===================================================== */
 
 .logo-enlace{
@@ -662,7 +658,7 @@ body{
 
 
 /* =====================================================
-   BOTONES
+   BOTONES PRODUCTO
 ===================================================== */
 
 .botones-producto{
@@ -840,9 +836,15 @@ body{
     font-size:17px;
 }
 
+
+/* =====================================================
+   PIE DEL CARRITO
+===================================================== */
+
 .carrito-footer{
     border-top:1px solid #eee;
     padding:18px;
+    background:white;
 }
 
 .total-carrito{
@@ -854,6 +856,9 @@ body{
     margin-bottom:15px;
 }
 
+
+/* BOTÓN WHATSAPP */
+
 .btn-whatsapp-carrito{
     width:100%;
     height:48px;
@@ -864,6 +869,37 @@ body{
     font-size:15px;
     font-weight:bold;
     cursor:pointer;
+    transition:.2s;
+}
+
+.btn-whatsapp-carrito:hover{
+    transform:translateY(-1px);
+    opacity:.92;
+}
+
+
+/* BOTÓN VER CARRITO COMPLETO */
+
+.btn-ver-carrito{
+    width:100%;
+    height:46px;
+    margin-top:10px;
+    border:2px solid var(--rosa);
+    border-radius:25px;
+    background:white;
+    color:var(--rosa);
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.btn-ver-carrito:hover{
+    background:var(--rosa-suave);
+    transform:translateY(-1px);
 }
 
 
@@ -934,6 +970,7 @@ body{
     .foto-principal{
         height:400px;
     }
+
 }
 
 
@@ -1067,6 +1104,7 @@ body{
     .btn-whatsapp{
         width:100%;
     }
+
 }
 
 
@@ -1088,6 +1126,7 @@ body{
     .buscador-header input{
         font-size:11px;
     }
+
 }
 
 </style>
@@ -1107,6 +1146,7 @@ body{
     <div class="marca-megatodo">
 
         <!-- LOGO CLICKEABLE -->
+
         <a href="index.html"
            class="logo-enlace"
            aria-label="Ir a la página principal">
@@ -1134,18 +1174,26 @@ body{
 
 
         <!-- MENÚ -->
-        <div class="menu-categorias" id="menuCategorias">
+
+        <div class="menu-categorias"
+             id="menuCategorias">
 
             <button
                 class="btn-menu"
                 id="btnMenuCategorias"
                 type="button">
 
-                <span class="btn-menu-icono">☰</span>
+                <span class="btn-menu-icono">
+                    ☰
+                </span>
 
-                <span>Categorías</span>
+                <span>
+                    Categorías
+                </span>
 
-                <span class="menu-flecha">⌄</span>
+                <span class="menu-flecha">
+                    ⌄
+                </span>
 
             </button>
 
@@ -1223,7 +1271,9 @@ body{
 
         🛒
 
-        <span id="cartCount">0</span>
+        <span id="cartCount">
+            0
+        </span>
 
     </button>
 
@@ -1237,16 +1287,26 @@ body{
 
 <main class="contenedor-producto">
 
-    <a href="javascript:history.back()" class="volver">
+    <a href="javascript:history.back()"
+       class="volver">
+
         ← Volver
+
     </a>
 
 
     <div id="contenedorProducto">
 
         <div class="mensaje">
-            <h2>Cargando producto...</h2>
-            <p>Espera un momento.</p>
+
+            <h2>
+                Cargando producto...
+            </h2>
+
+            <p>
+                Espera un momento.
+            </p>
+
         </div>
 
     </div>
@@ -1276,7 +1336,9 @@ body{
 
     <div class="carrito-header">
 
-        <h2>🛒 Mi carrito</h2>
+        <h2>
+            🛒 Mi carrito
+        </h2>
 
         <button
             class="cerrar-carrito"
@@ -1297,11 +1359,17 @@ body{
     </div>
 
 
+    <!-- =================================================
+         PIE DEL CARRITO
+    ================================================== -->
+
     <div class="carrito-footer">
 
         <div class="total-carrito">
 
-            <span>Total</span>
+            <span>
+                Total
+            </span>
 
             <span id="totalCarrito">
                 $0.00
@@ -1309,6 +1377,8 @@ body{
 
         </div>
 
+
+        <!-- WHATSAPP -->
 
         <button
             class="btn-whatsapp-carrito"
@@ -1318,6 +1388,17 @@ body{
             💬 Comprar por WhatsApp
 
         </button>
+
+
+        <!-- VER CARRITO COMPLETO -->
+
+        <a
+            href="carrito.html"
+            class="btn-ver-carrito">
+
+            🛒 Ver carrito completo
+
+        </a>
 
     </div>
 
@@ -1358,6 +1439,7 @@ const NUMERO_WHATSAPP =
 ===================================================== */
 
 let productos = [];
+
 let productoActual = null;
 
 
@@ -1381,7 +1463,9 @@ function normalizar(texto){
 ===================================================== */
 
 const parametros =
-new URLSearchParams(window.location.search);
+new URLSearchParams(
+    window.location.search
+);
 
 const codigoURL =
 parametros.get("codigo");
@@ -1398,9 +1482,15 @@ async function cargarProductos(){
         const respuesta =
         await fetch(URL_SHEET);
 
+
         if(!respuesta.ok){
-            throw new Error("No se pudo cargar el catálogo.");
+
+            throw new Error(
+                "No se pudo cargar el catálogo."
+            );
+
         }
+
 
         productos =
         await respuesta.json();
@@ -1420,8 +1510,11 @@ async function cargarProductos(){
                 ""
             ).trim();
 
+
             return codigo ===
-            String(codigoURL ?? "").trim();
+            String(
+                codigoURL ?? ""
+            ).trim();
 
         });
 
@@ -1442,6 +1535,7 @@ async function cargarProductos(){
                     ""
                 );
 
+
                 return normalizar(codigo) ===
                 normalizar(codigoURL);
 
@@ -1458,7 +1552,9 @@ async function cargarProductos(){
 
                 <div class="mensaje">
 
-                    <h2>Producto no encontrado</h2>
+                    <h2>
+                        Producto no encontrado
+                    </h2>
 
                     <p>
                         No encontramos el producto solicitado.
@@ -1483,13 +1579,16 @@ async function cargarProductos(){
 
         console.error(error);
 
+
         document.getElementById(
             "contenedorProducto"
         ).innerHTML = `
 
             <div class="mensaje">
 
-                <h2>Error al cargar el producto</h2>
+                <h2>
+                    Error al cargar el producto
+                </h2>
 
                 <p>
                     Intenta nuevamente.
@@ -1515,7 +1614,9 @@ function mostrarProducto(){
 
 
     const nombre =
-    String(p.Nombre ?? "").trim();
+    String(
+        p.Nombre ?? ""
+    ).trim();
 
 
     const categoria =
@@ -1600,9 +1701,18 @@ function mostrarProducto(){
 
     const fotos = [];
 
-    if(foto1) fotos.push(foto1);
-    if(foto2) fotos.push(foto2);
-    if(foto3) fotos.push(foto3);
+
+    if(foto1){
+        fotos.push(foto1);
+    }
+
+    if(foto2){
+        fotos.push(foto2);
+    }
+
+    if(foto3){
+        fotos.push(foto3);
+    }
 
 
     if(fotos.length === 0){
@@ -1620,12 +1730,15 @@ function mostrarProducto(){
 
     let htmlBadges = "";
 
+
     if(oferta){
 
         htmlBadges += `
+
             <span class="badge badge-oferta">
                 OFERTA
             </span>
+
         `;
 
     }
@@ -1634,26 +1747,31 @@ function mostrarProducto(){
     if(nuevo){
 
         htmlBadges += `
+
             <span class="badge badge-nuevo">
                 NUEVO
             </span>
+
         `;
 
     }
 
 
     /* =============================================
-       PRECIO
+       PRECIO ANTERIOR
     ============================================= */
 
     let htmlPrecioAnterior = "";
 
+
     if(precioAnterior){
 
         htmlPrecioAnterior = `
+
             <span class="precio-anterior">
                 ${precioAnterior}
             </span>
+
         `;
 
     }
@@ -1664,6 +1782,7 @@ function mostrarProducto(){
     ============================================= */
 
     let htmlTamanio = "";
+
 
     if(tamanio){
 
@@ -1689,6 +1808,7 @@ function mostrarProducto(){
     ============================================= */
 
     let htmlDescripcion = "";
+
 
     if(descripcion){
 
@@ -1717,6 +1837,7 @@ function mostrarProducto(){
 
     let htmlStock = "";
 
+
     if(stock){
 
         htmlStock = `
@@ -1736,26 +1857,29 @@ function mostrarProducto(){
 
     let htmlMiniaturas = "";
 
+
     if(fotos.length > 1){
 
-        fotos.forEach((foto,index) => {
+        fotos.forEach(
+            (foto,index) => {
 
-            htmlMiniaturas += `
+                htmlMiniaturas += `
 
-                <button
-                    class="miniatura ${index === 0 ? "activa" : ""}"
-                    type="button"
-                    onclick="cambiarFoto(${index})">
+                    <button
+                        class="miniatura ${index === 0 ? "activa" : ""}"
+                        type="button"
+                        onclick="cambiarFoto(${index})">
 
-                    <img
-                        src="${foto}"
-                        alt="${nombre}">
+                        <img
+                            src="${foto}"
+                            alt="${nombre}">
 
-                </button>
+                    </button>
 
-            `;
+                `;
 
-        });
+            }
+        );
 
     }
 
@@ -1908,29 +2032,42 @@ function cambiarFoto(indice){
     ).trim();
 
 
-    if(foto1) fotos.push(foto1);
-    if(foto2) fotos.push(foto2);
-    if(foto3) fotos.push(foto3);
+    if(foto1){
+        fotos.push(foto1);
+    }
+
+    if(foto2){
+        fotos.push(foto2);
+    }
+
+    if(foto3){
+        fotos.push(foto3);
+    }
 
 
-    if(!fotos[indice]) return;
+    if(!fotos[indice]){
+        return;
+    }
 
 
     document.getElementById(
         "fotoPrincipal"
-    ).src = fotos[indice];
+    ).src =
+    fotos[indice];
 
 
     document.querySelectorAll(
         ".miniatura"
-    ).forEach((miniatura,i) => {
+    ).forEach(
+        (miniatura,i) => {
 
-        miniatura.classList.toggle(
-            "activa",
-            i === indice
-        );
+            miniatura.classList.toggle(
+                "activa",
+                i === indice
+            );
 
-    });
+        }
+    );
 
 }
 
@@ -1969,6 +2106,7 @@ function guardarCarrito(carrito){
         JSON.stringify(carrito)
     );
 
+
     actualizarContadorCarrito();
 
 }
@@ -1980,7 +2118,9 @@ function guardarCarrito(carrito){
 
 function agregarAlCarrito(){
 
-    if(!productoActual) return;
+    if(!productoActual){
+        return;
+    }
 
 
     const carrito =
@@ -2019,7 +2159,8 @@ function agregarAlCarrito(){
 
     const existente =
     carrito.find(
-        item => item.codigo === codigo
+        item =>
+        item.codigo === codigo
     );
 
 
@@ -2069,14 +2210,18 @@ function actualizarContadorCarrito(){
     const cantidad =
     carrito.reduce(
         (total,item) =>
-        total + Number(item.cantidad || 0),
+        total +
+        Number(
+            item.cantidad || 0
+        ),
         0
     );
 
 
     document.getElementById(
         "cartCount"
-    ).textContent = cantidad;
+    ).textContent =
+    cantidad;
 
 }
 
@@ -2141,7 +2286,8 @@ function mostrarCarrito(){
 
         document.getElementById(
             "totalCarrito"
-        ).textContent = "$0.00";
+        ).textContent =
+        "$0.00";
 
 
         return;
@@ -2153,89 +2299,99 @@ function mostrarCarrito(){
 
 
     contenedor.innerHTML =
-    carrito.map((item,index) => {
+    carrito.map(
+        (item,index) => {
 
-        const precio =
-        convertirPrecio(item.precio);
-
-
-        const cantidad =
-        Number(item.cantidad || 1);
-
-
-        total +=
-        precio * cantidad;
+            const precio =
+            convertirPrecio(
+                item.precio
+            );
 
 
-        return `
-
-            <div class="item-carrito">
-
-                <img
-                    src="${item.foto || ""}"
-                    alt="${item.nombre}">
+            const cantidad =
+            Number(
+                item.cantidad || 1
+            );
 
 
-                <div>
+            total +=
+            precio * cantidad;
 
-                    <strong>
-                        ${item.nombre}
-                    </strong>
 
-                    <div class="item-precio">
+            return `
 
-                        ${item.precio}
+                <div class="item-carrito">
+
+                    <img
+                        src="${item.foto || ""}"
+                        alt="${item.nombre}">
+
+
+                    <div>
+
+                        <strong>
+                            ${item.nombre}
+                        </strong>
+
+
+                        <div class="item-precio">
+
+                            ${item.precio}
+
+                        </div>
+
+
+                        <div class="controles-cantidad">
+
+                            <button
+                                type="button"
+                                onclick="cambiarCantidad(${index},-1)">
+
+                                −
+
+                            </button>
+
+
+                            <span>
+                                ${cantidad}
+                            </span>
+
+
+                            <button
+                                type="button"
+                                onclick="cambiarCantidad(${index},1)">
+
+                                +
+
+                            </button>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="controles-cantidad">
+                    <button
+                        class="btn-eliminar"
+                        type="button"
+                        onclick="eliminarDelCarrito(${index})">
 
-                        <button
-                            type="button"
-                            onclick="cambiarCantidad(${index},-1)">
+                        🗑️
 
-                            −
-
-                        </button>
-
-                        <span>
-                            ${cantidad}
-                        </span>
-
-                        <button
-                            type="button"
-                            onclick="cambiarCantidad(${index},1)">
-
-                            +
-
-                        </button>
-
-                    </div>
+                    </button>
 
                 </div>
 
+            `;
 
-                <button
-                    class="btn-eliminar"
-                    type="button"
-                    onclick="eliminarDelCarrito(${index})">
-
-                    🗑️
-
-                </button>
-
-            </div>
-
-        `;
-
-    }).join("");
+        }
+    ).join("");
 
 
     document.getElementById(
         "totalCarrito"
     ).textContent =
-    "$" + total.toFixed(2);
+    "$" +
+    total.toFixed(2);
 
 }
 
@@ -2244,23 +2400,34 @@ function mostrarCarrito(){
    CAMBIAR CANTIDAD
 ===================================================== */
 
-function cambiarCantidad(indice,cambio){
+function cambiarCantidad(
+    indice,
+    cambio
+){
 
     const carrito =
     obtenerCarrito();
 
 
-    if(!carrito[indice]) return;
+    if(!carrito[indice]){
+        return;
+    }
 
 
     carrito[indice].cantidad =
-    Number(carrito[indice].cantidad || 1)
-    + cambio;
+    Number(
+        carrito[indice].cantidad || 1
+    ) + cambio;
 
 
-    if(carrito[indice].cantidad <= 0){
+    if(
+        carrito[indice].cantidad <= 0
+    ){
 
-        carrito.splice(indice,1);
+        carrito.splice(
+            indice,
+            1
+        );
 
     }
 
@@ -2282,7 +2449,10 @@ function eliminarDelCarrito(indice){
     obtenerCarrito();
 
 
-    carrito.splice(indice,1);
+    carrito.splice(
+        indice,
+        1
+    );
 
 
     guardarCarrito(carrito);
@@ -2303,12 +2473,16 @@ function abrirCarrito(){
 
     document.getElementById(
         "carritoPanel"
-    ).classList.add("abierto");
+    ).classList.add(
+        "abierto"
+    );
 
 
     document.getElementById(
         "overlayCarrito"
-    ).classList.add("activo");
+    ).classList.add(
+        "activo"
+    );
 
 }
 
@@ -2321,12 +2495,16 @@ function cerrarCarrito(){
 
     document.getElementById(
         "carritoPanel"
-    ).classList.remove("abierto");
+    ).classList.remove(
+        "abierto"
+    );
 
 
     document.getElementById(
         "overlayCarrito"
-    ).classList.remove("activo");
+    ).classList.remove(
+        "activo"
+    );
 
 }
 
@@ -2337,7 +2515,9 @@ function cerrarCarrito(){
 
 function comprarProductoWhatsApp(){
 
-    if(!productoActual) return;
+    if(!productoActual){
+        return;
+    }
 
 
     const codigo =
@@ -2387,7 +2567,9 @@ ${urlProducto}`;
     "https://wa.me/" +
     NUMERO_WHATSAPP +
     "?text=" +
-    encodeURIComponent(mensaje);
+    encodeURIComponent(
+        mensaje
+    );
 
 
     window.open(
@@ -2430,40 +2612,50 @@ Quiero realizar una compra:
     let total = 0;
 
 
-    carrito.forEach((item,index) => {
+    carrito.forEach(
+        (item,index) => {
 
-        const precio =
-        convertirPrecio(item.precio);
-
-
-        const cantidad =
-        Number(item.cantidad || 1);
-
-
-        total +=
-        precio * cantidad;
+            const precio =
+            convertirPrecio(
+                item.precio
+            );
 
 
-        const urlProducto =
-        new URL(
-            "producto.html?codigo=" +
-            encodeURIComponent(item.codigo),
-            window.location.href
-        ).href;
+            const cantidad =
+            Number(
+                item.cantidad || 1
+            );
 
 
-        mensaje +=
+            total +=
+            precio * cantidad;
+
+
+            const urlProducto =
+            new URL(
+                "producto.html?codigo=" +
+                encodeURIComponent(
+                    item.codigo
+                ),
+                window.location.href
+            ).href;
+
+
+            mensaje +=
 `${index + 1}. ${item.nombre}
 Cantidad: ${cantidad}
 Precio: ${item.precio}
-Subtotal: $${(precio * cantidad).toFixed(2)}
+Subtotal: $${(
+    precio * cantidad
+).toFixed(2)}
 
 🔗 Producto:
 ${urlProducto}
 
 `;
 
-    });
+        }
+    );
 
 
     mensaje +=
@@ -2476,7 +2668,9 @@ Quedo atento/a. Gracias 😊`;
     "https://wa.me/" +
     NUMERO_WHATSAPP +
     "?text=" +
-    encodeURIComponent(mensaje);
+    encodeURIComponent(
+        mensaje
+    );
 
 
     window.open(
@@ -2509,6 +2703,7 @@ btnMenuCategorias.addEventListener(
 
         event.stopPropagation();
 
+
         menuCategorias.classList.toggle(
             "abierto"
         );
@@ -2522,7 +2717,9 @@ document.addEventListener(
     function(event){
 
         if(
-            !menuCategorias.contains(event.target)
+            !menuCategorias.contains(
+                event.target
+            )
         ){
 
             menuCategorias.classList.remove(
@@ -2573,42 +2770,44 @@ function mostrarResultadosBusqueda(){
 
 
     if(productos.length === 0){
-
         return;
-
     }
 
 
     const resultados =
-    productos.filter(p => {
+    productos.filter(
+        p => {
 
-        const nombre =
-        normalizar(p.Nombre);
-
-
-        const categoria =
-        normalizar(
-            p.Categoria ??
-            p.Categoría ??
-            ""
-        );
+            const nombre =
+            normalizar(
+                p.Nombre
+            );
 
 
-        const codigo =
-        normalizar(
-            p.Código ??
-            p.Codigo ??
-            ""
-        );
+            const categoria =
+            normalizar(
+                p.Categoria ??
+                p.Categoría ??
+                ""
+            );
 
 
-        return (
-            nombre.includes(texto) ||
-            categoria.includes(texto) ||
-            codigo.includes(texto)
-        );
+            const codigo =
+            normalizar(
+                p.Código ??
+                p.Codigo ??
+                ""
+            );
 
-    }).slice(0,8);
+
+            return (
+                nombre.includes(texto) ||
+                categoria.includes(texto) ||
+                codigo.includes(texto)
+            );
+
+        }
+    ).slice(0,8);
 
 
     if(resultados.length === 0){
@@ -2628,8 +2827,10 @@ function mostrarResultadosBusqueda(){
 
         `;
 
+
         resultadosBusqueda.style.display =
         "block";
+
 
         return;
 
@@ -2637,65 +2838,69 @@ function mostrarResultadosBusqueda(){
 
 
     resultadosBusqueda.innerHTML =
-    resultados.map(p => {
+    resultados.map(
+        p => {
 
-        const codigo =
-        String(
-            p.Código ??
-            p.Codigo ??
-            ""
-        ).trim();
-
-
-        const nombre =
-        String(
-            p.Nombre ??
-            ""
-        ).trim();
+            const codigo =
+            String(
+                p.Código ??
+                p.Codigo ??
+                ""
+            ).trim();
 
 
-        const precio =
-        String(
-            p.Precio ??
-            ""
-        ).trim();
+            const nombre =
+            String(
+                p.Nombre ??
+                ""
+            ).trim();
 
 
-        const foto =
-        String(
-            p["Foto 1"] ??
-            p.Foto ??
-            ""
-        ).trim();
+            const precio =
+            String(
+                p.Precio ??
+                ""
+            ).trim();
 
 
-        return `
+            const foto =
+            String(
+                p["Foto 1"] ??
+                p.Foto ??
+                ""
+            ).trim();
 
-            <div
-                class="resultado-busqueda"
-                onclick="irAProducto('${encodeURIComponent(codigo)}')">
 
-                <img
-                    src="${foto}"
-                    alt="${nombre}">
+            return `
 
-                <div>
+                <div
+                    class="resultado-busqueda"
+                    onclick="irAProducto('${encodeURIComponent(codigo)}')">
 
-                    <strong>
-                        ${nombre}
-                    </strong>
+                    <img
+                        src="${foto}"
+                        alt="${nombre}">
 
-                    <small>
-                        ${precio}
-                    </small>
+
+                    <div>
+
+                        <strong>
+                            ${nombre}
+                        </strong>
+
+
+                        <small>
+                            ${precio}
+                        </small>
+
+                    </div>
 
                 </div>
 
-            </div>
+            `;
 
-        `;
-
-    }).join("");
+        }
+    ).join("");
 
 
     resultadosBusqueda.style.display =
@@ -2748,7 +2953,9 @@ buscadorGlobal.addEventListener(
 
                 window.location.href =
                 "buscar.html?q=" +
-                encodeURIComponent(texto);
+                encodeURIComponent(
+                    texto
+                );
 
             }
 
@@ -2776,7 +2983,9 @@ document.getElementById(
 
             window.location.href =
             "buscar.html?q=" +
-            encodeURIComponent(texto);
+            encodeURIComponent(
+                texto
+            );
 
         }
 
@@ -2884,8 +3093,11 @@ btnArriba.addEventListener(
     function(){
 
         window.scrollTo({
+
             top:0,
+
             behavior:"smooth"
+
         });
 
     }
