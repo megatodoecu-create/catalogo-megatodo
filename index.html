@@ -46,42 +46,312 @@ body{
 }
 
 /* =========================
-   BOTÓN CARRITO
+   CARRITO
 ========================= */
 
 .btn-carrito-global{
     position:fixed;
     top:18px;
     right:18px;
+    width:58px;
+    height:58px;
     background:#ff2a8a;
     color:white;
-    padding:11px 17px;
-    border-radius:30px;
-    text-decoration:none;
-    font-weight:bold;
-    font-size:15px;
+    border:none;
+    border-radius:50%;
+    font-size:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
     box-shadow:0 5px 15px rgba(255,42,138,.30);
     z-index:9999;
     transition:.25s;
 }
 
 .btn-carrito-global:hover{
-    transform:translateY(-2px);
+    transform:scale(1.06);
     box-shadow:0 7px 18px rgba(255,42,138,.40);
 }
 
 #cartCount{
+    position:absolute;
+    top:-3px;
+    right:-3px;
     background:white;
     color:#ff2a8a;
     font-size:12px;
-    min-width:21px;
-    height:21px;
-    display:inline-flex;
+    min-width:22px;
+    height:22px;
+    padding:0 5px;
+    display:flex;
     align-items:center;
     justify-content:center;
     border-radius:50%;
-    margin-left:5px;
     font-weight:bold;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+/* =========================
+   FONDO DEL CARRITO
+========================= */
+
+.carrito-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.28);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:10000;
+}
+
+.carrito-overlay.abierto{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================
+   PANEL LATERAL
+========================= */
+
+.carrito-panel{
+    position:fixed;
+    top:0;
+    right:0;
+    width:390px;
+    max-width:92%;
+    height:100vh;
+    background:white;
+    z-index:10001;
+    transform:translateX(100%);
+    transition:transform .35s ease;
+    box-shadow:-8px 0 30px rgba(0,0,0,.18);
+    display:flex;
+    flex-direction:column;
+}
+
+.carrito-panel.abierto{
+    transform:translateX(0);
+}
+
+/* =========================
+   ENCABEZADO DEL CARRITO
+========================= */
+
+.carrito-header{
+    background:linear-gradient(135deg,#ff2a8a,#ff67b3);
+    color:white;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.carrito-titulo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.carrito-titulo-icono{
+    font-size:26px;
+}
+
+.cerrar-carrito{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.20);
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s;
+}
+
+.cerrar-carrito:hover{
+    background:rgba(255,255,255,.35);
+    transform:rotate(90deg);
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.carrito-contenido{
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
+}
+
+/* =========================
+   PRODUCTO
+========================= */
+
+.carrito-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 4px;
+    border-bottom:1px solid #eee;
+}
+
+.carrito-item-imagen{
+    width:72px;
+    height:72px;
+    min-width:72px;
+    border-radius:12px;
+    border:1px solid #f1dce7;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.carrito-item-imagen img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.carrito-item-info{
+    flex:1;
+    min-width:0;
+}
+
+.carrito-item-nombre{
+    font-size:14px;
+    font-weight:bold;
+    line-height:1.3;
+    margin-bottom:5px;
+}
+
+.carrito-item-precio{
+    color:#d63384;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* =========================
+   CANTIDAD
+========================= */
+
+.carrito-item-cantidad{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:8px;
+}
+
+.cantidad-btn{
+    width:27px;
+    height:27px;
+    border:none;
+    border-radius:50%;
+    background:#fff0f6;
+    color:#ff2a8a;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cantidad-numero{
+    min-width:20px;
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* =========================
+   ELIMINAR
+========================= */
+
+.eliminar-item{
+    border:none;
+    background:transparent;
+    color:#ff3b5c;
+    font-size:18px;
+    cursor:pointer;
+    padding:5px;
+}
+
+/* =========================
+   CARRITO VACÍO
+========================= */
+
+.carrito-vacio{
+    text-align:center;
+    padding:60px 20px;
+    color:#777;
+}
+
+.carrito-vacio-icono{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.carrito-vacio h3{
+    margin:0 0 8px;
+    color:#444;
+}
+
+.carrito-vacio p{
+    margin:0;
+    font-size:14px;
+}
+
+/* =========================
+   PIE DEL CARRITO
+========================= */
+
+.carrito-footer{
+    padding:18px;
+    background:white;
+    border-top:1px solid #eee;
+    box-shadow:0 -3px 12px rgba(0,0,0,.06);
+}
+
+.carrito-total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.carrito-total-texto{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.carrito-total-precio{
+    font-size:23px;
+    color:#d63384;
+    font-weight:bold;
+}
+
+.btn-ver-carrito{
+    display:block;
+    width:100%;
+    padding:14px;
+    border:2px solid #ff2a8a;
+    background:white;
+    color:#ff2a8a;
+    border-radius:13px;
+    font-size:15px;
+    font-weight:bold;
+    text-decoration:none;
+    text-align:center;
+    transition:.2s;
+}
+
+.btn-ver-carrito:hover{
+    background:#fff0f6;
 }
 
 /* =========================
@@ -127,7 +397,7 @@ body{
 }
 
 /* =========================
-   RESULTADOS DEL BUSCADOR
+   RESULTADOS
 ========================= */
 
 #resultadosBusqueda{
@@ -265,6 +535,7 @@ body{
 }
 
 @keyframes aparecerBanner{
+
     from{
         opacity:0;
         transform:translateY(15px);
@@ -274,6 +545,7 @@ body{
         opacity:1;
         transform:translateY(0);
     }
+
 }
 
 /* =========================
@@ -454,8 +726,32 @@ body{
     .btn-carrito-global{
         top:10px;
         right:10px;
-        padding:9px 12px;
-        font-size:13px;
+        width:50px;
+        height:50px;
+        font-size:22px;
+    }
+
+    #cartCount{
+        min-width:20px;
+        height:20px;
+        font-size:11px;
+    }
+
+    .carrito-panel{
+        width:100%;
+        max-width:100%;
+    }
+
+    .carrito-header{
+        padding:18px 15px;
+    }
+
+    .carrito-contenido{
+        padding:12px;
+    }
+
+    .carrito-footer{
+        padding:15px;
     }
 
     .buscador{
@@ -585,25 +881,132 @@ body{
     target="_blank"
     class="btn-wpp-flotante"
     aria-label="WhatsApp">
+
     💬
+
 </a>
 
 
 <!-- =========================
-     CARRITO
+     BOTÓN CARRITO
 ========================= -->
 
-<a href="carrito.html" class="btn-carrito-global">
-    🛒 Carrito
-    <span id="cartCount">0</span>
-</a>
+<button
+    class="btn-carrito-global"
+    id="abrirCarrito"
+    aria-label="Abrir carrito">
+
+    🛒
+
+    <span id="cartCount">
+        0
+    </span>
+
+</button>
+
+
+<!-- =========================
+     FONDO OSCURO
+========================= -->
+
+<div
+    class="carrito-overlay"
+    id="carritoOverlay">
+</div>
+
+
+<!-- =========================
+     PANEL DEL CARRITO
+========================= -->
+
+<aside
+    class="carrito-panel"
+    id="carritoPanel">
+
+
+    <!-- CABECERA -->
+
+    <div class="carrito-header">
+
+        <div class="carrito-titulo">
+
+            <span class="carrito-titulo-icono">
+                🛒
+            </span>
+
+            <span>
+                Mi carrito
+            </span>
+
+        </div>
+
+
+        <button
+            class="cerrar-carrito"
+            id="cerrarCarrito"
+            aria-label="Cerrar carrito">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <!-- PRODUCTOS -->
+
+    <div
+        class="carrito-contenido"
+        id="carritoContenido">
+
+    </div>
+
+
+    <!-- TOTAL -->
+
+    <div class="carrito-footer">
+
+        <div class="carrito-total">
+
+            <span class="carrito-total-texto">
+                Total
+            </span>
+
+            <span
+                class="carrito-total-precio"
+                id="carritoTotal">
+
+                $0.00
+
+            </span>
+
+        </div>
+
+
+        <a
+            href="carrito.html"
+            class="btn-ver-carrito">
+
+            🛒 Ver carrito completo
+
+        </a>
+
+    </div>
+
+</aside>
 
 
 <!-- =========================
      BOTÓN SUBIR
 ========================= -->
 
-<div id="btnArriba" onclick="irArriba()">⬆️</div>
+<div
+    id="btnArriba"
+    onclick="irArriba()">
+
+    ⬆️
+
+</div>
 
 
 <!-- =========================
@@ -611,7 +1014,12 @@ body{
 ========================= -->
 
 <header class="header">
-    <img src="logo-megatodo.jpg" class="logo" alt="Megatodo">
+
+    <img
+        src="logo-megatodo.jpg"
+        class="logo"
+        alt="Megatodo">
+
 </header>
 
 
@@ -629,7 +1037,9 @@ body{
             placeholder="Buscar productos..."
             autocomplete="off">
 
-        <span class="icono-busqueda">🔎</span>
+        <span class="icono-busqueda">
+            🔎
+        </span>
 
     </div>
 
@@ -655,6 +1065,7 @@ body{
     <div
         id="productosNuevos"
         class="productos-grid">
+
     </div>
 
 </section>
@@ -674,37 +1085,54 @@ body{
     <a
         class="categoria"
         href="categoria.html?cat=Artículos%20de%20Belleza">
+
         ✨ Artículos de Belleza
+
     </a>
+
 
     <a
         class="categoria"
         href="categoria.html?cat=Juguetes">
+
         🧸 Juguetes
+
     </a>
+
 
     <a
         class="categoria"
         href="categoria.html?cat=MonopatinesyCoches">
+
         🛴 Monopatines y Coches de Bebé
+
     </a>
+
 
     <a
         class="categoria"
         href="categoria.html?cat=Bazar">
+
         🏠 Bazar
+
     </a>
+
 
     <a
         class="categoria"
         href="categoria.html?cat=Peluches">
+
         🐻 Peluches
+
     </a>
+
 
     <a
         class="categoria"
         href="categoria.html?cat=CajasdeRegalo">
+
         🎁 Cajas y Fundas de Regalo
+
     </a>
 
 </div>
@@ -720,14 +1148,30 @@ body{
         🕒 Horario de atención
     </h2>
 
-    <div class="fila">
-        <span>Lunes a Sábado</span>
-        <strong>8:30 a 19:30</strong>
-    </div>
 
     <div class="fila">
-        <span>Domingo</span>
-        <strong>9:30 a 18:30</strong>
+
+        <span>
+            Lunes a Sábado
+        </span>
+
+        <strong>
+            8:30 a 19:30
+        </strong>
+
+    </div>
+
+
+    <div class="fila">
+
+        <span>
+            Domingo
+        </span>
+
+        <strong>
+            9:30 a 18:30
+        </strong>
+
     </div>
 
 </div>
@@ -951,7 +1395,8 @@ function actualizarCarritoUI(){
 
     let total =
         carrito.reduce(
-            (sum,p) => sum + (Number(p.cantidad) || 0),
+            (sum,p) =>
+                sum + (Number(p.cantidad) || 0),
             0
         );
 
@@ -964,6 +1409,342 @@ function actualizarCarritoUI(){
 
 actualizarCarritoUI();
 
+
+/* =========================
+   ABRIR CARRITO
+========================= */
+
+const abrirCarrito =
+    document.getElementById("abrirCarrito");
+
+const cerrarCarrito =
+    document.getElementById("cerrarCarrito");
+
+const carritoPanel =
+    document.getElementById("carritoPanel");
+
+const carritoOverlay =
+    document.getElementById("carritoOverlay");
+
+const carritoContenido =
+    document.getElementById("carritoContenido");
+
+const carritoTotal =
+    document.getElementById("carritoTotal");
+
+
+function abrirPanelCarrito(){
+
+    renderizarCarrito();
+
+    carritoPanel.classList.add("abierto");
+
+    carritoOverlay.classList.add("abierto");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function cerrarPanelCarrito(){
+
+    carritoPanel.classList.remove("abierto");
+
+    carritoOverlay.classList.remove("abierto");
+
+    document.body.style.overflow = "";
+
+}
+
+
+abrirCarrito.addEventListener(
+    "click",
+    abrirPanelCarrito
+);
+
+
+cerrarCarrito.addEventListener(
+    "click",
+    cerrarPanelCarrito
+);
+
+
+carritoOverlay.addEventListener(
+    "click",
+    cerrarPanelCarrito
+);
+
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key === "Escape"){
+
+            cerrarPanelCarrito();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   MOSTRAR CARRITO
+========================= */
+
+function renderizarCarrito(){
+
+    const carrito = getCart();
+
+
+    if(!carrito.length){
+
+        carritoContenido.innerHTML = `
+
+            <div class="carrito-vacio">
+
+                <div class="carrito-vacio-icono">
+                    🛒
+                </div>
+
+                <h3>
+                    Tu carrito está vacío
+                </h3>
+
+                <p>
+                    Agrega productos para verlos aquí.
+                </p>
+
+            </div>
+
+        `;
+
+        carritoTotal.textContent = "$0.00";
+
+        return;
+
+    }
+
+
+    carritoContenido.innerHTML = carrito.map(
+        (p,index) => {
+
+        const nombre =
+            p.nombre ||
+            p.Nombre ||
+            "Producto";
+
+
+        const precio =
+            Number(
+                p.precio ||
+                p.Precio ||
+                0
+            );
+
+
+        const cantidad =
+            Number(p.cantidad) || 1;
+
+
+        const foto =
+            p.foto ||
+            p.imagen ||
+            p["Foto 1"] ||
+            p["Foto"] ||
+            "https://via.placeholder.com/150";
+
+
+        return `
+
+            <div class="carrito-item">
+
+                <div class="carrito-item-imagen">
+
+                    <img
+                        src="${foto}"
+                        alt="${nombre}">
+
+                </div>
+
+
+                <div class="carrito-item-info">
+
+                    <div class="carrito-item-nombre">
+                        ${nombre}
+                    </div>
+
+                    <div class="carrito-item-precio">
+                        $${precio.toFixed(2)}
+                    </div>
+
+
+                    <div class="carrito-item-cantidad">
+
+                        <button
+                            class="cantidad-btn"
+                            onclick="cambiarCantidadCarrito(${index},-1)">
+
+                            −
+
+                        </button>
+
+
+                        <span class="cantidad-numero">
+
+                            ${cantidad}
+
+                        </span>
+
+
+                        <button
+                            class="cantidad-btn"
+                            onclick="cambiarCantidadCarrito(${index},1)">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="eliminar-item"
+                    onclick="eliminarDelCarrito(${index})"
+                    aria-label="Eliminar producto">
+
+                    🗑️
+
+                </button>
+
+            </div>
+
+        `;
+
+    }).join("");
+
+
+    const total =
+        carrito.reduce(
+            (sum,p) => {
+
+                const precio =
+                    Number(
+                        p.precio ||
+                        p.Precio ||
+                        0
+                    );
+
+
+                const cantidad =
+                    Number(p.cantidad) || 1;
+
+
+                return sum +
+                    (precio * cantidad);
+
+            },
+            0
+        );
+
+
+    carritoTotal.textContent =
+        "$" + total.toFixed(2);
+
+}
+
+
+/* =========================
+   CAMBIAR CANTIDAD
+========================= */
+
+function cambiarCantidadCarrito(
+    index,
+    cambio
+){
+
+    let carrito = getCart();
+
+
+    if(!carrito[index]){
+        return;
+    }
+
+
+    carrito[index].cantidad =
+        (Number(carrito[index].cantidad) || 1)
+        + cambio;
+
+
+    if(carrito[index].cantidad <= 0){
+
+        carrito.splice(index,1);
+
+    }
+
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
+
+
+    actualizarCarritoUI();
+
+    renderizarCarrito();
+
+}
+
+
+/* =========================
+   ELIMINAR
+========================= */
+
+function eliminarDelCarrito(index){
+
+    let carrito = getCart();
+
+
+    carrito.splice(index,1);
+
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
+
+
+    actualizarCarritoUI();
+
+    renderizarCarrito();
+
+}
+
+
+/* =========================
+   ACTUALIZAR ENTRE PÁGINAS
+========================= */
+
+window.addEventListener(
+    "storage",
+    function(){
+
+        actualizarCarritoUI();
+
+
+        if(
+            carritoPanel.classList.contains("abierto")
+        ){
+
+            renderizarCarrito();
+
+        }
+
+    }
+);
 
 </script>
 
