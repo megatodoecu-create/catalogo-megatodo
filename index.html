@@ -10,7 +10,33 @@
 
 <title>Megatodo | Todo lo que necesitas</title>
 
+/* CARRUSEL DE BANNERS MEGATODO */
+.carrusel-megatodo {
+  width: 100%;
+  max-width: 1400px;
+  margin: 15px auto 25px;
+  padding: 0 15px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 
+.carrusel-megatodo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+@media (max-width: 650px) {
+  .carrusel-megatodo img {
+    aspect-ratio: 16 / 7;
+    border-radius: 10px;
+  }
+}
+
+      
 <style>
 
 /* =====================================================
