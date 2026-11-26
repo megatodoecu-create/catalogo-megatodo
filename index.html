@@ -4222,6 +4222,22 @@ function irArriba(){
 
 }
 
+/* CAMBIO AUTOMÁTICO DE BANNERS MEGATODO */
+const imagenesBanners = [
+  "banners/banner1.jpg",
+  "banners/banner2.jpg",
+  "banners/banner3.jpg",
+  "banners/banner4.jpg"
+];
+
+let bannerActual = 0;
+
+setInterval(() => {
+  bannerActual = (bannerActual + 1) % imagenesBanners.length;
+  document.getElementById("bannerMegatodo").src =
+    imagenesBanners[bannerActual];
+}, 4000);
+      
 
 </script>
 
