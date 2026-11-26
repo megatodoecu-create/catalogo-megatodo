@@ -2804,9 +2804,25 @@ body{
 
 <!-- CARRUSEL DE BANNERS -->
 <div class="carrusel-megatodo">
+
   <img id="bannerMegatodo"
        src="banners/banner1.jpg"
        alt="Productos Megatodo">
+
+  <button type="button"
+          class="flecha-banner flecha-anterior"
+          onclick="cambiarBanner(-1)"
+          aria-label="Banner anterior">
+    &#10094;
+  </button>
+
+  <button type="button"
+          class="flecha-banner flecha-siguiente"
+          onclick="cambiarBanner(1)"
+          aria-label="Banner siguiente">
+    &#10095;
+  </button>
+
 </div>
       
 <section
