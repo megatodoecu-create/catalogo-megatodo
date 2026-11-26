@@ -4266,10 +4266,21 @@ const imagenesBanners = [
 
 let bannerActual = 0;
 
-setInterval(() => {
-  bannerActual = (bannerActual + 1) % imagenesBanners.length;
+function mostrarBanner() {
   document.getElementById("bannerMegatodo").src =
     imagenesBanners[bannerActual];
+}
+
+function cambiarBanner(direccion) {
+  bannerActual =
+    (bannerActual + direccion + imagenesBanners.length) %
+    imagenesBanners.length;
+
+  mostrarBanner();
+}
+
+setInterval(() => {
+  cambiarBanner(1);
 }, 4000);
       
 
