@@ -501,7 +501,7 @@ body{
 .buscador-header input{
     width:100%;
     height:47px;
-    padding:0 100px 0 20px;
+    padding:0 58px 0 20px;
     border-radius:30px;
     border:2px solid #e9afd0;
     background:white;
@@ -538,10 +538,6 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-}
-
-.btn-buscar-texto{
-    background:linear-gradient(135deg,var(--rosa),var(--morado));
 }
 
 .btn-abrir-camara{
@@ -724,7 +720,7 @@ body{
     .buscador-header input{
         height:40px;
         padding-left:13px;
-        padding-right:85px;
+        padding-right:48px;
         font-size:12px;
     }
 
@@ -2825,12 +2821,6 @@ body{
         <div class="buscador-acciones">
             <button
                 type="button"
-                id="btnBuscarTexto"
-                class="btn-buscar-texto"
-                aria-label="Buscar">🔍</button>
-
-            <button
-                type="button"
                 id="btnAbrirVisual"
                 class="btn-abrir-camara"
                 aria-label="Buscar con foto">📷</button>
@@ -3473,7 +3463,7 @@ body{
 </aside>
 
 
-<script src="https://unpkg.com/@zxing/browser@0.2.1/umd/index.min.js"></script>
+<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
 
 
       
@@ -3848,9 +3838,6 @@ buscadorGlobal.addEventListener("keydown", function(e) {
         ejecutarBusquedaTexto();
     }
 });
-
-document.getElementById("btnBuscarTexto").addEventListener("click", ejecutarBusquedaTexto);
-
 
 /* =====================================================
    VENTANA DE BUSQUEDA POR FOTO
