@@ -185,18 +185,40 @@
           undefined,
           video,
           (scanResult, error) => {
-            if (scanResult && !processing) {
-              processing = true;
-              scannedCode = scanResult.getText();
+         
+if (scanResult && !processing) {
+  processing = true;
+  scannedCode = scanResult.getText();
 
-              codeResult.textContent = scannedCode;
-              result.style.display = 'block';
+  codeResult.textContent = scannedCode;
+  result.style.display = 'block';
 
-              status.textContent =
-                '¡Código leído correctamente!';
+  stopScanner();
 
-              stopScanner();
-            }
+  if (window.opener && !window.opener.closed) {
+    status.textContent = 'Código leído. Enviando al formulario...';
+
+    window.opener.postMessage(
+      {
+        type: 'MEGATODO_BARCODE',
+        code: scannedCode
+      },
+      '*'
+    );
+
+    status.textContent =
+      'Código enviado al formulario de Megatodo.';
+
+    setTimeout(function() {
+      window.close();
+    }, 700);
+
+  } else {
+    status.textContent =
+      'Código leído. No se encontró el formulario abierto. Puedes copiarlo.';
+  }
+}
+
           }
         );
 
