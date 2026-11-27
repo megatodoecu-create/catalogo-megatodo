@@ -1,1 +1,270 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lector de códigos | Megatodo</title>
+
+  <script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f5f4fa;
+      color: #18234B;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 25px auto;
+      padding: 22px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px #00000012;
+    }
+
+    h1 {
+      color: #E83B83;
+      margin-top: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    video {
+      width: 100%;
+      max-height: 380px;
+      background: #111;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-top: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      background: #E83B83;
+    }
+
+    button.secondary {
+      background: #7867B7;
+    }
+
+    button:disabled {
+      opacity: .5;
+    }
+
+    #status {
+      min-height: 45px;
+      margin: 15px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    #result {
+      display: none;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      background: #e9f8f3;
+      overflow-wrap: anywhere;
+    }
+
+    #codeResult {
+      display: block;
+      font-size: 23px;
+      font-weight: bold;
+      color: #087b63;
+      margin: 10px 0;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: #E83B83;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="logo">Megatodo</div>
+
+    <h1>Lector de códigos</h1>
+
+    <p>
+      Coloca el código de barras frente a la cámara
+      para identificar el producto.
+    </p>
+
+    <video id="video" autoplay muted playsinline></video>
+
+    <p id="status">
+      Pulsa el botón para activar la cámara.
+    </p>
+
+    <div id="result">
+      <strong>Código detectado:</strong>
+      <span id="codeResult"></span>
+
+      <button onclick="sendCode()">
+        Enviar código
+      </button>
+
+      <button class="secondary" onclick="copyCode()">
+        Copiar código
+      </button>
+    </div>
+
+    <button id="startButton" onclick="startScanner()">
+      Activar cámara
+    </button>
+
+    <button class="secondary" onclick="stopScanner()">
+      Detener cámara
+    </button>
+
+  </div>
+
+  <script>
+    let reader = null;
+    let controls = null;
+    let scannedCode = '';
+    let processing = false;
+
+    const video = document.getElementById('video');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+    const codeResult = document.getElementById('codeResult');
+    const startButton = document.getElementById('startButton');
+
+    async function startScanner() {
+      if (!navigator.mediaDevices ||
+          !navigator.mediaDevices.getUserMedia) {
+        status.textContent =
+          'Este navegador no permite acceder a la cámara. Abre esta página mediante HTTPS.';
+        return;
+      }
+
+      if (!window.ZXingBrowser) {
+        status.textContent =
+          'No se pudo cargar el lector. Revisa tu conexión a Internet.';
+        return;
+      }
+
+      stopScanner();
+      processing = false;
+      scannedCode = '';
+      result.style.display = 'none';
+
+      status.textContent = 'Solicitando permiso para usar la cámara...';
+      startButton.disabled = true;
+
+      try {
+        reader = new ZXingBrowser.BrowserMultiFormatReader();
+
+        controls = await reader.decodeFromVideoDevice(
+          undefined,
+          video,
+          (scanResult, error) => {
+            if (scanResult && !processing) {
+              processing = true;
+              scannedCode = scanResult.getText();
+
+              codeResult.textContent = scannedCode;
+              result.style.display = 'block';
+
+              status.textContent =
+                '¡Código leído correctamente!';
+
+              stopScanner();
+            }
+          }
+        );
+
+        status.textContent =
+          'Cámara activada. Apunta al código de barras.';
+
+      } catch (error) {
+        stopScanner();
+
+        status.textContent =
+          'No se pudo activar la cámara: ' +
+          (error.message || error);
+
+      } finally {
+        startButton.disabled = false;
+      }
+    }
+
+    function stopScanner() {
+      if (controls) {
+        controls.stop();
+        controls = null;
+      }
+
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
+
+      startButton.disabled = false;
+    }
+
+    function sendCode() {
+      if (!scannedCode) return;
+
+      if (window.opener && !window.opener.closed) {
+        window.opener.postMessage(
+          {
+            type: 'MEGATODO_BARCODE',
+            code: scannedCode
+          },
+          '*'
+        );
+
+        status.textContent =
+          'Código enviado al formulario de Megatodo.';
+
+      } else {
+        status.textContent =
+          'No hay un formulario abierto. Puedes copiar el código.';
+      }
+    }
+
+    async function copyCode() {
+      if (!scannedCode) return;
+
+      try {
+        await navigator.clipboard.writeText(scannedCode);
+        status.textContent = 'Código copiado correctamente.';
+      } catch (error) {
+        status.textContent =
+          'No se pudo copiar automáticamente. Selecciona el código.';
+      }
+    }
+
+    window.addEventListener('beforeunload', stopScanner);
+  </script>
+
+</body>
+</html>
+
