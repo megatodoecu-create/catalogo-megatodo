@@ -740,9 +740,6 @@ body{
 }
 
 
-    color:var(--rosa);
-
-}
 
 
 /* =====================================================
@@ -2266,444 +2263,40 @@ body{
 
 
  
-/* =====================================================
-   BUSCADOR MEGATODO
-===================================================== */
 
-const campoBusqueda =
-    document.getElementById("buscadorGlobal");
 
-const resultadosBusqueda =
-    document.getElementById("resultadosBusqueda");
+<!-- BUSCADOR -->
+<div class="buscador-header">
 
+    <input
+        type="text"
+        id="buscadorGlobal"
+        placeholder="Buscar por nombre o código..."
+        autocomplete="off">
 
-function obtenerCodigoProducto(p){
+    <div class="buscador-acciones">
 
-    return String(
-        p.Código ||
-        p.Codigo ||
-        ""
-    ).trim();
+        <button
+            type="button"
+            id="btnBuscarTexto"
+            class="btn-buscar-texto"
+            aria-label="Buscar">
+            🔍
+        </button>
 
-}
+        <button
+            type="button"
+            id="btnAbrirVisual"
+            class="btn-abrir-camara"
+            aria-label="Buscar con foto">
+            📷
+        </button>
 
+    </div>
 
-function codigoCompacto(texto){
+    <div id="resultadosBusqueda"></div>
 
-    return normalizar(texto)
-        .replace(/[\s-]/g,"");
-
-}
-
-
-function ejecutarBusquedaTexto(){
-
-    const texto = campoBusqueda.value.trim();
-
-    if(texto){
-
-        window.location.href =
-            "buscar.html?q=" +
-            encodeURIComponent(texto);
-
-    }
-
-}
-
-
-function mostrarResultadosBusqueda(texto){
-
-    const consulta = normalizar(texto);
-
-    const consultaCompacta =
-        codigoCompacto(texto);
-
-    if(!consulta){
-
-        resultadosBusqueda.innerHTML = "";
-
-        return;
-
-    }
-
-    const filtrados = productos.filter(p => {
-
-        const nombre =
-            normalizar(p.Nombre);
-
-        const codigo =
-            normalizar(obtenerCodigoProducto(p));
-
-        const codigoSinEspacios =
-            codigoCompacto(obtenerCodigoProducto(p));
-
-        const categoria =
-            normalizar(
-                p.Categoria ||
-                p.Categoría ||
-                ""
-            );
-
-        return (
-            nombre.includes(consulta) ||
-            codigo.includes(consulta) ||
-            codigoSinEspacios.includes(consultaCompacta) ||
-            categoria.includes(consulta)
-        );
-
-    });
-
-    if(!filtrados.length){
-
-        resultadosBusqueda.innerHTML = `
-            <div class="resultado">
-                No encontramos productos.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    resultadosBusqueda.innerHTML =
-        filtrados.slice(0,10).map(p => {
-
-            const codigo = obtenerCodigoProducto(p);
-
-            return `
-                <div class="resultado">
-
-                    <a href="producto.html?codigo=${encodeURIComponent(codigo)}">
-                        ${p.Nombre || "Producto"}
-                    </a>
-
-                    ${
-                        codigo
-                        ? `<div style="font-size:12px;color:#888;margin-top:4px;">
-                              Código: ${codigo}
-                           </div>`
-                        : ""
-                    }
-
-                </div>
-            `;
-
-        }).join("");
-
-}
-
-
-campoBusqueda.addEventListener(
-    "input",
-    function(){
-
-        mostrarResultadosBusqueda(this.value);
-
-    }
-);
-
-
-campoBusqueda.addEventListener(
-    "keydown",
-    function(e){
-
-        if(e.key === "Enter"){
-
-            ejecutarBusquedaTexto();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "click",
-    function(e){
-
-        if(
-            !e.target.closest(".buscador-header")
-        ){
-
-            resultadosBusqueda.innerHTML = "";
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   VENTANA DE BÚSQUEDA VISUAL
-===================================================== */
-
-const modalBusquedaVisual =
-    document.getElementById("modalBusquedaVisual");
-
-
-function abrirBusquedaVisual(){
-
-    modalBusquedaVisual.classList.add("abierto");
-
-}
-
-
-function cerrarBusquedaVisual(){
-
-    detenerLectorCodigo();
-
-    modalBusquedaVisual.classList.remove("abierto");
-
-}
-
-
-modalBusquedaVisual.addEventListener(
-    "click",
-    function(e){
-
-        if(e.target === modalBusquedaVisual){
-
-            cerrarBusquedaVisual();
-
-        }
-
-    }
-);
-
-
-function mostrarFotoSeleccionada(archivo){
-
-    if(!archivo){
-
-        return;
-
-    }
-
-    const imagen =
-        document.getElementById("vistaFotoBusqueda");
-
-    const estado =
-        document.getElementById("estadoBusquedaVisual");
-
-    imagen.src = URL.createObjectURL(archivo);
-
-    imagen.style.display = "block";
-
-    estado.textContent =
-        "Fotografía cargada. La comparación con las fotografías del catálogo se conectará en la siguiente etapa.";
-
-}
-
-
-document.getElementById("archivoCamara")
-.addEventListener("change",function(){
-
-    mostrarFotoSeleccionada(this.files[0]);
-
-});
-
-
-document.getElementById("archivoGaleria")
-.addEventListener("change",function(){
-
-    mostrarFotoSeleccionada(this.files[0]);
-
-});
-
-
-/* =====================================================
-   LECTOR DE CÓDIGOS DE BARRAS
-===================================================== */
-
-let lectorMegatodo = null;
-
-let controlesLector = null;
-
-let codigoYaLeido = false;
-
-
-async function iniciarLectorCodigo(){
-
-    const estado =
-        document.getElementById("estadoLectorCodigo");
-
-    const zona =
-        document.getElementById("zonaLectorCodigo");
-
-    const video =
-        document.getElementById("videoLectorCodigo");
-
-    if(!window.ZXingBrowser){
-
-        estado.textContent =
-            "No se pudo cargar el lector. Recarga la página e inténtalo nuevamente.";
-
-        zona.style.display = "block";
-
-        return;
-
-    }
-
-    if(!productos.length){
-
-        estado.textContent =
-            "Espera a que se cargue el catálogo.";
-
-        zona.style.display = "block";
-
-        return;
-
-    }
-
-    detenerLectorCodigo();
-
-    codigoYaLeido = false;
-
-    zona.style.display = "block";
-
-    estado.textContent =
-        "Solicitando acceso a la cámara...";
-
-    try{
-
-        const formatos = [
-            ZXingBrowser.BarcodeFormat.EAN_13,
-            ZXingBrowser.BarcodeFormat.EAN_8,
-            ZXingBrowser.BarcodeFormat.UPC_A,
-            ZXingBrowser.BarcodeFormat.UPC_E,
-            ZXingBrowser.BarcodeFormat.CODE_128,
-            ZXingBrowser.BarcodeFormat.CODE_39,
-            ZXingBrowser.BarcodeFormat.ITF,
-            ZXingBrowser.BarcodeFormat.CODABAR
-        ];
-
-        const pistas = new Map();
-
-        pistas.set(
-            ZXingBrowser.DecodeHintType.POSSIBLE_FORMATS,
-            formatos
-        );
-
-        lectorMegatodo =
-            new ZXingBrowser.BrowserMultiFormatReader(pistas);
-
-        controlesLector =
-            await lectorMegatodo.decodeFromVideoDevice(
-                undefined,
-                video,
-                (resultado,error) => {
-
-                    if(resultado && !codigoYaLeido){
-
-                        codigoYaLeido = true;
-
-                        const codigo =
-                            resultado.getText().trim();
-
-                        detenerLectorCodigo();
-
-                        buscarCodigoEscaneado(codigo);
-
-                    }
-
-                }
-            );
-
-        estado.textContent =
-            "Enfoca el código de barras del producto.";
-
-    }catch(error){
-
-        console.error("Error lector:",error);
-
-        estado.textContent =
-            "No se pudo iniciar la cámara. Verifica los permisos del navegador.";
-
-    }
-
-}
-
-
-function detenerLectorCodigo(){
-
-    if(controlesLector){
-
-        controlesLector.stop();
-
-        controlesLector = null;
-
-    }
-
-    if(lectorMegatodo){
-
-        lectorMegatodo.reset();
-
-        lectorMegatodo = null;
-
-    }
-
-    const video =
-        document.getElementById("videoLectorCodigo");
-
-    if(video && video.srcObject){
-
-        video.srcObject.getTracks().forEach(track => {
-            track.stop();
-        });
-
-        video.srcObject = null;
-
-    }
-
-}
-
-
-function buscarCodigoEscaneado(codigo){
-
-    const codigoBuscado =
-        codigoCompacto(codigo);
-
-    campoBusqueda.value = codigo;
-
-    const producto =
-        productos.find(p => {
-
-            return codigoCompacto(
-                obtenerCodigoProducto(p)
-            ) === codigoBuscado;
-
-        });
-
-    if(producto){
-
-        const codigoProducto =
-            obtenerCodigoProducto(producto);
-
-        window.location.href =
-            "producto.html?codigo=" +
-            encodeURIComponent(codigoProducto);
-
-        return;
-
-    }
-
-    document.getElementById(
-        "estadoBusquedaVisual"
-    ).textContent =
-        "Código escaneado: " + codigo +
-        ". No encontramos un producto con ese código en el catálogo.";
-
-    document.getElementById(
-        "estadoLectorCodigo"
-    ).textContent =
-        "Código leído correctamente.";
-
-    mostrarResultadosBusqueda(codigo);
-
-}
-
-
-  
+</div>
 
     /* CARRITO */
 
@@ -3050,46 +2643,7 @@ function buscarCodigoEscaneado(codigo){
   }
 }
 
-      /* AJUSTES DEL NUEVO BUSCADOR MEGATODO */
-.buscador-header {
-    position: relative;
-}
-
-.buscador-header input {
-    padding-right: 95px;
-}
-
-.buscador-acciones {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.buscador-acciones button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 21px;
-    padding: 5px;
-}
-
-.btn-abrir-visual {
-    color: #E83B83;
-}
-
-@media(max-width:650px) {
-    .buscador-header input {
-        padding-right: 85px;
-    }
-
-    .buscador-acciones button {
-        font-size: 19px;
-    }
-}
+      
       
 </style>
 
@@ -3337,55 +2891,8 @@ function buscarCodigoEscaneado(codigo){
 
 </header>
 
-      <!-- VENTANA DE BUSQUEDA POR FOTO -->
-<div id="modalBusquedaVisual" class="modal-visual">
-    <div class="panel-visual">
-
-        <div class="visual-cabecera">
-            <h2>Buscar producto con foto</h2>
-            <button type="button" id="btnCerrarVisual">✕</button>
-        </div>
-
-        <button type="button" id="btnAbrirEscaner" class="btn-escanear">
-            ▦ Escanear código de barras
-        </button>
-
-        <div class="visual-acciones">
-            <button type="button" id="btnTomarFoto" class="visual-btn">
-                📷 Tomar una foto
-            </button>
-
-            <button type="button" id="btnElegirFoto" class="visual-btn">
-                🖼️ Elegir de galería
-            </button>
-        </div>
-
-        <input type="file" id="archivoCamara" accept="image/*"
-               capture="environment" hidden>
-
-        <input type="file" id="archivoGaleria" accept="image/*" hidden>
-
-        <div id="vistaPreviaFoto" class="visual-preview" hidden>
-            <img id="imagenSeleccionada" alt="Foto seleccionada">
-        </div>
-
-        <p id="mensajeVisual">
-            Selecciona una fotografía del producto.
-        </p>
-
-        <div id="scannerContenedor" class="scanner-contenedor" hidden>
-            <video id="videoEscaner" playsinline></video>
-            <p id="estadoEscaner">Preparando cámara...</p>
-            <button type="button" id="btnCerrarEscaner">
-                Cerrar escáner
-            </button>
-        </div>
-
-    </div>
-</div>
-
-<!-- VENTANA DE BÚSQUEDA VISUAL -->
-
+ 
+<!-- VENTANA ÚNICA DE BÚSQUEDA VISUAL -->
 <div class="modal-busqueda" id="modalBusquedaVisual">
 
     <div class="modal-busqueda-contenido">
@@ -3393,12 +2900,13 @@ function buscarCodigoEscaneado(codigo){
         <button
             class="modal-busqueda-cerrar"
             type="button"
-            onclick="cerrarBusquedaVisual()">
-            ×
+            id="btnCerrarVisual"
+            aria-label="Cerrar">
+            ✕
         </button>
 
         <h2 class="modal-busqueda-titulo">
-            Buscar productos
+            Buscar producto con foto
         </h2>
 
         <p class="modal-busqueda-texto">
@@ -3406,26 +2914,29 @@ function buscarCodigoEscaneado(codigo){
             para buscar productos en Megatodo.
         </p>
 
+        <button
+            type="button"
+            id="btnAbrirEscaner"
+            class="btn-escanear-codigo">
+            ▦ Escanear código de barras
+        </button>
+
         <div class="opciones-fotografia">
 
             <button
                 class="opcion-fotografia"
                 type="button"
-                onclick="document.getElementById('archivoCamara').click()">
-
-                <span>📸</span>
-                Tomar fotografía
-
+                id="btnTomarFoto">
+                <span>📷</span>
+                Tomar una foto
             </button>
 
             <button
                 class="opcion-fotografia"
                 type="button"
-                onclick="document.getElementById('archivoGaleria').click()">
-
+                id="btnElegirFoto">
                 <span>🖼️</span>
                 Elegir de galería
-
             </button>
 
         </div>
@@ -3444,43 +2955,33 @@ function buscarCodigoEscaneado(codigo){
             hidden>
 
         <img
-            id="vistaFotoBusqueda"
-            alt="Fotografía seleccionada">
+            id="imagenSeleccionada"
+            alt="Fotografía seleccionada"
+            style="display:none;width:100%;max-height:260px;object-fit:contain;margin-top:18px;border-radius:12px;">
 
-        <div id="estadoBusquedaVisual">
-            La búsqueda por fotografía se conectará
-            en la siguiente etapa.
-        </div>
+        <p id="mensajeVisual" class="modal-busqueda-texto">
+            Selecciona una fotografía del producto.
+        </p>
 
-        <button
-            class="btn-escanear-codigo"
-            type="button"
-            onclick="iniciarLectorCodigo()">
-
-            ▦ Escanear código de barras
-
-        </button>
-
-        <div id="zonaLectorCodigo">
+        <div id="scannerContenedor" hidden>
 
             <video
-                id="videoLectorCodigo"
+                id="videoEscaner"
                 autoplay
                 muted
-                playsinline>
+                playsinline
+                style="width:100%;border-radius:13px;background:#111;">
             </video>
 
-            <p id="estadoLectorCodigo">
-                Enfoca el código de barras del producto.
+            <p id="estadoEscaner">
+                Preparando cámara...
             </p>
 
             <button
-                class="btn-escanear-codigo"
                 type="button"
-                onclick="detenerLectorCodigo()">
-
-                Detener cámara
-
+                id="btnCerrarEscaner"
+                class="btn-escanear-codigo">
+                Detener escáner
             </button>
 
         </div>
