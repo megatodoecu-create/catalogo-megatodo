@@ -3146,6 +3146,11 @@ function mostrarProductos(lista){
             producto.precio ||
             "";
 
+          const precioMostrar =
+    precio
+    ? precioNumero(precio).toFixed(2)
+    : "";
+
 
         const precioAnterior =
             producto["Precio Anterior"] ||
@@ -3344,12 +3349,11 @@ function mostrarProductos(lista){
 
                     <span class="precio">
 
-                        ${
-                            precio
-                            ? "$" +
-                              escaparHTML(precio)
-                            : "Consultar"
-                        }
+                       ${
+    precioMostrar
+    ? "$" + precioMostrar
+    : "Consultar"
+}
 
                     </span>
 
@@ -3450,7 +3454,7 @@ function mostrarProductos(lista){
                     nombre + "\n" +
 
                     "Precio: $" +
-                    precio + "\n\n" +
+precioMostrar + "\n\n" +
 
                     urlProducto;
 
