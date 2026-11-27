@@ -2265,40 +2265,7 @@ body{
  
 
 
-<!-- BUSCADOR -->
-<div class="buscador-header">
-
-    <input
-        type="text"
-        id="buscadorGlobal"
-        placeholder="Buscar por nombre o código..."
-        autocomplete="off">
-
-    <div class="buscador-acciones">
-
-        <button
-            type="button"
-            id="btnBuscarTexto"
-            class="btn-buscar-texto"
-            aria-label="Buscar">
-            🔍
-        </button>
-
-        <button
-            type="button"
-            id="btnAbrirVisual"
-            class="btn-abrir-camara"
-            aria-label="Buscar con foto">
-            📷
-        </button>
-
-    </div>
-
-    <div id="resultadosBusqueda"></div>
-
-</div>
-
-    /* CARRITO */
+/* CARRITO */
 
     .btn-carrito-global{
 
@@ -2848,26 +2815,29 @@ body{
          BUSCADOR
     ================================================== -->
 
-   
-<div class="buscador-header">
-    <input type="text" id="buscadorGlobal"
-           placeholder="Buscar por nombre o código..."
-           autocomplete="off">
+    <div class="buscador-header">
+        <input
+            type="text"
+            id="buscadorGlobal"
+            placeholder="Buscar por nombre o código..."
+            autocomplete="off">
 
-    <div class="buscador-acciones">
-        <button type="button" id="btnBuscarTexto" aria-label="Buscar">🔍</button>
-        <button type="button" id="btnAbrirVisual" aria-label="Buscar con foto">📷</button>
+        <div class="buscador-acciones">
+            <button
+                type="button"
+                id="btnBuscarTexto"
+                class="btn-buscar-texto"
+                aria-label="Buscar">🔍</button>
+
+            <button
+                type="button"
+                id="btnAbrirVisual"
+                class="btn-abrir-camara"
+                aria-label="Buscar con foto">📷</button>
+        </div>
+
+        <div id="resultadosBusqueda"></div>
     </div>
-
-    <div id="resultadosBusqueda"></div>
-</div>
-    <div id="resultadosBusqueda"></div>
-
-</div>
-
-
-    </div>
-
 
 
     <!-- =================================================
@@ -3889,7 +3859,6 @@ document.getElementById("btnBuscarTexto").addEventListener("click", ejecutarBusq
 const modalVisual = document.getElementById("modalBusquedaVisual");
 const archivoCamara = document.getElementById("archivoCamara");
 const archivoGaleria = document.getElementById("archivoGaleria");
-const vistaPreviaFoto = document.getElementById("vistaPreviaFoto");
 const imagenSeleccionada = document.getElementById("imagenSeleccionada");
 const mensajeVisual = document.getElementById("mensajeVisual");
 
@@ -3929,7 +3898,7 @@ function mostrarFotoSeleccionada(archivo) {
 
     urlFotoTemporal = URL.createObjectURL(archivo);
     imagenSeleccionada.src = urlFotoTemporal;
-    vistaPreviaFoto.hidden = false;
+    imagenSeleccionada.style.display = "block";
 
     mensajeVisual.textContent =
         "Fotografía cargada. La búsqueda automática por similitud se implementará en la siguiente etapa.";
