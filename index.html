@@ -545,38 +545,84 @@ function crearResultadoBusqueda(p){
   fila.appendChild(enlace);
   return fila;
 }
+
 function buscarProductos(texto){
   const busqueda = normalizar(texto);
-  if(!busqueda){resultadosBusqueda.innerHTML="";resultadosBusqueda.style.display="none";return;}
-  if(!productosCargados){
-    resultadosBusqueda.innerHTML='<div class="resultado-vacio">Cargando productos...</div>';
-    resultadosBusqueda.style.display="block";
+
+  if(!busqueda){
+    resultadosBusqueda.innerHTML = "";
+    resultadosBusqueda.style.display = "none";
     return;
   }
+
+  if(!productosCargados || !variantesCargadas){
+    resultadosBusqueda.innerHTML =
+      '<div class="resultado-vacio">Cargando productos...</div>';
+    resultadosBusqueda.style.display = "block";
+    return;
+  }
+
   const palabras = busqueda.split(/\s+/).filter(Boolean);
   const codigoBuscado = compactarCodigo(texto);
+
   const filtrados = productos.filter(p => {
+    const variantesProducto = obtenerVariantesProducto(p);
+
     const contenido = normalizar([
-      p.Nombre || "",p.Categoria || p.Categoría || "",p.Descripción || p.Descripcion || "",obtenerCodigoProducto(p)
+      p.Nombre || "",
+      p.Categoria || p.Categoría || "",
+      p.Descripción || p.Descripcion || "",
+      obtenerCodigoProducto(p),
+      ...variantesProducto.map(v =>
+        v.CodigoVariante ?? v["Código Variante"] ?? ""
+      )
     ].join(" "));
-    const coincideTexto = palabras.every(palabra => contenido.includes(palabra));
+
+    const coincideTexto = palabras.every(palabra =>
+      contenido.includes(palabra)
+    );
+
     const codigoProducto = compactarCodigo(obtenerCodigoProducto(p));
-    const coincideCodigo = codigoBuscado && codigoProducto && codigoProducto.includes(codigoBuscado);
-    return coincideTexto || coincideCodigo;
+
+    const coincideCodigoProducto =
+      codigoBuscado &&
+      codigoProducto &&
+      codigoProducto.includes(codigoBuscado);
+
+    const coincideCodigoVariante = variantesProducto.some(v => {
+      const codigoVariante = compactarCodigo(
+        v.CodigoVariante ?? v["Código Variante"] ?? ""
+      );
+
+      return codigoBuscado &&
+        codigoVariante &&
+        codigoVariante.includes(codigoBuscado);
+    });
+
+    return coincideTexto ||
+      coincideCodigoProducto ||
+      coincideCodigoVariante;
   }).slice(0,10);
 
   resultadosBusqueda.innerHTML = "";
+
   if(!filtrados.length){
     const vacio = document.createElement("div");
     vacio.className = "resultado-vacio";
-    vacio.textContent = "No encontramos productos con ese nombre o código.";
+    vacio.textContent =
+      "No encontramos productos con ese nombre o código.";
     resultadosBusqueda.appendChild(vacio);
     resultadosBusqueda.style.display = "block";
     return;
   }
-  filtrados.forEach(p => resultadosBusqueda.appendChild(crearResultadoBusqueda(p)));
+
+  filtrados.forEach(p =>
+    resultadosBusqueda.appendChild(crearResultadoBusqueda(p))
+  );
+
   resultadosBusqueda.style.display = "block";
 }
+
 buscadorGlobal.addEventListener("input",function(){buscarProductos(this.value);});
 function ejecutarBusquedaTexto(){
   const texto = buscadorGlobal.value.trim();
