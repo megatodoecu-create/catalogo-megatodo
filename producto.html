@@ -88,11 +88,19 @@ let errorCargaVariantes = false;
 function normalizar(texto){
   return String(texto ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
+function compactarCodigo(texto){
+  return normalizar(texto).replace(/[\s-]/g,"");
+}
 function escaparHTML(valor){
   return String(valor ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function precioNumero(valor){
-  const limpio = String(valor ?? "").replace(/[^\d.,-]/g,"").replace(/,(?=\d{1,2}$)/,".").replace(/,/g,"");
+  let limpio = String(valor ?? "").replace(/[^\d.,-]/g,"").trim();
+  if(limpio.includes(",") && limpio.lastIndexOf(",") > limpio.lastIndexOf(".")){
+    limpio = limpio.replace(/\./g,"").replace(",",".");
+  }else{
+    limpio = limpio.replace(/,/g,"");
+  }
   const numero = Number(limpio);
   return Number.isFinite(numero) ? numero : 0;
 }
@@ -102,46 +110,105 @@ function mostrarPrecio(valor){
   if(texto.includes("$")) return escaparHTML(texto);
   return "$" + precioNumero(texto).toFixed(2);
 }
-function estaAgotado(stock){return normalizar(stock) === "agotado" || normalizar(stock).includes("agotado");}
-function obtenerCodigo(p){return String(p?.Código ?? p?.Codigo ?? "").trim();}
-function obtenerIdProducto(p){return String(p?.["ID interno"] ?? p?.IDInterno ?? p?.IdProducto ?? "").trim();}
-function obtenerUrlProducto(p){
+function estaAgotado(stock){
+  return normalizar(stock).includes("agotado");
+}
+function obtenerCodigo(p){
+  return String(p?.["Código"] ?? p?.Codigo ?? p?.codigo ?? "").trim();
+}
+function obtenerIdProducto(p){
+  return String(
+    p?.["ID interno"] ??
+    p?.IDInterno ??
+    p?.IdInterno ??
+    p?.IdProducto ??
+    p?.idProducto ??
+    ""
+  ).trim();
+}
+function obtenerCodigoVariante(v){
+  return String(v?.CodigoVariante ?? v?.["Código Variante"] ?? "").trim();
+}
+function obtenerCodigoProductoVariante(v){
+  return String(v?.CodigoProducto ?? v?.["CódigoProducto"] ?? "").trim();
+}
+function obtenerIdVarianteProducto(v){
+  return String(v?.IdProducto ?? v?.idProducto ?? "").trim();
+}
+function obtenerUrlProducto(p,codigoVariante=""){
   const id = obtenerIdProducto(p);
-  if(id) return new URL("producto.html?id=" + encodeURIComponent(id), window.location.href).href;
-  return new URL("producto.html?codigo=" + encodeURIComponent(obtenerCodigo(p)), window.location.href).href;
+  const codigo = obtenerCodigo(p);
+  let url = id
+    ? "producto.html?id=" + encodeURIComponent(id)
+    : "producto.html?codigo=" + encodeURIComponent(codigo);
+
+  if(codigoVariante){
+    url += "&variante=" + encodeURIComponent(codigoVariante);
+  }
+  return new URL(url,window.location.href).href;
 }
 const parametros = new URLSearchParams(window.location.search);
 const codigoURL = parametros.get("codigo");
 const idURL = parametros.get("id");
+const varianteURL = parametros.get("variante") || "";
 
 /* ======================== CARGA DE PRODUCTOS Y VARIANTES ======================== */
 async function cargarProductos(){
   try{
-    const respuesta = await fetch(URL_SHEET, {cache:"no-store"});
+    const respuesta = await fetch(URL_SHEET,{cache:"no-store"});
     if(!respuesta.ok) throw new Error("No se pudo cargar el catálogo.");
     productos = await respuesta.json();
 
     productoActual = null;
+
     if(idURL){
       productoActual = productos.find(p => obtenerIdProducto(p) === String(idURL).trim());
     }
+
     if(!productoActual && codigoURL){
       productoActual = productos.find(p => obtenerCodigo(p) === String(codigoURL).trim());
     }
+
     if(!productoActual && codigoURL){
       productoActual = productos.find(p => normalizar(obtenerCodigo(p)) === normalizar(codigoURL));
     }
+
+    if(!productoActual && varianteURL){
+      const respuestaVariantes = await fetch(URL_VARIANTES,{cache:"no-store"});
+      if(respuestaVariantes.ok){
+        const filas = await respuestaVariantes.json();
+        const variante = filas.find(v =>
+          compactarCodigo(obtenerCodigoVariante(v)) === compactarCodigo(varianteURL)
+        );
+        if(variante){
+          const idVariante = obtenerIdVarianteProducto(variante);
+          const codigoVariante = obtenerCodigoProductoVariante(variante);
+          productoActual = productos.find(p =>
+            idVariante && obtenerIdProducto(p) === idVariante
+          );
+          if(!productoActual && codigoVariante){
+            productoActual = productos.find(p =>
+              obtenerCodigo(p) === codigoVariante
+            );
+          }
+        }
+      }
+    }
+
     if(!productoActual){
-      document.getElementById("contenedorProducto").innerHTML = `<div class="mensaje"><h2>Producto no encontrado</h2><p>No encontramos el producto solicitado.</p></div>`;
+      document.getElementById("contenedorProducto").innerHTML =
+        `<div class="mensaje"><h2>Producto no encontrado</h2><p>No encontramos el producto solicitado.</p></div>`;
       return;
     }
 
     await cargarVariantesProducto();
     mostrarProducto();
     actualizarContadorCarrito();
+
   }catch(error){
     console.error(error);
-    document.getElementById("contenedorProducto").innerHTML = `<div class="mensaje"><h2>Error al cargar el producto</h2><p>Intenta nuevamente. ${escaparHTML(error.message)}</p></div>`;
+    document.getElementById("contenedorProducto").innerHTML =
+      `<div class="mensaje"><h2>Error al cargar el producto</h2><p>Intenta nuevamente. ${escaparHTML(error.message)}</p></div>`;
   }
 }
 
@@ -149,22 +216,57 @@ async function cargarVariantesProducto(){
   variantesProducto = [];
   varianteActual = null;
   errorCargaVariantes = false;
+
   try{
-    const respuesta = await fetch(URL_VARIANTES, {cache:"no-store"});
+    const respuesta = await fetch(URL_VARIANTES,{cache:"no-store"});
     if(!respuesta.ok) throw new Error("No se pudo consultar la pestaña Variantes.");
+
     const filas = await respuesta.json();
     const id = obtenerIdProducto(productoActual);
     const codigo = obtenerCodigo(productoActual);
+
     if(id){
-      variantesProducto = filas.filter(v => String(v.IdProducto ?? v.idProducto ?? "").trim() === id);
+      variantesProducto = filas.filter(v => {
+        const idVariante = obtenerIdVarianteProducto(v);
+        const codigoVariante = obtenerCodigoProductoVariante(v);
+
+        return idVariante === id ||
+          (!idVariante && codigo && codigoVariante === codigo);
+      });
     }else if(codigo){
-      // Compatibilidad temporal: se usa el código solo si el producto aún no tiene ID interno.
-      variantesProducto = filas.filter(v => String(v.CodigoProducto ?? "").trim() === codigo);
+      variantesProducto = filas.filter(v =>
+        obtenerCodigoProductoVariante(v) === codigo
+      );
     }
-    variantesProducto = variantesProducto.filter(v => String(v.Tamaño ?? v.Tamano ?? "").trim());
-    if(variantesProducto.length) varianteActual = variantesProducto[0];
+
+    variantesProducto = variantesProducto.filter(v =>
+      String(v.Tamaño ?? v.Tamano ?? "").trim()
+    );
+
+    // Evita duplicar presentaciones si aparecen repetidas en la hoja.
+    const vistos = new Set();
+    variantesProducto = variantesProducto.filter(v => {
+      const clave = compactarCodigo(obtenerCodigoVariante(v)) ||
+        normalizar(v.Tamaño ?? v.Tamano);
+      if(vistos.has(clave)) return false;
+      vistos.add(clave);
+      return true;
+    });
+
+    if(variantesProducto.length){
+      const indiceSolicitado = varianteURL
+        ? variantesProducto.findIndex(v =>
+            compactarCodigo(obtenerCodigoVariante(v)) === compactarCodigo(varianteURL)
+          )
+        : -1;
+
+      varianteActual = variantesProducto[
+        indiceSolicitado >= 0 ? indiceSolicitado : 0
+      ];
+    }
+
   }catch(error){
-    console.error("Error consultando variantes:", error);
+    console.error("Error consultando variantes:",error);
     errorCargaVariantes = true;
   }
 }
@@ -173,18 +275,24 @@ async function cargarVariantesProducto(){
 function obtenerDatosSeleccionados(){
   const p = productoActual || {};
   const v = varianteActual;
+
   return {
     precio: v && String(v.Precio ?? "").trim() !== "" ? v.Precio : (p.Precio ?? ""),
     tamano: v ? (v.Tamaño ?? v.Tamano ?? p.Tamaño ?? p.Tamano ?? "") : (p.Tamaño ?? p.Tamano ?? ""),
     stock: v && String(v.Stock ?? "").trim() !== "" ? v.Stock : (p.Stock ?? ""),
-    descripcion: v && String(v.Descripción ?? v.Descripcion ?? "").trim() !== "" ? (v.Descripción ?? v.Descripcion) : (p.Descripción ?? p.Descripcion ?? ""),
-    codigoVariante: v ? String(v.CodigoVariante ?? "").trim() : ""
+    descripcion: v && String(v.Descripción ?? v.Descripcion ?? "").trim() !== ""
+      ? (v.Descripción ?? v.Descripcion)
+      : (p.Descripción ?? p.Descripcion ?? ""),
+    codigoVariante: v ? obtenerCodigoVariante(v) : ""
   };
 }
 
 function cambiarVariante(indice){
   const numero = Number(indice);
-  varianteActual = Number.isInteger(numero) && numero >= 0 && numero < variantesProducto.length ? variantesProducto[numero] : null;
+  varianteActual = Number.isInteger(numero) && numero >= 0 && numero < variantesProducto.length
+    ? variantesProducto[numero]
+    : null;
+
   actualizarDatosPresentacion();
 }
 
@@ -195,23 +303,31 @@ function actualizarDatosPresentacion(){
   const descripcion = document.getElementById("descripcionTexto");
   const stock = document.getElementById("stockActual");
   const botonCarrito = document.getElementById("btnAgregarProducto");
+
   if(precio) precio.innerHTML = mostrarPrecio(datos.precio) || "Consultar precio";
+
   if(tamano){
-    tamano.innerHTML = datos.tamano ? `<strong>Tamaño:</strong> ${escaparHTML(datos.tamano)}` : "";
+    tamano.innerHTML = datos.tamano
+      ? `<strong>Tamaño:</strong> ${escaparHTML(datos.tamano)}`
+      : "";
     tamano.style.display = datos.tamano ? "block" : "none";
   }
+
   if(descripcion){
     descripcion.textContent = datos.descripcion || "";
     descripcion.parentElement.style.display = datos.descripcion ? "block" : "none";
   }
+
   if(stock){
     stock.textContent = datos.stock || "";
-    stock.classList.toggle("agotado", estaAgotado(datos.stock));
+    stock.classList.toggle("agotado",estaAgotado(datos.stock));
     stock.style.display = datos.stock ? "inline-block" : "none";
   }
+
   if(botonCarrito){
     const sinSeleccion = variantesProducto.length > 0 && !varianteActual;
     botonCarrito.disabled = sinSeleccion || estaAgotado(datos.stock) || errorCargaVariantes;
+
     if(errorCargaVariantes) botonCarrito.title = "No se pudo comprobar el stock de las variantes. Recarga la página.";
     else if(estaAgotado(datos.stock)) botonCarrito.title = "Esta presentación está agotada.";
     else botonCarrito.title = "Agregar al carrito";
@@ -224,28 +340,60 @@ function mostrarProducto(){
   const nombre = String(p.Nombre ?? "").trim();
   const categoria = String(p.Categoria ?? p.Categoría ?? "").trim();
   const precioAnterior = String(p["Precio Anterior"] ?? p.PrecioAnterior ?? "").trim();
-  const descripcionBase = String(p.Descripción ?? p.Descripcion ?? "").trim();
-  const fotos = [p["Foto 1"] ?? p.Foto ?? "", p["Foto 2"] ?? "", p["Foto 3"] ?? ""].map(x => String(x || "").trim()).filter(Boolean);
+  const fotos = [
+    p["Foto 1"] ?? p.Foto ?? "",
+    p["Foto 2"] ?? "",
+    p["Foto 3"] ?? ""
+  ].map(x => String(x || "").trim()).filter(Boolean);
+
   if(!fotos.length) fotos.push("https://via.placeholder.com/600x600?text=Megatodo");
+
   const oferta = normalizar(p.Oferta) === "si";
   const nuevo = normalizar(p.Nuevo) === "si";
+
   let htmlBadges = "";
   if(oferta) htmlBadges += `<span class="badge badge-oferta">OFERTA</span>`;
   if(nuevo) htmlBadges += `<span class="badge badge-nuevo">NUEVO</span>`;
-  const htmlPrecioAnterior = !variantesProducto.length && precioAnterior ? `<span class="precio-anterior">${escaparHTML(precioAnterior)}</span>` : "";
+
+  const htmlPrecioAnterior = !variantesProducto.length && precioAnterior
+    ? `<span class="precio-anterior">${escaparHTML(precioAnterior)}</span>`
+    : "";
+
   let htmlSelector = "";
+
   if(variantesProducto.length){
+    const indiceActual = varianteActual
+      ? variantesProducto.indexOf(varianteActual)
+      : 0;
+
     const opciones = variantesProducto.map((v,i) => {
       const tam = String(v.Tamaño ?? v.Tamano ?? "Presentación " + (i+1));
-      const cod = String(v.CodigoVariante ?? "").trim();
+      const cod = obtenerCodigoVariante(v);
       const etiqueta = tam + (cod ? " · " + cod : "");
-      return `<option value="${i}" ${i === 0 ? "selected" : ""}>${escaparHTML(etiqueta)}</option>`;
+
+      return `<option value="${i}" ${i === indiceActual ? "selected" : ""}>${escaparHTML(etiqueta)}</option>`;
     }).join("");
-    htmlSelector = `<div class="selector-variantes"><label for="selectorVariante">Selecciona tamaño o presentación</label><select id="selectorVariante" onchange="cambiarVariante(this.value)">${opciones}</select><p class="ayuda-variante">El precio y la disponibilidad se actualizan según la presentación elegida.</p></div>`;
+
+    htmlSelector = `
+      <div class="selector-variantes">
+        <label for="selectorVariante">Selecciona tamaño o presentación</label>
+        <select id="selectorVariante" onchange="cambiarVariante(this.value)">
+          ${opciones}
+        </select>
+        <p class="ayuda-variante">El precio y la disponibilidad se actualizan según la presentación elegida.</p>
+      </div>`;
   }
-  const avisoError = errorCargaVariantes ? `<div class="aviso-variantes" style="display:block">No pudimos consultar las variantes de este producto. Recarga la página antes de agregarlo al carrito para comprobar el precio y la disponibilidad.</div>` : "";
+
+  const avisoError = errorCargaVariantes
+    ? `<div class="aviso-variantes" style="display:block">No pudimos consultar las variantes de este producto. Recarga la página antes de agregarlo al carrito para comprobar el precio y la disponibilidad.</div>`
+    : "";
+
   const urlFotos = fotos.map(escaparHTML);
-  const miniaturas = fotos.length > 1 ? fotos.map((foto,index) => `<button class="miniatura ${index===0?"activa":""}" type="button" onclick="cambiarFoto(${index})"><img src="${urlFotos[index]}" alt="${escaparHTML(nombre)}"></button>`).join("") : "";
+  const miniaturas = fotos.length > 1
+    ? fotos.map((foto,index) =>
+        `<button class="miniatura ${index===0?"activa":""}" type="button" onclick="cambiarFoto(${index})"><img src="${urlFotos[index]}" alt="${escaparHTML(nombre)}"></button>`
+      ).join("")
+    : "";
 
   document.getElementById("contenedorProducto").innerHTML = `
     <div class="producto">
@@ -262,7 +410,10 @@ function mostrarProducto(){
         <div class="precio" id="precioActual">${mostrarPrecio(obtenerDatosSeleccionados().precio)}</div>
         ${htmlPrecioAnterior}
         <div class="detalle" id="detalleTamanio"></div>
-        <div class="descripcion" id="bloqueDescripcion"><div class="descripcion-titulo">Descripción</div><div class="descripcion-texto" id="descripcionTexto"></div></div>
+        <div class="descripcion" id="bloqueDescripcion">
+          <div class="descripcion-titulo">Descripción</div>
+          <div class="descripcion-texto" id="descripcionTexto"></div>
+        </div>
         <div class="stock" id="stockActual"></div>
         <div class="botones-producto">
           <button class="btn-carrito" id="btnAgregarProducto" type="button" onclick="agregarAlCarrito()">🛒 Agregar al carrito</button>
@@ -270,37 +421,72 @@ function mostrarProducto(){
         </div>
       </div>
     </div>`;
+
   actualizarDatosPresentacion();
 }
 
 function cambiarFoto(indice){
-  const fotos = [productoActual?.["Foto 1"] ?? productoActual?.Foto ?? "",productoActual?.["Foto 2"] ?? "",productoActual?.["Foto 3"] ?? ""].map(x=>String(x||"").trim()).filter(Boolean);
+  const fotos = [
+    productoActual?.["Foto 1"] ?? productoActual?.Foto ?? "",
+    productoActual?.["Foto 2"] ?? "",
+    productoActual?.["Foto 3"] ?? ""
+  ].map(x => String(x || "").trim()).filter(Boolean);
+
   if(!fotos[indice]) return;
+
   document.getElementById("fotoPrincipal").src = fotos[indice];
-  document.querySelectorAll(".miniatura").forEach((miniatura,i)=>miniatura.classList.toggle("activa",i===indice));
+
+  document.querySelectorAll(".miniatura").forEach((miniatura,i) =>
+    miniatura.classList.toggle("activa",i===indice)
+  );
 }
 
 /* ======================== CARRITO ======================== */
-function obtenerCarrito(){try{return JSON.parse(localStorage.getItem("carrito")) || [];}catch{return [];}}
-function guardarCarrito(carrito){localStorage.setItem("carrito",JSON.stringify(carrito));actualizarContadorCarrito();}
+function obtenerCarrito(){
+  try{
+    const datos = JSON.parse(localStorage.getItem("carrito") || "[]");
+    return Array.isArray(datos) ? datos : [];
+  }catch{
+    return [];
+  }
+}
+
+function guardarCarrito(carrito){
+  localStorage.setItem("carrito",JSON.stringify(carrito));
+  actualizarContadorCarrito();
+}
+
 function claveDeVariante(v,index){
   if(!v) return "base";
-  const codigo = String(v.CodigoVariante ?? "").trim();
+  const codigo = obtenerCodigoVariante(v);
   const tamano = String(v.Tamaño ?? v.Tamano ?? "").trim();
   return codigo ? "codigo:" + codigo : "tamano:" + tamano + ":" + index;
 }
+
 function agregarAlCarrito(){
   if(!productoActual) return;
-  if(errorCargaVariantes){alert("No se pudieron consultar las variantes. Recarga la página antes de agregar este producto.");return;}
-  if(variantesProducto.length && !varianteActual){alert("Selecciona una presentación.");return;}
+  if(errorCargaVariantes){
+    alert("No se pudieron consultar las variantes. Recarga la página antes de agregar este producto.");
+    return;
+  }
+  if(variantesProducto.length && !varianteActual){
+    alert("Selecciona una presentación.");
+    return;
+  }
+
   const datos = obtenerDatosSeleccionados();
-  if(estaAgotado(datos.stock)){alert("Esta presentación está AGOTADA.");return;}
+  if(estaAgotado(datos.stock)){
+    alert("Esta presentación está AGOTADA.");
+    return;
+  }
+
   const carrito = obtenerCarrito();
   const idProducto = obtenerIdProducto(productoActual);
   const codigo = obtenerCodigo(productoActual);
   const indiceVariante = varianteActual ? variantesProducto.indexOf(varianteActual) : -1;
   const varianteKey = varianteActual ? claveDeVariante(varianteActual,indiceVariante) : "base";
   const foto = String(productoActual["Foto 1"] ?? productoActual.Foto ?? "").trim();
+
   const item = {
     idProducto:idProducto,
     codigo:codigo,
@@ -314,104 +500,271 @@ function agregarAlCarrito(){
     cantidad:1,
     foto:foto
   };
+
   const existente = carrito.find(x => {
-    const mismoProducto = idProducto ? String(x.idProducto || "") === idProducto : String(x.codigo || "") === codigo;
-    const claveExistente = x.claveVariante || "base";
-    return mismoProducto && claveExistente === varianteKey;
+    const mismoProducto = idProducto
+      ? String(x.idProducto || "") === idProducto
+      : String(x.codigo || "") === codigo;
+
+    return mismoProducto && (x.claveVariante || "base") === varianteKey;
   });
+
   if(existente) existente.cantidad = Number(existente.cantidad || 0) + 1;
   else carrito.push(item);
+
   guardarCarrito(carrito);
   abrirCarrito();
 }
+
 function actualizarContadorCarrito(){
-  const cantidad = obtenerCarrito().reduce((total,item)=>total+Number(item.cantidad||0),0);
+  const cantidad = obtenerCarrito().reduce((total,item) => total + Number(item.cantidad || 0),0);
   const contador = document.getElementById("cartCount");
   if(contador) contador.textContent = cantidad;
 }
+
 function convertirPrecio(valor){return precioNumero(valor);}
+
 function mostrarCarrito(){
   const carrito = obtenerCarrito();
   const contenedor = document.getElementById("carritoItems");
-  if(!carrito.length){contenedor.innerHTML=`<div class="carrito-vacio"><div style="font-size:45px">🛒</div><p>Tu carrito está vacío.</p></div>`;document.getElementById("totalCarrito").textContent="$0.00";return;}
+
+  if(!carrito.length){
+    contenedor.innerHTML = `<div class="carrito-vacio"><div style="font-size:45px">🛒</div><p>Tu carrito está vacío.</p></div>`;
+    document.getElementById("totalCarrito").textContent = "$0.00";
+    return;
+  }
+
   let total = 0;
-  contenedor.innerHTML = carrito.map((item,index)=>{
+
+  contenedor.innerHTML = carrito.map((item,index) => {
     const precio = convertirPrecio(item.precio);
-    const cantidad = Number(item.cantidad||1);
-    total += precio*cantidad;
-    const detalle = [item.tamano ? "Tamaño: " + item.tamano : "",item.codigoVariante ? "Código: " + item.codigoVariante : ""].filter(Boolean).join(" · ");
-    return `<div class="item-carrito"><img src="${escaparHTML(item.foto||"")}" alt="${escaparHTML(item.nombre)}"><div><strong>${escaparHTML(item.nombre)}</strong>${detalle ? `<small class="item-variante">${escaparHTML(detalle)}</small>` : ""}<div class="item-precio">${escaparHTML(item.precio)}</div><div class="controles-cantidad"><button type="button" onclick="cambiarCantidad(${index},-1)">−</button><span>${cantidad}</span><button type="button" onclick="cambiarCantidad(${index},1)">+</button></div></div><button class="btn-eliminar" type="button" onclick="eliminarDelCarrito(${index})">🗑️</button></div>`;
+    const cantidad = Number(item.cantidad || 1);
+    total += precio * cantidad;
+
+    const detalle = [
+      item.tamano ? "Tamaño: " + item.tamano : "",
+      item.codigoVariante ? "Código: " + item.codigoVariante : ""
+    ].filter(Boolean).join(" · ");
+
+    return `
+      <div class="item-carrito">
+        <img src="${escaparHTML(item.foto || "")}" alt="${escaparHTML(item.nombre)}">
+        <div>
+          <strong>${escaparHTML(item.nombre)}</strong>
+          ${detalle ? `<small class="item-variante">${escaparHTML(detalle)}</small>` : ""}
+          <div class="item-precio">${escaparHTML(item.precio)}</div>
+          <div class="controles-cantidad">
+            <button type="button" onclick="cambiarCantidad(${index},-1)">−</button>
+            <span>${cantidad}</span>
+            <button type="button" onclick="cambiarCantidad(${index},1)">+</button>
+          </div>
+        </div>
+        <button class="btn-eliminar" type="button" onclick="eliminarDelCarrito(${index})">🗑️</button>
+      </div>`;
   }).join("");
-  document.getElementById("totalCarrito").textContent="$"+total.toFixed(2);
+
+  document.getElementById("totalCarrito").textContent = "$" + total.toFixed(2);
 }
+
 function cambiarCantidad(indice,cambio){
-  const carrito=obtenerCarrito();if(!carrito[indice])return;
-  carrito[indice].cantidad=Number(carrito[indice].cantidad||1)+cambio;
-  if(carrito[indice].cantidad<=0)carrito.splice(indice,1);
-  guardarCarrito(carrito);mostrarCarrito();
+  const carrito = obtenerCarrito();
+  if(!carrito[indice]) return;
+
+  carrito[indice].cantidad = Number(carrito[indice].cantidad || 1) + cambio;
+  if(carrito[indice].cantidad <= 0) carrito.splice(indice,1);
+
+  guardarCarrito(carrito);
+  mostrarCarrito();
 }
-function eliminarDelCarrito(indice){const carrito=obtenerCarrito();carrito.splice(indice,1);guardarCarrito(carrito);mostrarCarrito();}
-function abrirCarrito(){mostrarCarrito();document.getElementById("carritoPanel").classList.add("abierto");document.getElementById("overlayCarrito").classList.add("activo");}
-function cerrarCarrito(){document.getElementById("carritoPanel").classList.remove("abierto");document.getElementById("overlayCarrito").classList.remove("activo");}
+
+function eliminarDelCarrito(indice){
+  const carrito = obtenerCarrito();
+  carrito.splice(indice,1);
+  guardarCarrito(carrito);
+  mostrarCarrito();
+}
+
+function abrirCarrito(){
+  mostrarCarrito();
+  document.getElementById("carritoPanel").classList.add("abierto");
+  document.getElementById("overlayCarrito").classList.add("activo");
+}
+
+function cerrarCarrito(){
+  document.getElementById("carritoPanel").classList.remove("abierto");
+  document.getElementById("overlayCarrito").classList.remove("activo");
+}
 
 /* ======================== WHATSAPP ======================== */
 function comprarProductoWhatsApp(){
-  if(!productoActual)return;
-  const datos=obtenerDatosSeleccionados();
-  const nombre=String(productoActual.Nombre||"").trim();
-  const codigo=obtenerCodigo(productoActual);
-  const urlProducto=obtenerUrlProducto(productoActual);
-  let detalleVariante="";
+  if(!productoActual) return;
+
+  const datos = obtenerDatosSeleccionados();
+  const nombre = String(productoActual.Nombre || "").trim();
+  const codigo = obtenerCodigo(productoActual);
+  const urlProducto = obtenerUrlProducto(productoActual,datos.codigoVariante);
+
+  let detalleVariante = "";
   if(datos.tamano) detalleVariante += `\n📏 Presentación: ${datos.tamano}`;
   if(datos.codigoVariante) detalleVariante += `\n🔢 Código de variante: ${datos.codigoVariante}`;
-  const mensaje=`Hola Megatodo 👋\n\nEstoy interesado/a en este producto:\n\n🛍️ ${nombre}${codigo ? `\nCódigo: ${codigo}` : ""}${detalleVariante}\n💰 Precio: ${mostrarPrecio(datos.precio)}\n📦 Disponibilidad: ${datos.stock || "Consultar"}\n\n🔗 Ver producto:\n${urlProducto}`;
-  window.open("https://wa.me/"+NUMERO_WHATSAPP+"?text="+encodeURIComponent(mensaje),"_blank");
+
+  const mensaje =
+    `Hola Megatodo 👋\n\nEstoy interesado/a en este producto:\n\n🛍️ ${nombre}` +
+    (codigo ? `\nCódigo: ${codigo}` : "") +
+    `${detalleVariante}\n💰 Precio: ${mostrarPrecio(datos.precio)}\n📦 Disponibilidad: ${datos.stock || "Consultar"}\n\n🔗 Ver producto:\n${urlProducto}`;
+
+  window.open("https://wa.me/" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(mensaje),"_blank");
 }
+
 function prepararWhatsAppCarrito(){
-  const carrito=obtenerCarrito();if(!carrito.length){alert("Tu carrito está vacío.");return;}
-  let mensaje="Hola Megatodo 👋\n\nQuiero realizar una compra:\n\n";let total=0;
-  carrito.forEach((item,index)=>{
-    const precio=convertirPrecio(item.precio);const cantidad=Number(item.cantidad||1);const subtotal=precio*cantidad;total+=subtotal;
-    const detalle=[item.tamano?"Presentación: "+item.tamano:"",item.codigoVariante?"Código de variante: "+item.codigoVariante:""].filter(Boolean).join("\n");
-    const urlProducto=item.idProducto?new URL("producto.html?id="+encodeURIComponent(item.idProducto),window.location.href).href:new URL("producto.html?codigo="+encodeURIComponent(item.codigo||""),window.location.href).href;
-    mensaje+=`${index+1}. ${item.nombre}\n${detalle ? detalle+"\n" : ""}Cantidad: ${cantidad}\nPrecio: ${item.precio}\nSubtotal: $${subtotal.toFixed(2)}\n\n🔗 Producto:\n${urlProducto}\n\n`;
+  const carrito = obtenerCarrito();
+  if(!carrito.length){
+    alert("Tu carrito está vacío.");
+    return;
+  }
+
+  let mensaje = "Hola Megatodo 👋\n\nQuiero realizar una compra:\n\n";
+  let total = 0;
+
+  carrito.forEach((item,index) => {
+    const precio = convertirPrecio(item.precio);
+    const cantidad = Number(item.cantidad || 1);
+    const subtotal = precio * cantidad;
+    total += subtotal;
+
+    const detalle = [
+      item.tamano ? "Presentación: " + item.tamano : "",
+      item.codigoVariante ? "Código de variante: " + item.codigoVariante : ""
+    ].filter(Boolean).join("\n");
+
+    let url = item.idProducto
+      ? "producto.html?id=" + encodeURIComponent(item.idProducto)
+      : "producto.html?codigo=" + encodeURIComponent(item.codigo || "");
+
+    if(item.codigoVariante){
+      url += "&variante=" + encodeURIComponent(item.codigoVariante);
+    }
+
+    const urlProducto = new URL(url,window.location.href).href;
+
+    mensaje +=
+      `${index+1}. ${item.nombre}\n` +
+      `${detalle ? detalle + "\n" : ""}` +
+      `Cantidad: ${cantidad}\nPrecio: ${item.precio}\nSubtotal: $${subtotal.toFixed(2)}\n\n🔗 Producto:\n${urlProducto}\n\n`;
   });
-  mensaje+=`💰 TOTAL: $${total.toFixed(2)}\n\nQuedo atento/a. Gracias 😊`;
-  window.open("https://wa.me/"+NUMERO_WHATSAPP+"?text="+encodeURIComponent(mensaje),"_blank");
+
+  mensaje += `💰 TOTAL: $${total.toFixed(2)}\n\nQuedo atento/a. Gracias 😊`;
+
+  window.open("https://wa.me/" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(mensaje),"_blank");
 }
 
 /* ======================== MENÚ, BUSCADOR Y CONTROLES ======================== */
-const menuCategorias=document.getElementById("menuCategorias");
-const btnMenuCategorias=document.getElementById("btnMenuCategorias");
-btnMenuCategorias.addEventListener("click",event=>{event.stopPropagation();menuCategorias.classList.toggle("abierto");});
-document.addEventListener("click",event=>{if(!menuCategorias.contains(event.target))menuCategorias.classList.remove("abierto");});
-const buscadorGlobal=document.getElementById("buscadorGlobal");
-const resultadosBusqueda=document.getElementById("resultadosBusqueda");
+const menuCategorias = document.getElementById("menuCategorias");
+const btnMenuCategorias = document.getElementById("btnMenuCategorias");
+
+btnMenuCategorias.addEventListener("click",event => {
+  event.stopPropagation();
+  menuCategorias.classList.toggle("abierto");
+});
+
+document.addEventListener("click",event => {
+  if(!menuCategorias.contains(event.target)) menuCategorias.classList.remove("abierto");
+});
+
+const buscadorGlobal = document.getElementById("buscadorGlobal");
+const resultadosBusqueda = document.getElementById("resultadosBusqueda");
+
 function mostrarResultadosBusqueda(){
-  const texto=normalizar(buscadorGlobal.value);
-  if(!texto){resultadosBusqueda.style.display="none";resultadosBusqueda.innerHTML="";return;}
-  if(!productos.length)return;
-  const resultados=productos.filter(p=>normalizar(p.Nombre).includes(texto)||normalizar(p.Categoria??p.Categoría??"").includes(texto)||normalizar(obtenerCodigo(p)).includes(texto)).slice(0,8);
-  if(!resultados.length){resultadosBusqueda.innerHTML=`<div style="padding:15px;text-align:center;color:#888">No encontramos productos.</div>`;resultadosBusqueda.style.display="block";return;}
-  resultadosBusqueda.innerHTML=resultados.map((p,i)=>{
-    const nombre=String(p.Nombre??"").trim();const precio=String(p.Precio??"").trim();const foto=String(p["Foto 1"]??p.Foto??"").trim();
-    return `<div class="resultado-busqueda" onclick="irAProducto(${i})"><img src="${escaparHTML(foto)}" alt="${escaparHTML(nombre)}"><div><strong>${escaparHTML(nombre)}</strong><small>${escaparHTML(precio)}</small></div></div>`;
+  const texto = normalizar(buscadorGlobal.value);
+
+  if(!texto){
+    resultadosBusqueda.style.display = "none";
+    resultadosBusqueda.innerHTML = "";
+    return;
+  }
+
+  if(!productos.length) return;
+
+  const palabras = texto.split(/\s+/).filter(Boolean);
+
+  const resultados = productos.filter(p => {
+    const campos = [
+      normalizar(p.Nombre),
+      normalizar(p.Categoria ?? p.Categoría ?? ""),
+      normalizar(obtenerCodigo(p))
+    ];
+
+    const coincideProducto = palabras.every(palabra =>
+      campos.some(campo => campo.includes(palabra))
+    );
+
+    const coincideVariante = variantesProducto.length
+      ? variantesProducto.some(v =>
+          compactarCodigo(obtenerCodigoVariante(v)).includes(compactarCodigo(texto))
+        )
+      : false;
+
+    return coincideProducto || coincideVariante;
+  }).slice(0,8);
+
+  if(!resultados.length){
+    resultadosBusqueda.innerHTML = `<div style="padding:15px;text-align:center;color:#888">No encontramos productos.</div>`;
+    resultadosBusqueda.style.display = "block";
+    return;
+  }
+
+  resultadosBusqueda.innerHTML = resultados.map((p,i) => {
+    const nombre = String(p.Nombre ?? "").trim();
+    const precio = String(p.Precio ?? "").trim();
+    const foto = String(p["Foto 1"] ?? p.Foto ?? "").trim();
+
+    return `
+      <div class="resultado-busqueda" onclick="irAProducto(${i})">
+        <img src="${escaparHTML(foto)}" alt="${escaparHTML(nombre)}">
+        <div><strong>${escaparHTML(nombre)}</strong><small>${escaparHTML(precio)}</small></div>
+      </div>`;
   }).join("");
-  window.resultadosMegatodo=resultados;
-  resultadosBusqueda.style.display="block";
+
+  window.resultadosMegatodo = resultados;
+  resultadosBusqueda.style.display = "block";
 }
-function irAProducto(indice){const lista=window.resultadosMegatodo||[];const p=lista[Number(indice)];if(!p)return;window.location.href=obtenerUrlProducto(p);}
+
+function irAProducto(indice){
+  const lista = window.resultadosMegatodo || [];
+  const p = lista[Number(indice)];
+  if(!p) return;
+  window.location.href = obtenerUrlProducto(p);
+}
+
 buscadorGlobal.addEventListener("input",mostrarResultadosBusqueda);
-buscadorGlobal.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();const texto=buscadorGlobal.value.trim();if(texto)window.location.href="buscar.html?q="+encodeURIComponent(texto);}});
-document.getElementById("btnBuscar").addEventListener("click",()=>{const texto=buscadorGlobal.value.trim();if(texto)window.location.href="buscar.html?q="+encodeURIComponent(texto);});
-document.addEventListener("click",event=>{if(!event.target.closest(".buscador-header"))resultadosBusqueda.style.display="none";});
+
+buscadorGlobal.addEventListener("keydown",event => {
+  if(event.key === "Enter"){
+    event.preventDefault();
+    const texto = buscadorGlobal.value.trim();
+    if(texto) window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
+  }
+});
+
+document.getElementById("btnBuscar").addEventListener("click",() => {
+  const texto = buscadorGlobal.value.trim();
+  if(texto) window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
+});
+
+document.addEventListener("click",event => {
+  if(!event.target.closest(".buscador-header")) resultadosBusqueda.style.display = "none";
+});
+
 document.getElementById("abrirCarrito").addEventListener("click",abrirCarrito);
 document.getElementById("cerrarCarrito").addEventListener("click",cerrarCarrito);
 document.getElementById("overlayCarrito").addEventListener("click",cerrarCarrito);
 document.getElementById("btnWhatsAppCarrito").addEventListener("click",prepararWhatsAppCarrito);
-const btnArriba=document.getElementById("btnArriba");
-window.addEventListener("scroll",()=>{btnArriba.style.display=window.scrollY>300?"block":"none";});
-btnArriba.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+const btnArriba = document.getElementById("btnArriba");
+window.addEventListener("scroll",() => {
+  btnArriba.style.display = window.scrollY > 300 ? "block" : "none";
+});
+btnArriba.addEventListener("click",() => window.scrollTo({top:0,behavior:"smooth"}));
 
 /* ======================== INICIAR ======================== */
 cargarProductos();
