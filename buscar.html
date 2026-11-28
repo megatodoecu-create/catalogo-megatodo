@@ -206,13 +206,21 @@ async function cargarProductos(){
    BÚSQUEDA Y RESULTADOS
 ===================================================== */
 function coincideBusqueda(producto, palabras){
+  const variantes = obtenerVariantesDeProducto(producto);
+
   const campos = [
     normalizar(producto.Nombre),
     normalizar(obtenerCategoria(producto)),
     normalizar(producto["Descripción"] ?? producto.Descripcion ?? ""),
-    normalizar(obtenerCodigo(producto))
+    normalizar(obtenerCodigo(producto)),
+    ...variantes.map(v => normalizar(
+      v.CodigoVariante ?? v["Código Variante"] ?? ""
+    ))
   ];
-  return palabras.every(palabra => campos.some(campo => campo.includes(palabra)));
+
+  return palabras.every(palabra =>
+    campos.some(campo => campo.includes(palabra))
+  );
 }
 function filtrarProductos(){
   const texto = normalizar(buscador.value);
@@ -244,12 +252,25 @@ function render(lista){
 function obtenerVariantesDeProducto(producto){
   const id = obtenerIdProducto(producto);
   const codigo = obtenerCodigo(producto);
+
   return variantesGlobal.filter(v => {
-    const idVariante = String(v.IdProducto ?? v.idProducto ?? "").trim();
-    const codigoVariante = String(v.CodigoProducto ?? v.CódigoProducto ?? "").trim();
-    if(id) return idVariante === id;
-    return codigo ? codigoVariante === codigo : false;
-  }).filter(v => String(v.Tamaño ?? v.Tamano ?? "").trim());
+    const idVariante = String(
+      v.IdProducto ?? v.idProducto ?? ""
+    ).trim();
+
+    const codigoVariante = String(
+      v.CodigoProducto ?? v.CódigoProducto ?? ""
+    ).trim();
+
+    if(id){
+      return idVariante === id ||
+        (!idVariante && codigoVariante === codigo);
+    }
+
+    return codigo && codigoVariante === codigo;
+  }).filter(v =>
+    String(v.Tamaño ?? v.Tamano ?? "").trim()
+  );
 }
 function precioMenorTexto(variantes){
   if(!Array.isArray(variantes) || !variantes.length) return "Consultar";
