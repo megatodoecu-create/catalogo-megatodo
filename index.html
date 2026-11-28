@@ -322,12 +322,23 @@ function convertirUrlFotografia(url, ancho=1005){
   if(coincidencia && coincidencia[1]) return `https://lh3.googleusercontent.com/d/${coincidencia[1]}=w${ancho}`;
   return valor;
 }
-function obtenerUrlFichaProducto(p){
+function obtenerUrlFichaProducto(p, codigoVariante = ""){
   const id = obtenerIdInternoProducto(p);
   const codigo = obtenerCodigoProducto(p);
-  if(id) return "producto.html?id=" + encodeURIComponent(id);
-  if(codigo) return "producto.html?codigo=" + encodeURIComponent(codigo);
-  return "";
+
+  let url = "";
+
+  if(id){
+    url = "producto.html?id=" + encodeURIComponent(id);
+  }else if(codigo){
+    url = "producto.html?codigo=" + encodeURIComponent(codigo);
+  }
+
+  if(codigoVariante){
+    url += "&variante=" + encodeURIComponent(codigoVariante);
+  }
+
+  return url;
 }
 function convertirPrecio(valor){
   if(typeof valor === "number") return valor;
@@ -339,9 +350,66 @@ function convertirPrecio(valor){
 function precioTexto(valor){return "$" + convertirPrecio(valor).toFixed(2);}
 function obtenerVariantesProducto(producto){
   const id = obtenerIdInternoProducto(producto);
-  if(!id) return [];
-  return variantes.filter(v => String(v.IdProducto ?? v.idProducto ?? "").trim() === id);
+  const codigo = obtenerCodigoProducto(producto);
+
+  return variantes.filter(v => {
+    const idVariante = String(
+      v.IdProducto ?? v.idProducto ?? ""
+    ).trim();
+
+    const codigoVariante = String(
+      v.CodigoProducto ?? v["CódigoProducto"] ?? ""
+    ).trim();
+
+    if(id){
+      return idVariante === id ||
+        (!idVariante && codigoVariante === codigo);
+    }
+
+    return codigo && codigoVariante === codigo;
+  });
 }
+
+function buscarVariantePorCodigo(codigoLeido){
+  const codigo = compactarCodigo(codigoLeido);
+
+  if(!codigo) return null;
+
+  return variantes.find(v =>
+    compactarCodigo(
+      v.CodigoVariante ?? v["Código Variante"] ?? ""
+    ) === codigo
+  ) || null;
+}
+
+function buscarProductoDeVariante(variante){
+  if(!variante) return null;
+
+  const id = String(
+    variante.IdProducto ?? variante.idProducto ?? ""
+  ).trim();
+
+  const codigo = String(
+    variante.CodigoProducto ?? variante["CódigoProducto"] ?? ""
+  ).trim();
+
+  if(id){
+    const productoPorId = productos.find(p =>
+      obtenerIdInternoProducto(p) === id
+    );
+
+    if(productoPorId) return productoPorId;
+  }
+
+  if(codigo){
+    return productos.find(p =>
+      obtenerCodigoProducto(p) === codigo
+    ) || null;
+  }
+
+  return null;
+}
+   
 function varianteDisponible(v){return normalizar(v.Stock) === "disponible";}
 function varianteMenorPrecio(lista){
   const conPrecio = lista.filter(v => v.Precio !== "" && v.Precio !== null && v.Precio !== undefined && Number.isFinite(convertirPrecio(v.Precio)));
