@@ -303,6 +303,57 @@ let variantesCargadas = false;
 function normalizar(texto){
   return String(texto ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
+
+   
+function distanciaEdicionUno(a,b){
+  if(Math.abs(a.length-b.length)>1) return 2;
+
+  let i=0,j=0,errores=0;
+
+  while(i<a.length && j<b.length){
+    if(a[i]===b[j]){
+      i++;
+      j++;
+    }else{
+      errores++;
+      if(errores>1) return 2;
+
+      if(a.length>b.length) i++;
+      else if(b.length>a.length) j++;
+      else{
+        i++;
+        j++;
+      }
+    }
+  }
+
+  if(i<a.length || j<b.length) errores++;
+
+  return errores;
+}
+
+function palabraCoincideFlexible(busqueda,palabra){
+  if(palabra===busqueda) return true;
+
+  // Permite palabras incompletas.
+  if(busqueda.length>=3 && palabra.startsWith(busqueda)) return true;
+
+  // Permite una letra equivocada, faltante o adicional.
+  if(busqueda.length>=4 && distanciaEdicionUno(busqueda,palabra)<=1) return true;
+
+  return false;
+}
+
+function textoCoincideFlexible(palabrasBuscadas,contenido){
+  const palabrasCatalogo=normalizar(contenido).split(/\s+/).filter(Boolean);
+
+  return palabrasBuscadas.every(busqueda =>
+    palabrasCatalogo.some(palabra =>
+      palabraCoincideFlexible(busqueda,palabra)
+    )
+  );
+}
+
 function escaparHTML(texto){
   return String(texto ?? "").replace(/[&<>"']/g, caracter => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[caracter]));
 }
@@ -546,6 +597,7 @@ function crearResultadoBusqueda(p){
   return fila;
 }
 
+   
 function buscarProductos(texto){
   const busqueda = normalizar(texto);
 
@@ -565,8 +617,10 @@ function buscarProductos(texto){
   const palabras = busqueda.split(/\s+/).filter(Boolean);
   const codigoBuscado = compactarCodigo(texto);
 
-  const filtrados = productos.filter(p => {
+  const filtrados = productos.map(p => {
     const variantesProducto = obtenerVariantesProducto(p);
+
+    const nombre = normalizar(p.Nombre || "");
 
     const contenido = normalizar([
       p.Nombre || "",
@@ -578,9 +632,7 @@ function buscarProductos(texto){
       )
     ].join(" "));
 
-    const coincideTexto = palabras.every(palabra =>
-      contenido.includes(palabra)
-    );
+    const coincideTexto = textoCoincideFlexible(palabras,contenido);
 
     const codigoProducto = compactarCodigo(obtenerCodigoProducto(p));
 
@@ -599,10 +651,20 @@ function buscarProductos(texto){
         codigoVariante.includes(codigoBuscado);
     });
 
-    return coincideTexto ||
-      coincideCodigoProducto ||
-      coincideCodigoVariante;
-  }).slice(0,10);
+    if(!coincideTexto && !coincideCodigoProducto && !coincideCodigoVariante){
+      return null;
+    }
+
+    let prioridad = 0;
+
+    if(coincideCodigoProducto || coincideCodigoVariante) prioridad = 3;
+    else if(nombre === busqueda) prioridad = 2;
+    else if(coincideTexto) prioridad = 1;
+
+    return {producto:p,prioridad};
+  }).filter(Boolean);
+
+  filtrados.sort((a,b) => b.prioridad-a.prioridad);
 
   resultadosBusqueda.innerHTML = "";
 
@@ -616,12 +678,15 @@ function buscarProductos(texto){
     return;
   }
 
-  filtrados.forEach(p =>
-    resultadosBusqueda.appendChild(crearResultadoBusqueda(p))
-  );
+  filtrados.slice(0,10).forEach(resultado => {
+    resultadosBusqueda.appendChild(
+      crearResultadoBusqueda(resultado.producto)
+    );
+  });
 
   resultadosBusqueda.style.display = "block";
 }
+
 
 buscadorGlobal.addEventListener("input",function(){buscarProductos(this.value);});
 function ejecutarBusquedaTexto(){
