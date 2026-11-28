@@ -239,8 +239,70 @@ function actualizarWhatsAppCarrito(cart,total){let mensaje="Hola Megatodo 👋\n
 
 /* ============================ BUSCADOR DEL ENCABEZADO ============================ */
 const buscador=document.getElementById("buscadorGlobal"),resultados=document.getElementById("resultadosBusqueda");
-function mostrarResultados(){const texto=normalizar(buscador.value);if(!texto){resultados.hidden=true;resultados.innerHTML="";return;}const encontrados=productos.filter(p=>normalizar(p.Nombre).includes(texto)||normalizar(obtenerCodigo(p)).includes(texto)||normalizar(obtenerCategoriaProducto(p)).includes(texto)).slice(0,8);if(!encontrados.length){resultados.innerHTML='<div class="resultado">No encontramos productos.</div>';resultados.hidden=false;return;}resultados.innerHTML=encontrados.map(p=>{const url=obtenerUrlProducto(p),foto=convertirUrlFotografia(obtenerFoto(p));return `<div class="resultado"><a href="${escaparHTML(url || "#")}">${foto?`<img src="${escaparHTML(foto)}" alt="">`:""}<span>${escaparHTML(p.Nombre || "Producto")}<small>${escaparHTML(p.Precio || "Consultar precio")}</small></span></a></div>`;}).join("");resultados.hidden=false;}
-buscador.addEventListener("input",mostrarResultados);document.getElementById("btnBuscar").addEventListener("click",()=>{const q=buscador.value.trim();if(q)window.location.href="buscar.html?q="+encodeURIComponent(q);});buscador.addEventListener("keydown",e=>{if(e.key==="Enter"){const q=buscador.value.trim();if(q)window.location.href="buscar.html?q="+encodeURIComponent(q);}});document.addEventListener("click",e=>{if(!e.target.closest(".buscador-header"))resultados.hidden=true;});
+
+function mostrarResultados(){
+  const texto = normalizar(buscador.value);
+
+  if(!texto){
+    resultados.hidden = true;
+    resultados.innerHTML = "";
+    return;
+  }
+
+  const codigoBuscado = normalizar(buscador.value).replace(/[\s-]/g,"");
+
+  const encontrados = productos.filter(p => {
+    const nombre = normalizar(p.Nombre);
+    const categoria = normalizar(obtenerCategoriaProducto(p));
+    const codigo = normalizar(obtenerCodigo(p));
+
+    const coincideNombre = nombre.includes(texto);
+    const coincideCategoria = categoria.includes(texto);
+    const coincideCodigo = codigo.includes(texto);
+
+    const variantesProducto = variantesDeProducto(p);
+
+    const coincideCodigoVariante = variantesProducto.some(v => {
+      const codigoVariante = normalizar(
+        v.CodigoVariante ?? v["Código Variante"] ?? ""
+      ).replace(/[\s-]/g,"");
+
+      return codigoBuscado && codigoVariante.includes(codigoBuscado);
+    });
+
+    return coincideNombre ||
+      coincideCategoria ||
+      coincideCodigo ||
+      coincideCodigoVariante;
+
+  }).slice(0,8);
+
+  if(!encontrados.length){
+    resultados.innerHTML =
+      '<div class="resultado">No encontramos productos.</div>';
+    resultados.hidden = false;
+    return;
+  }
+
+  resultados.innerHTML = encontrados.map(p => {
+    const url = obtenerUrlProducto(p);
+    const foto = convertirUrlFotografia(obtenerFoto(p));
+
+    return `
+      <div class="resultado">
+        <a href="${escaparHTML(url || "#")}">
+          ${foto ? `<img src="${escaparHTML(foto)}" alt="">` : ""}
+          <span>
+            ${escaparHTML(p.Nombre || "Producto")}
+            <small>${escaparHTML(p.Precio || "Consultar precio")}</small>
+          </span>
+        </a>
+      </div>`;
+  }).join("");
+
+  resultados.hidden = false;
+}
+
 
 /* ============================ MENÚ Y BOTONES ============================ */
 const menu=document.getElementById("menuCategorias");document.getElementById("btnMenuCategorias").addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("abierto");});document.addEventListener("click",e=>{if(!menu.contains(e.target))menu.classList.remove("abierto");});
