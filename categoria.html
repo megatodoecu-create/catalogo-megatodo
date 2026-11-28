@@ -282,6 +282,37 @@ function mostrarResultados(){
 }
 
 
+/* ============================ CONEXIONES DEL BUSCADOR ============================ */
+
+// Mostrar sugerencias mientras se escribe
+buscador.addEventListener("input", mostrarResultados);
+
+// Buscar al presionar Enter
+buscador.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    e.preventDefault();
+
+    const texto = buscador.value.trim();
+
+    if(texto){
+      window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
+    }
+  }
+
+  if(e.key === "Escape"){
+    resultados.hidden = true;
+  }
+});
+
+// Buscar al presionar la lupa
+document.getElementById("btnBuscar").addEventListener("click", function(){
+  const texto = buscador.value.trim();
+
+  if(texto){
+    window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
+  }
+});
+  
 /* ============================ MENÚ Y BOTONES ============================ */
 const menu=document.getElementById("menuCategorias");document.getElementById("btnMenuCategorias").addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("abierto");});document.addEventListener("click",e=>{if(!menu.contains(e.target))menu.classList.remove("abierto");});
 document.getElementById("btnArriba").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));window.addEventListener("scroll",()=>{document.getElementById("btnArriba").style.display=window.scrollY>250?"flex":"none";});window.addEventListener("storage",actualizarCarritoUI);window.addEventListener("pageshow",actualizarCarritoUI);
