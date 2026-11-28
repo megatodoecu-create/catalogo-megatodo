@@ -240,6 +240,21 @@ function actualizarWhatsAppCarrito(cart,total){let mensaje="Hola Megatodo 👋\n
 /* ============================ BUSCADOR DEL ENCABEZADO ============================ */
 const buscador=document.getElementById("buscadorGlobal"),resultados=document.getElementById("resultadosBusqueda");
 
+  function variantesParaBusqueda(p){
+  const id = obtenerId(p);
+  const codigo = obtenerCodigo(p);
+
+  return variantes.filter(v => {
+    const idVariante = String(v.IdProducto ?? v.idProducto ?? "").trim();
+    const codigoProducto = String(v.CodigoProducto ?? v.codigoProducto ?? "").trim();
+
+    return (
+      (id && idVariante === id) ||
+      (codigo && codigoProducto === codigo)
+    );
+  });
+}
+
 function mostrarResultados(){
   const texto = normalizar(buscador.value);
 
@@ -249,11 +264,30 @@ function mostrarResultados(){
     return;
   }
 
-  const encontrados = productos.filter(p =>
-    normalizar(p.Nombre).includes(texto) ||
-    normalizar(obtenerCodigo(p)).includes(texto) ||
-    normalizar(obtenerCategoriaProducto(p)).includes(texto)
-  ).slice(0,8);
+  const codigoBuscado = texto.replace(/[\s-]/g, "");
+
+  const encontrados = productos.filter(p => {
+    const nombre = normalizar(p.Nombre);
+    const codigo = normalizar(obtenerCodigo(p));
+    const categoria = normalizar(obtenerCategoriaProducto(p));
+
+    const variantesProducto = variantesParaBusqueda(p);
+
+    const coincideVariante = variantesProducto.some(v => {
+      const codigoVariante = normalizar(
+        v.CodigoVariante ?? v["Código Variante"] ?? ""
+      ).replace(/[\s-]/g, "");
+
+      return codigoVariante && codigoVariante.includes(codigoBuscado);
+    });
+
+    return (
+      nombre.includes(texto) ||
+      codigo.includes(texto) ||
+      categoria.includes(texto) ||
+      coincideVariante
+    );
+  }).slice(0, 8);
 
   if(!encontrados.length){
     resultados.innerHTML =
@@ -265,6 +299,7 @@ function mostrarResultados(){
   resultados.innerHTML = encontrados.map(p => {
     const url = obtenerUrlProducto(p);
     const foto = convertirUrlFotografia(obtenerFoto(p));
+    const tieneVariantes = variantesParaBusqueda(p).length > 0;
 
     return `
       <div class="resultado">
@@ -272,7 +307,9 @@ function mostrarResultados(){
           ${foto ? `<img src="${escaparHTML(foto)}" alt="">` : ""}
           <span>
             ${escaparHTML(p.Nombre || "Producto")}
-            <small>${escaparHTML(p.Precio || "Consultar precio")}</small>
+            <small>
+              ${tieneVariantes ? "Varias presentaciones disponibles" : escaparHTML(p.Precio || "Consultar precio")}
+            </small>
           </span>
         </a>
       </div>`;
