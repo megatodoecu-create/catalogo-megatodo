@@ -1,4604 +1,710 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Megatodo | Todo lo que necesitas</title>
-
-
-
-      
 <style>
-
 /* =====================================================
-   GENERAL
+   IDENTIDAD Y ESTILOS GENERALES MEGATODO
 ===================================================== */
-
-*{
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#fff;
-    color:#18234b;
-}
-
-
-/* =====================================================
-   COLORES IDENTIDAD MEGATODO
-===================================================== */
-
 :root{
-
-    --rosa:#E83B83;
-    --morado:#7867B7;
-    --lavanda:#9690D0;
-    --naranja:#F2A52B;
-    --celeste:#08A5C6;
-    --turquesa:#63BBAE;
-    --azul:#18234B;
-    --rosa-claro:#FFF5FA;
-    --rosa-suave:#FDE4EF;
-
+  --rosa:#E83B83;--morado:#7867B7;--lavanda:#9690D0;--naranja:#F2A52B;
+  --celeste:#08A5C6;--turquesa:#63BBAE;--azul:#18234B;
+  --rosa-claro:#FFF5FA;--rosa-suave:#FDE4EF;
 }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--azul)}
 
+/* ENCABEZADO */
+.header{position:sticky;top:0;z-index:9000;width:100%;min-height:125px;background:rgba(255,250,252,.98);border-bottom:1px solid #f3d8e5;display:flex;align-items:center;padding:10px 24px;gap:22px;box-shadow:0 4px 18px rgba(232,59,131,.08)}
+.marca-megatodo{flex-shrink:0;width:270px;display:flex;flex-direction:column;align-items:flex-start}
+.logo-megatodo{display:flex;align-items:center;justify-content:flex-start;height:49px;line-height:1;white-space:nowrap}
+.logo-letra{font-family:"Arial Rounded MT Bold",Arial,Helvetica,sans-serif;font-size:48px;font-weight:900;letter-spacing:-4px}
+.logo-m{color:var(--rosa)}.logo-e{color:var(--morado)}.logo-g{color:var(--lavanda)}.logo-a{color:var(--naranja)}
+.logo-t{color:var(--rosa)}.logo-o1,.logo-d{color:var(--celeste)}.logo-o2{color:var(--turquesa)}
+.eslogan{margin:2px 0 5px 8px;font-size:15px;color:var(--azul);font-weight:500;letter-spacing:.2px}
+.sonrisa-megatodo{position:relative;width:68px;height:25px;margin-left:92px;margin-bottom:7px}
+.sonrisa-megatodo:before{content:"";position:absolute;left:5px;top:0;width:54px;height:22px;border-bottom:5px solid var(--rosa);border-radius:0 0 50px 50px}
+.sonrisa-megatodo:after{content:"";position:absolute;left:2px;top:-2px;width:11px;height:11px;border-radius:50%;background:var(--rosa);box-shadow:53px 0 0 var(--rosa)}
 
-/* =====================================================
-   ENCABEZADO
-===================================================== */
+/* MENÚ */
+.menu-categorias{position:relative;flex-shrink:0}
+.btn-menu{height:38px;padding:0 15px;border:0;border-radius:22px;background:linear-gradient(135deg,var(--rosa),#f05b9b);color:white;font-size:14px;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 4px 12px rgba(232,59,131,.22);transition:.2s}
+.btn-menu:hover{transform:translateY(-2px);box-shadow:0 7px 17px rgba(232,59,131,.30)}
+.btn-menu-icono{font-size:20px;line-height:1}.menu-flecha{font-size:17px;transition:.25s}
+.menu-desplegable{position:absolute;top:46px;left:0;width:250px;background:white;border-radius:0 0 17px 17px;box-shadow:0 10px 28px rgba(0,0,0,.14);border:1px solid #f3d7e4;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-8px);transition:.25s;z-index:10000}
+.menu-categorias.abierto .menu-desplegable{opacity:1;visibility:visible;transform:translateY(0)}
+.menu-categorias.abierto .menu-flecha{transform:rotate(180deg)}
+.menu-desplegable a{display:flex;align-items:center;gap:12px;min-height:45px;padding:9px 16px;text-decoration:none;color:var(--azul);font-size:14px;font-weight:bold;border-bottom:1px solid #f5edf1;transition:.2s}
+.menu-desplegable a:last-child{border-bottom:0}.menu-desplegable a:hover{background:#fff0f7;color:var(--rosa);padding-left:21px}.menu-icono{width:30px;text-align:center;font-size:23px;flex-shrink:0}
 
-.header{
+/* BUSCADOR DEL ENCABEZADO: SUGERENCIAS CON FOTOGRAFÍAS */
+.buscador-header{flex:1;max-width:650px;margin:0 auto;position:relative;min-width:0}
+.buscador-header input{width:100%;height:47px;padding:0 58px 0 20px;border-radius:30px;border:2px solid #e9afd0;background:white;color:#25315c;outline:none;font-size:14px;box-shadow:0 3px 12px rgba(232,59,131,.06)}
+.buscador-header input:focus{border-color:var(--rosa);box-shadow:0 3px 15px rgba(232,59,131,.12)}
+.buscador-acciones{position:absolute;top:3px;right:3px;height:41px;display:flex;align-items:center;gap:3px}
+.buscador-acciones button{position:static;width:40px;height:40px;border:0;border-radius:50%;color:white;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.btn-abrir-camara{background:linear-gradient(135deg,var(--celeste),var(--turquesa))}
+#resultadosBusqueda{position:absolute;top:53px;left:0;right:0;background:white;border-radius:14px;box-shadow:0 8px 25px rgba(0,0,0,.14);overflow:hidden;z-index:10000;max-height:350px;overflow-y:auto;display:none}
+.resultado{padding:0;border-bottom:1px solid #f1e8ed}.resultado:last-child{border-bottom:0}
+.resultado a{display:flex;align-items:center;gap:12px;padding:10px 13px;text-decoration:none;color:var(--azul);font-size:14px;font-weight:bold}
+.resultado a:hover{background:#fff0f7;color:var(--rosa)}
+.resultado-foto{width:55px;height:55px;flex:0 0 55px;object-fit:contain;border-radius:9px;background:#faf7fa}
+.resultado-datos{min-width:0;display:flex;flex-direction:column;gap:4px}
+.resultado-nombre{color:var(--azul);line-height:1.25;overflow-wrap:anywhere}
+.resultado-detalle{color:var(--rosa);font-size:12px;font-weight:normal}
+.resultado-vacio{padding:14px 16px;color:#777;font-size:13px}
 
-    position:sticky;
+/* VENTANA DE BÚSQUEDA VISUAL Y LECTOR */
+.modal-busqueda{position:fixed;inset:0;background:rgba(24,35,75,.65);z-index:20000;display:none;align-items:center;justify-content:center;padding:15px}
+.modal-busqueda.abierto{display:flex}.modal-busqueda-contenido{width:100%;max-width:430px;max-height:90vh;overflow-y:auto;background:white;border-radius:22px;padding:20px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.modal-busqueda-cerrar{position:absolute;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:#fff0f7;color:var(--rosa);font-size:24px;cursor:pointer}
+.modal-busqueda-titulo{margin:5px 45px 8px 0;color:var(--azul);font-size:21px}.modal-busqueda-texto{color:#73788c;font-size:13px;line-height:1.5}
+.opciones-fotografia{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.opcion-fotografia{min-height:115px;border:1px solid #ead8e6;border-radius:15px;background:#fff7fb;color:var(--azul);font-weight:bold;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;font-size:13px}
+.opcion-fotografia span{font-size:32px}
+.btn-escanear-codigo{width:100%;margin-top:18px;min-height:45px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--celeste),var(--turquesa));color:white;font-weight:bold;font-size:14px;cursor:pointer}
+#scannerContenedor{margin-top:15px}#videoEscaner{width:100%;border-radius:13px;background:#111}#estadoEscaner{font-size:13px;text-align:center;color:var(--morado);margin-top:8px}
 
-    top:0;
+/* CARRITO SUPERIOR */
+.btn-carrito-global{position:relative;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--celeste),var(--turquesa));color:white;font-size:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 5px 16px rgba(8,165,198,.25);transition:.2s}
+.btn-carrito-global:hover{transform:scale(1.05)}
+#cartCount{position:absolute;top:-4px;right:-3px;min-width:24px;height:24px;padding:0 5px;background:var(--rosa);color:white;border:2px solid white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold}
 
-    z-index:9000;
+/* CARRUSEL DE BANNERS */
+.carrusel-megatodo{width:100%;max-width:1300px;margin:15px auto 25px;padding:0 15px;position:relative;overflow:hidden;box-sizing:border-box}
+.carrusel-megatodo img{display:block;width:100%;height:420px;object-fit:contain;border-radius:16px}
+.flecha-banner{position:absolute;top:50%;transform:translateY(-50%);width:45px;height:45px;border:none;border-radius:50%;background:rgba(255,255,255,.85);color:var(--rosa);font-size:32px;font-weight:bold;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.flecha-banner:hover{background:var(--rosa);color:white}.flecha-anterior{left:25px}.flecha-siguiente{right:25px}
 
-    width:100%;
+/* HERO */
+.hero-categorias{width:100%;min-height:190px;margin:0;padding:25px 20px;background:radial-gradient(circle at 12% 20%,rgba(255,255,255,.85) 0 70px,transparent 71px),radial-gradient(circle at 88% 70%,rgba(255,255,255,.65) 0 100px,transparent 101px),linear-gradient(110deg,#ffd8e9,#f8e9f7,#dff5f3);border-radius:0 0 18px 18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-categorias:before{content:"♥";position:absolute;top:20px;left:18%;color:var(--rosa);font-size:32px;transform:rotate(-15deg)}
+.hero-categorias:after{content:"✦";position:absolute;top:35px;right:27%;color:var(--celeste);font-size:30px;transform:rotate(18deg)}
+.hero-contenido{position:relative;z-index:2}.hero-pequeno{margin:0;font-size:31px;font-weight:900;color:var(--azul);letter-spacing:.5px}
+.hero-grande{margin:0;font-size:55px;line-height:.95;font-weight:1000;color:var(--rosa);text-shadow:2px 2px 0 white,4px 4px 0 #e7a4c4}
 
-    min-height:125px;
+/* CATEGORÍAS */
+.categorias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;padding:18px 15px;max-width:1250px;margin:auto}
+.categoria{min-height:118px;border-radius:17px;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 7px;border:1px solid rgba(255,255,255,.7);box-shadow:0 5px 13px rgba(0,0,0,.06);transition:.25s}
+.categoria:hover{transform:translateY(-4px);box-shadow:0 9px 20px rgba(0,0,0,.12)}.categoria-icono{font-size:38px;line-height:1;margin-bottom:10px}.categoria-nombre{font-size:14px;line-height:1.15;font-weight:800}
+.categoria-belleza{background:#ffd4e7;color:#d71970}.categoria-juguetes{background:#bdeeff;color:#0758a9}.categoria-bazar{background:#d9c8ff;color:#5330c9}.categoria-peluches{background:#f4dfca;color:#72431e}.categoria-cosmeticos{background:#ffcce5;color:#c51d70}.categoria-regalo{background:#bdeff7;color:#0878a6}.categoria-coches{background:#d9c8ff;color:#5425c8}
 
-    background:
-        rgba(255,250,252,.98);
+/* NUEVOS INGRESOS */
+.nuevos{max-width:1220px;margin:0 auto;padding:0 15px 25px}
+.nuevos-titulo{width:max-content;max-width:90%;margin:0 auto 7px;padding:10px 42px;border-radius:30px;background:linear-gradient(90deg,var(--rosa),var(--morado),var(--celeste));color:white;font-size:25px;text-align:center;font-weight:900;box-shadow:0 5px 14px rgba(232,59,131,.20)}
+.nuevos-subtitulo{margin:0 0 20px;text-align:center;color:#bd1665;font-size:14px;font-weight:bold}
+.productos-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.producto-nuevo{position:relative;background:white;border:1px solid #f2c4dc;border-radius:17px;padding:9px;text-decoration:none;color:var(--azul);box-shadow:0 3px 13px rgba(232,59,131,.08);overflow:hidden;transition:.25s;display:block}
+.producto-nuevo:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(232,59,131,.15)}
+.producto-imagen{width:100%;height:195px;border-radius:12px;overflow:hidden;background:#f9f9f9;display:flex;align-items:center;justify-content:center}
+.producto-imagen img{width:100%;height:100%;object-fit:contain}
+.badge{position:absolute;top:15px;left:15px;padding:6px 9px;border-radius:10px;color:white;font-size:11px;font-weight:900;z-index:3}.badge-nuevo{background:#11b96b}.badge-oferta{background:#ff4c4c}
+.producto-nuevo h3{margin:11px 4px 7px;font-size:14px;line-height:1.2;min-height:34px}
+.producto-precio{display:flex;align-items:center;justify-content:space-between;gap:5px}.precio{color:var(--rosa);font-size:20px;font-weight:900}.precio-anterior{color:#8990a7;font-size:13px;text-decoration:line-through;margin-left:5px}
+.precio-desde{font-size:11px;color:#7b7180;font-weight:bold;margin-bottom:2px}.texto-variante-home{font-size:11px;color:#6f7485;margin:5px 3px 0;line-height:1.3}.mas-opciones-home{display:inline-block;margin:5px 3px 1px;color:var(--morado);font-size:11px;font-weight:bold}
+.btn-agregar-producto{width:39px;height:39px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--rosa),var(--morado));color:white;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.btn-agregar-producto:hover{transform:scale(1.08)}.btn-agregar-producto:disabled{opacity:.45;cursor:not-allowed}
 
-    border-bottom:
-        1px solid #f3d8e5;
+/* BENEFICIOS Y HORARIO */
+.beneficios{width:100%;margin-top:10px;padding:16px 25px;background:linear-gradient(90deg,#fff0f8,#f6efff,#ecfbfa);display:flex;align-items:center;justify-content:center;gap:55px;border-top:1px solid #f9d8e9}
+.beneficio{display:flex;align-items:center;gap:9px;color:#1460ad;font-size:13px;font-weight:bold}.beneficio-icono{color:var(--rosa);font-size:27px}
+.horario{max-width:650px;margin:25px auto 50px;padding:20px;border-radius:18px;background:white;box-shadow:0 5px 18px rgba(0,0,0,.07);border:1px solid #f5dce8}
+.horario h2{text-align:center;margin:0 0 15px;color:var(--rosa);font-size:20px}.fila{display:flex;justify-content:space-between;padding:10px 5px;border-bottom:1px solid #eee;font-size:14px}.fila:last-of-type{border-bottom:0}.fila strong{color:var(--rosa)}
+.datos-contacto{margin-top:20px;font-size:14px;line-height:1.5}.datos-contacto a{color:var(--morado);font-weight:bold;text-decoration:none}.datos-contacto a:hover{text-decoration:underline}
 
-    display:flex;
+/* WHATSAPP Y BOTÓN ARRIBA */
+.btn-wpp-flotante{position:fixed;bottom:20px;right:20px;width:55px;height:55px;border-radius:50%;background:#20c968;color:white;text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:27px;box-shadow:0 5px 16px rgba(0,0,0,.20);z-index:9998;transition:.2s}
+.btn-wpp-flotante:hover{transform:scale(1.08)}
+#btnArriba{position:fixed;bottom:20px;left:20px;width:48px;height:48px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--morado),var(--rosa));color:white;display:none;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:9998}
 
-    align-items:center;
+/* CARRITO LATERAL */
+.carrito-overlay{position:fixed;inset:0;background:rgba(0,0,0,.30);opacity:0;visibility:hidden;transition:.3s;z-index:10000}
+.carrito-overlay.abierto{opacity:1;visibility:visible}
+.carrito-panel{position:fixed;top:0;right:0;width:390px;max-width:94%;height:100vh;background:white;z-index:10001;transform:translateX(100%);transition:transform .35s ease;box-shadow:-8px 0 30px rgba(0,0,0,.18);display:flex;flex-direction:column}
+.carrito-panel.abierto{transform:translateX(0)}
+.carrito-header{min-height:68px;padding:15px 18px;background:linear-gradient(135deg,var(--rosa),var(--morado),var(--celeste));color:white;display:flex;align-items:center;justify-content:space-between}
+.carrito-titulo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:bold}.carrito-titulo-icono{font-size:28px}
+.cerrar-carrito{width:38px;height:38px;border:0;border-radius:50%;background:rgba(255,255,255,.15);color:white;font-size:28px;cursor:pointer}
+.carrito-contenido{flex:1;overflow-y:auto;padding:10px 16px}
+.carrito-item{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #eee}
+.carrito-item-imagen{width:80px;height:80px;min-width:80px;border-radius:11px;overflow:hidden;background:#fafafa}.carrito-item-imagen img{width:100%;height:100%;object-fit:contain}
+.carrito-item-info{flex:1;min-width:0}.carrito-item-nombre{font-size:14px;font-weight:bold;line-height:1.25;margin-bottom:5px}.carrito-item-detalle{font-size:11px;color:#777;margin-bottom:4px}.carrito-item-precio{font-size:16px;font-weight:bold;color:var(--azul)}
+.carrito-item-cantidad{display:flex;align-items:center;gap:9px;margin-top:8px}.cantidad-btn{width:29px;height:29px;border:0;border-radius:50%;background:#fff0f7;color:var(--rosa);font-size:19px;font-weight:bold;cursor:pointer}.cantidad-numero{min-width:18px;text-align:center;font-size:14px;font-weight:bold}
+.eliminar-item{border:0;background:none;color:#ff3d42;font-size:18px;cursor:pointer}
+.carrito-vacio{text-align:center;padding:65px 20px;color:#777}.carrito-vacio-icono{font-size:55px;margin-bottom:12px}.carrito-vacio h3{margin:0 0 7px;color:var(--azul)}.carrito-vacio p{margin:0;font-size:13px}
+.carrito-footer{padding:15px 17px 18px;background:white;border-top:1px solid #eee;box-shadow:0 -4px 14px rgba(0,0,0,.06)}
+.carrito-total{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.carrito-total-texto{font-size:17px;font-weight:bold}.carrito-total-precio{font-size:23px;font-weight:900;color:var(--rosa)}
+.btn-wpp-carrito{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:48px;background:#19bf67;color:white;border-radius:11px;text-decoration:none;font-size:15px;font-weight:bold;margin-bottom:10px}
+.btn-ver-carrito{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border:2px solid var(--rosa);background:white;color:var(--rosa);border-radius:11px;text-decoration:none;font-size:14px;font-weight:bold}
 
-    padding:10px 24px;
-
-    gap:22px;
-
-    box-shadow:
-        0 4px 18px rgba(232,59,131,.08);
-
+/* TABLET */
+@media(max-width:1000px){
+  .header{min-height:115px;padding:9px 15px;gap:14px}.marca-megatodo{width:245px}.logo-letra{font-size:43px}
+  .categorias{grid-template-columns:repeat(4,1fr)}.productos-grid{grid-template-columns:repeat(3,1fr)}.beneficios{gap:25px}
 }
-
-
-/* =====================================================
-   MARCA MEGATODO
-===================================================== */
-
-.marca-megatodo{
-
-    flex-shrink:0;
-
-    width:270px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-}
-
-
-/* =====================================================
-   LOGO TEXTO
-===================================================== */
-
-.logo-megatodo{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:flex-start;
-
-    height:49px;
-
-    line-height:1;
-
-    white-space:nowrap;
-
-}
-
-
-/* LETRAS */
-
-.logo-letra{
-
-    font-family:
-        Arial Rounded MT Bold,
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    font-size:48px;
-
-    font-weight:900;
-
-    letter-spacing:-4px;
-
-}
-
-
-/* COLORES DEL LOGO */
-
-.logo-m{
-    color:var(--rosa);
-}
-
-.logo-e{
-    color:var(--morado);
-}
-
-.logo-g{
-    color:var(--lavanda);
-}
-
-.logo-a{
-    color:var(--naranja);
-}
-
-.logo-t{
-    color:var(--rosa);
-}
-
-.logo-o1{
-    color:var(--celeste);
-}
-
-.logo-d{
-    color:var(--celeste);
-}
-
-.logo-o2{
-    color:var(--turquesa);
-}
-
-
-/* =====================================================
-   ESLOGAN
-===================================================== */
-
-.eslogan{
-
-    margin:2px 0 5px 8px;
-
-    font-size:15px;
-
-    color:var(--azul);
-
-    font-weight:500;
-
-    letter-spacing:.2px;
-
-}
-
-
-/* =====================================================
-   SONRISA MEGATODO
-===================================================== */
-
-.sonrisa-megatodo{
-
-    position:relative;
-
-    width:68px;
-
-    height:25px;
-
-    margin-left:92px;
-
-    margin-bottom:7px;
-
-}
-
-
-/* arco */
-
-.sonrisa-megatodo:before{
-
-    content:"";
-
-    position:absolute;
-
-    left:5px;
-
-    top:0;
-
-    width:54px;
-
-    height:22px;
-
-    border-bottom:
-        5px solid var(--rosa);
-
-    border-radius:
-        0 0 50px 50px;
-
-}
-
-
-/* punto izquierdo */
-
-.sonrisa-megatodo:after{
-
-    content:"";
-
-    position:absolute;
-
-    left:2px;
-
-    top:-2px;
-
-    width:11px;
-
-    height:11px;
-
-    border-radius:50%;
-
-    background:var(--rosa);
-
-    box-shadow:
-        53px 0 0 var(--rosa);
-
-}
-
-
-/* =====================================================
-   BOTÓN CATEGORÍAS
-===================================================== */
-
-.menu-categorias{
-
-    position:relative;
-
-    flex-shrink:0;
-
-}
-
-
-/* BOTÓN */
-
-.btn-menu{
-
-    height:38px;
-
-    padding:0 15px;
-
-    border:0;
-
-    border-radius:22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--rosa),
-            #f05b9b
-        );
-
-    color:white;
-
-    font-size:14px;
-
-    font-weight:bold;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:8px;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 4px 12px rgba(232,59,131,.22);
-
-    transition:.2s;
-
-}
-
-
-.btn-menu:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 7px 17px rgba(232,59,131,.30);
-
-}
-
-
-.btn-menu-icono{
-
-    font-size:20px;
-
-    line-height:1;
-
-}
-
-
-.menu-flecha{
-
-    font-size:17px;
-
-    transition:.25s;
-
-}
-
-
-/* =====================================================
-   MENÚ DESPLEGABLE
-===================================================== */
-
-.menu-desplegable{
-
-    position:absolute;
-
-    top:46px;
-
-    left:0;
-
-    width:235px;
-
-    background:white;
-
-    border-radius:
-        0 0 17px 17px;
-
-    box-shadow:
-        0 10px 28px rgba(0,0,0,.14);
-
-    border:
-        1px solid #f3d7e4;
-
-    overflow:hidden;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transform:translateY(-8px);
-
-    transition:.25s;
-
-    z-index:10000;
-
-}
-
-
-/* ABIERTO */
-
-.menu-categorias.abierto
-.menu-desplegable{
-
-    opacity:1;
-
-    visibility:visible;
-
-    transform:translateY(0);
-
-}
-
-
-.menu-categorias.abierto
-.menu-flecha{
-
-    transform:rotate(180deg);
-
-}
-
-
-/* =====================================================
-   OPCIONES MENÚ
-===================================================== */
-
-.menu-desplegable a{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    min-height:45px;
-
-    padding:9px 16px;
-
-    text-decoration:none;
-
-    color:var(--azul);
-
-    font-size:14px;
-
-    font-weight:bold;
-
-    border-bottom:
-        1px solid #f5edf1;
-
-    transition:.2s;
-
-}
-
-
-.menu-desplegable a:last-child{
-
-    border-bottom:0;
-
-}
-
-
-.menu-desplegable a:hover{
-
-    background:#fff0f7;
-
-    color:var(--rosa);
-
-    padding-left:21px;
-
-}
-
-
-.menu-icono{
-
-    width:30px;
-
-    text-align:center;
-
-    font-size:23px;
-
-    flex-shrink:0;
-
-}
-
-
-/* =====================================================
-   BUSCADOR
-===================================================== */
-
-
-/* =====================================================
-   BUSCADOR MEGATODO
-===================================================== */
-
-.buscador-header{
-    flex:1;
-    max-width:650px;
-    margin:0 auto;
-    position:relative;
-}
-
-.buscador-header input{
-    width:100%;
-    height:47px;
-    padding:0 58px 0 20px;
-    border-radius:30px;
-    border:2px solid #e9afd0;
-    background:white;
-    color:#25315c;
-    outline:none;
-    font-size:14px;
-    box-shadow:0 3px 12px rgba(232,59,131,.06);
-}
-
-.buscador-header input:focus{
-    border-color:var(--rosa);
-    box-shadow:0 3px 15px rgba(232,59,131,.12);
-}
-
-.buscador-acciones{
-    position:absolute;
-    top:3px;
-    right:3px;
-    height:41px;
-    display:flex;
-    align-items:center;
-    gap:3px;
-}
-
-.buscador-acciones button{
-    position:static;
-    width:40px;
-    height:40px;
-    border:0;
-    border-radius:50%;
-    color:white;
-    font-size:19px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.btn-abrir-camara{
-    background:linear-gradient(135deg,var(--celeste),var(--turquesa));
-}
-
-#resultadosBusqueda{
-    position:absolute;
-    top:53px;
-    left:0;
-    right:0;
-    background:white;
-    border-radius:14px;
-    box-shadow:0 8px 25px rgba(0,0,0,.14);
-    overflow:hidden;
-    z-index:10000;
-    max-height:350px;
-    overflow-y:auto;
-}
-
-.resultado{
-    padding:13px 17px;
-    border-bottom:1px solid #f1e8ed;
-}
-
-.resultado:last-child{
-    border-bottom:0;
-}
-
-.resultado a{
-    text-decoration:none;
-    color:var(--azul);
-    font-size:14px;
-    font-weight:bold;
-}
-
-.resultado a:hover{
-    color:var(--rosa);
-}
-
-/* =====================================================
-   VENTANA DE BÚSQUEDA VISUAL
-===================================================== */
-
-.modal-busqueda{
-    position:fixed;
-    inset:0;
-    background:rgba(24,35,75,.65);
-    z-index:20000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-}
-
-.modal-busqueda.abierto{
-    display:flex;
-}
-
-.modal-busqueda-contenido{
-    width:100%;
-    max-width:430px;
-    max-height:90vh;
-    overflow-y:auto;
-    background:white;
-    border-radius:22px;
-    padding:20px;
-    position:relative;
-    box-shadow:0 12px 40px rgba(0,0,0,.25);
-}
-
-.modal-busqueda-cerrar{
-    position:absolute;
-    top:12px;
-    right:12px;
-    width:36px;
-    height:36px;
-    border:0;
-    border-radius:50%;
-    background:#fff0f7;
-    color:var(--rosa);
-    font-size:24px;
-    cursor:pointer;
-}
-
-.modal-busqueda-titulo{
-    margin:5px 45px 8px 0;
-    color:var(--azul);
-    font-size:21px;
-}
-
-.modal-busqueda-texto{
-    color:#73788c;
-    font-size:13px;
-    line-height:1.5;
-}
-
-.opciones-fotografia{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-top:20px;
-}
-
-.opcion-fotografia{
-    min-height:115px;
-    border:1px solid #ead8e6;
-    border-radius:15px;
-    background:#fff7fb;
-    color:var(--azul);
-    font-weight:bold;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:9px;
-    font-size:13px;
-}
-
-.opcion-fotografia span{
-    font-size:32px;
-}
-
-#vistaFotoBusqueda{
-    display:none;
-    width:100%;
-    max-height:260px;
-    object-fit:contain;
-    margin-top:18px;
-    border-radius:12px;
-    background:#f8f8f8;
-}
-
-#estadoBusquedaVisual{
-    margin-top:12px;
-    color:var(--morado);
-    font-size:13px;
-    text-align:center;
-    line-height:1.5;
-}
-
-.btn-escanear-codigo{
-    width:100%;
-    margin-top:18px;
-    min-height:45px;
-    border:0;
-    border-radius:12px;
-    background:linear-gradient(135deg,var(--celeste),var(--turquesa));
-    color:white;
-    font-weight:bold;
-    font-size:14px;
-    cursor:pointer;
-}
-
-#zonaLectorCodigo{
-    display:none;
-    margin-top:15px;
-}
-
-#videoLectorCodigo{
-    width:100%;
-    border-radius:13px;
-    background:#111;
-}
-
-#estadoLectorCodigo{
-    font-size:13px;
-    text-align:center;
-    color:var(--morado);
-    margin-top:8px;
-}
-
+/* CELULAR */
 @media(max-width:650px){
-    .buscador-header{
-        margin-left:3px;
-        margin-right:3px;
-    }
-
-    .buscador-header input{
-        height:40px;
-        padding-left:13px;
-        padding-right:48px;
-        font-size:12px;
-    }
-
-    .buscador-acciones{
-        height:34px;
-    }
-
-    .buscador-acciones button{
-        width:33px;
-        height:34px;
-        font-size:16px;
-    }
+  .header{min-height:105px;height:auto;padding:7px 9px;gap:7px;align-items:center}
+  .marca-megatodo{width:130px;align-items:flex-start}.logo-megatodo{height:31px}.logo-letra{font-size:29px;letter-spacing:-3px}
+  .eslogan{font-size:8px;margin:2px 0 2px 3px}.sonrisa-megatodo{transform:scale(.60);transform-origin:left top;width:68px;height:18px;margin-left:39px;margin-bottom:-2px}
+  .menu-categorias{position:absolute;left:9px;bottom:5px}.btn-menu{height:28px;padding:0 10px;font-size:10px;gap:5px}.btn-menu-icono{font-size:15px}.menu-flecha{font-size:13px}.menu-desplegable{top:34px;left:0;width:215px}
+  .buscador-header{margin-left:3px;margin-right:3px}.buscador-header input{height:40px;padding-left:13px;padding-right:48px;font-size:12px}.buscador-acciones{height:34px}.buscador-acciones button{width:33px;height:34px;font-size:16px}
+  .btn-carrito-global{width:45px;height:45px;font-size:22px}#cartCount{min-width:21px;height:21px;font-size:10px}
+  .carrusel-megatodo img{height:170px;border-radius:10px}.flecha-banner{width:32px;height:32px;font-size:23px}.flecha-anterior{left:20px}.flecha-siguiente{right:20px}
+  .hero-categorias{min-height:135px;padding:18px 10px}.hero-pequeno{font-size:23px}.hero-grande{font-size:40px}
+  .categorias{grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 9px}.categoria{min-height:105px;padding:8px 3px;border-radius:13px}.categoria-icono{font-size:29px;margin-bottom:7px}.categoria-nombre{font-size:11px}
+  .nuevos{padding:0 9px 20px}.nuevos-titulo{font-size:20px;padding:9px 25px}.nuevos-subtitulo{font-size:12px}
+  .productos-grid{grid-template-columns:repeat(2,1fr);gap:10px}.producto-nuevo{padding:7px;border-radius:13px}.producto-imagen{height:150px}.producto-nuevo h3{font-size:12px;min-height:30px;margin:8px 3px 5px}.precio{font-size:17px}.precio-anterior{font-size:11px}.btn-agregar-producto{width:35px;height:35px;font-size:17px}
+  .beneficios{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:15px}.beneficio{font-size:11px}.beneficio-icono{font-size:22px}
+  .carrito-panel{width:100%;max-width:100%}.horario{width:92%;padding:16px;margin:20px auto 40px}.datos-contacto iframe{height:210px}
 }
+@media(max-width:400px){
+  .marca-megatodo{width:112px}.logo-letra{font-size:25px;letter-spacing:-3px}.eslogan{font-size:7px}.categorias{grid-template-columns:repeat(3,1fr)}.producto-imagen{height:135px}
+}
+</style>
+</head>
+<body>
 
+<header class="header">
+  <div class="marca-megatodo">
+    <div class="logo-megatodo">
+      <span class="logo-letra logo-m">m</span><span class="logo-letra logo-e">e</span><span class="logo-letra logo-g">g</span><span class="logo-letra logo-a">a</span><span class="logo-letra logo-t">t</span><span class="logo-letra logo-o1">o</span><span class="logo-letra logo-d">d</span><span class="logo-letra logo-o2">o</span>
+    </div>
+    <div class="eslogan">Todo lo que necesitas</div>
+    <div class="sonrisa-megatodo"></div>
+    <div class="menu-categorias" id="menuCategorias">
+      <button class="btn-menu" id="btnMenuCategorias" type="button"><span class="btn-menu-icono">☰</span><span>Categorías</span><span class="menu-flecha">⌄</span></button>
+      <div class="menu-desplegable" id="menuDesplegable">
+        <a href="categoria.html?cat=Artículos%20de%20Belleza"><span class="menu-icono">💅</span><span>Artículos de Belleza</span></a>
+        <a href="categoria.html?cat=Juguetes"><span class="menu-icono">🧸</span><span>Juguetes</span></a>
+        <a href="categoria.html?cat=Bazar"><span class="menu-icono">🏠</span><span>Bazar</span></a>
+        <a href="categoria.html?cat=Peluches"><span class="menu-icono">🐻</span><span>Peluches</span></a>
+        <a href="categoria.html?cat=Cosméticos"><span class="menu-icono">💄</span><span>Cosméticos</span></a>
+        <a href="categoria.html?cat=Cajas%20de%20Regalo"><span class="menu-icono">🎁</span><span>Cajas y fundas de regalo</span></a>
+        <a href="categoria.html?cat=Coches%20de%20Bebé"><span class="menu-icono">🚗</span><span>Correpasillos, monopatines y patinetas</span></a>
+      </div>
+    </div>
+  </div>
 
+  <div class="buscador-header">
+    <input type="text" id="buscadorGlobal" placeholder="Buscar por nombre o código..." autocomplete="off">
+    <div class="buscador-acciones"><button type="button" id="btnAbrirVisual" class="btn-abrir-camara" aria-label="Buscar con foto">📷</button></div>
+    <div id="resultadosBusqueda"></div>
+  </div>
 
+  <button class="btn-carrito-global" id="abrirCarrito" type="button" aria-label="Abrir carrito">🛒<span id="cartCount">0</span></button>
+</header>
+
+<!-- BÚSQUEDA VISUAL Y ESCÁNER -->
+<div class="modal-busqueda" id="modalBusquedaVisual">
+  <div class="modal-busqueda-contenido">
+    <button class="modal-busqueda-cerrar" type="button" id="btnCerrarVisual" aria-label="Cerrar">✕</button>
+    <h2 class="modal-busqueda-titulo">Buscar producto con foto</h2>
+    <p class="modal-busqueda-texto">Toma una fotografía o selecciona una imagen para buscar productos en Megatodo.</p>
+    <button type="button" id="btnAbrirEscaner" class="btn-escanear-codigo">▦ Escanear código de barras</button>
+    <div class="opciones-fotografia">
+      <button class="opcion-fotografia" type="button" id="btnTomarFoto"><span>📷</span>Tomar una foto</button>
+      <button class="opcion-fotografia" type="button" id="btnElegirFoto"><span>🖼️</span>Elegir de galería</button>
+    </div>
+    <input type="file" id="archivoCamara" accept="image/*" capture="environment" hidden>
+    <input type="file" id="archivoGaleria" accept="image/*" hidden>
+    <img id="imagenSeleccionada" alt="Fotografía seleccionada" style="display:none;width:100%;max-height:260px;object-fit:contain;margin-top:18px;border-radius:12px;">
+    <p id="mensajeVisual" class="modal-busqueda-texto">Selecciona una fotografía del producto.</p>
+    <div id="scannerContenedor" hidden>
+      <video id="videoEscaner" autoplay muted playsinline></video>
+      <p id="estadoEscaner">Preparando cámara...</p>
+      <button type="button" id="btnCerrarEscaner" class="btn-escanear-codigo">Detener escáner</button>
+    </div>
+  </div>
+</div>
+
+<!-- CARRUSEL DE BANNERS -->
+<div class="carrusel-megatodo">
+  <img id="bannerMegatodo" src="banners/banner1.jpg" alt="Productos Megatodo">
+  <button type="button" class="flecha-banner flecha-anterior" onclick="cambiarBanner(-1)" aria-label="Banner anterior">&#10094;</button>
+  <button type="button" class="flecha-banner flecha-siguiente" onclick="cambiarBanner(1)" aria-label="Banner siguiente">&#10095;</button>
+</div>
+
+<section class="hero-categorias"><div class="hero-contenido"><p class="hero-pequeno">ELIGE UNA</p><h1 class="hero-grande">CATEGORÍA</h1></div></section>
+
+<section class="categorias">
+  <a href="categoria.html?cat=Artículos%20de%20Belleza" class="categoria categoria-belleza"><span class="categoria-icono">💅</span><span class="categoria-nombre">Artículos de Belleza</span></a>
+  <a href="categoria.html?cat=Juguetes" class="categoria categoria-juguetes"><span class="categoria-icono">🧸</span><span class="categoria-nombre">Juguetes</span></a>
+  <a href="categoria.html?cat=Bazar" class="categoria categoria-bazar"><span class="categoria-icono">🏠</span><span class="categoria-nombre">Bazar</span></a>
+  <a href="categoria.html?cat=Peluches" class="categoria categoria-peluches"><span class="categoria-icono">🐻</span><span class="categoria-nombre">Peluches</span></a>
+  <a href="categoria.html?cat=Cosméticos" class="categoria categoria-cosmeticos"><span class="categoria-icono">💄</span><span class="categoria-nombre">Maquillaje</span></a>
+  <a href="categoria.html?cat=Cajas%20de%20Regalo" class="categoria categoria-regalo"><span class="categoria-icono">🎁</span><span class="categoria-nombre">Cajas y fundas<br>de regalo</span></a>
+  <a href="categoria.html?cat=Coches%20de%20Bebé" class="categoria categoria-coches"><span class="categoria-icono">🚗</span><span class="categoria-nombre">Correpasillos,<br>monopatines y patinetas</span></a>
+</section>
+
+<section class="nuevos">
+  <h2 class="nuevos-titulo">✨ NUEVOS INGRESOS ✨</h2>
+  <p class="nuevos-subtitulo">Descubre nuestros productos recién llegados</p>
+  <div id="productosNuevos" class="productos-grid"></div>
+</section>
+
+<section class="beneficios">
+  <div class="beneficio"><span class="beneficio-icono">⚡</span><span>Rápido y fácil</span></div>
+  <div class="beneficio"><span class="beneficio-icono">🛡️</span><span>Seguro</span></div>
+  <div class="beneficio"><span class="beneficio-icono">♡</span><span>Tu tienda de confianza</span></div>
+  <div class="beneficio"><span class="beneficio-icono">🚚</span><span>Envíos a todo el país</span></div>
+</section>
+
+<section class="horario">
+  <h2>🕒 Horario de atención</h2>
+  <div class="fila"><span>Lunes a Sábado</span><strong>8:30 a 19:30</strong></div>
+  <div class="fila"><span>Domingo</span><strong>9:30 a 18:30</strong></div>
+  <section class="datos-contacto">
+    <div style="margin-bottom:18px;">
+      <p>📍 <strong>Ubicación:</strong> Otavalo, calle Bolívar entre Quiroga y Salinas</p>
+      <a href="https://maps.app.goo.gl/8Q15o9XXEw2d9LS67" target="_blank" rel="noopener noreferrer" style="display:block;">
+        <iframe src="https://maps.google.com/maps?q=Otavalo%2C%20calle%20Bol%C3%ADvar%20entre%20Quiroga%20y%20Salinas%2C%20Ecuador&output=embed" width="100%" height="250" style="border:0;border-radius:12px;pointer-events:none;" loading="lazy" title="Ubicación de Megatodo"></iframe>
+      </a>
+    </div>
+    <p>📞 <strong>Teléfono:</strong> <a href="tel:+593990924437">0990924437</a></p>
+    <p>✉️ <strong>Correo:</strong> <a href="mailto:megatodo.ecu@gmail.com">megatodo.ecu@gmail.com</a></p>
+  </section>
+</section>
+
+<a href="https://wa.me/593990924437" target="_blank" rel="noopener noreferrer" class="btn-wpp-flotante" aria-label="WhatsApp">💬</a>
+<button id="btnArriba" type="button" onclick="irArriba()" aria-label="Volver arriba">⬆️</button>
+
+<div class="carrito-overlay" id="carritoOverlay"></div>
+<aside class="carrito-panel" id="carritoPanel">
+  <div class="carrito-header">
+    <div class="carrito-titulo"><span class="carrito-titulo-icono">🛒</span><span>Mi carrito</span></div>
+    <button class="cerrar-carrito" id="cerrarCarrito" type="button">×</button>
+  </div>
+  <div class="carrito-contenido" id="carritoContenido"></div>
+  <div class="carrito-footer">
+    <div class="carrito-total"><span class="carrito-total-texto">Total</span><span class="carrito-total-precio" id="carritoTotal">$0.00</span></div>
+    <a href="https://wa.me/593990924437" target="_blank" rel="noopener noreferrer" class="btn-wpp-carrito" id="btnWppCarrito">💬 Comprar por WhatsApp</a>
+    <a href="carrito.html" class="btn-ver-carrito">🛒 Ver carrito completo</a>
+  </div>
+</aside>
+
+<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
+<script>
+/* =====================================================
+   CATÁLOGO MEGATODO
+===================================================== */
+const ID_HOJA = "1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU";
+const URL_PRODUCTOS = `https://opensheet.elk.sh/${ID_HOJA}/Megatodo`;
+const URL_VARIANTES = `https://opensheet.elk.sh/${ID_HOJA}/Variantes`;
+const NUMERO_WHATSAPP = "593990924437";
+let productos = [];
+let variantes = [];
+let productosCargados = false;
+let variantesCargadas = false;
+
+function normalizar(texto){
+  return String(texto ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+}
+function escaparHTML(texto){
+  return String(texto ?? "").replace(/[&<>"']/g, caracter => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[caracter]));
+}
+function obtenerCodigoProducto(p){
+  return String(p?.["Código"] ?? p?.Codigo ?? p?.codigo ?? "").trim();
+}
+function obtenerIdInternoProducto(p){
+  return String(p?.["ID interno"] ?? p?.IDInterno ?? p?.IdInterno ?? p?.IdProducto ?? p?.idProducto ?? "").trim();
+}
+function obtenerFotoProducto(p){
+  return String(p?.["Foto 1"] || p?.Foto || p?.["Foto 2"] || p?.["Foto 3"] || "").trim();
+}
+function convertirUrlFotografia(url, ancho=1005){
+  const valor = String(url || "").trim();
+  if(!valor) return "";
+  const coincidencia = valor.match(/[?&]id=([a-zA-Z0-9_-]+)/) || valor.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(coincidencia && coincidencia[1]) return `https://lh3.googleusercontent.com/d/${coincidencia[1]}=w${ancho}`;
+  return valor;
+}
+function obtenerUrlFichaProducto(p){
+  const id = obtenerIdInternoProducto(p);
+  const codigo = obtenerCodigoProducto(p);
+  if(id) return "producto.html?id=" + encodeURIComponent(id);
+  if(codigo) return "producto.html?codigo=" + encodeURIComponent(codigo);
+  return "";
+}
+function convertirPrecio(valor){
+  if(typeof valor === "number") return valor;
+  let texto = String(valor ?? "").replace(/[^\d,.-]/g,"");
+  if(texto.includes(",") && texto.lastIndexOf(",") > texto.lastIndexOf(".")) texto = texto.replace(/\./g,"").replace(",",".");
+  const numero = parseFloat(texto);
+  return Number.isFinite(numero) ? numero : 0;
+}
+function precioTexto(valor){return "$" + convertirPrecio(valor).toFixed(2);}
+function obtenerVariantesProducto(producto){
+  const id = obtenerIdInternoProducto(producto);
+  if(!id) return [];
+  return variantes.filter(v => String(v.IdProducto ?? v.idProducto ?? "").trim() === id);
+}
+function varianteDisponible(v){return normalizar(v.Stock) === "disponible";}
+function varianteMenorPrecio(lista){
+  const conPrecio = lista.filter(v => v.Precio !== "" && v.Precio !== null && v.Precio !== undefined && Number.isFinite(convertirPrecio(v.Precio)));
+  const disponibles = conPrecio.filter(varianteDisponible);
+  const candidatos = disponibles.length ? disponibles : conPrecio;
+  return candidatos.sort((a,b) => convertirPrecio(a.Precio) - convertirPrecio(b.Precio))[0] || null;
+}
 
 /* =====================================================
-   BOTÓN CARRITO
+   CARGAR PRODUCTOS Y VARIANTES
+   El buscador se vuelve a dibujar cuando terminan de llegar
+   los datos, incluso si el cliente ya escribió una búsqueda.
 ===================================================== */
+async function cargarCatalogo(){
+  const peticiones = await Promise.allSettled([
+    fetch(URL_PRODUCTOS, {cache:"no-store"}),
+    fetch(URL_VARIANTES, {cache:"no-store"})
+  ]);
 
-.btn-carrito-global{
+  if(peticiones[0].status === "fulfilled" && peticiones[0].value.ok){
+    const data = await peticiones[0].value.json();
+    productos = Array.isArray(data) ? data : [];
+    productosCargados = true;
+  }else{
+    console.error("No se pudo cargar la hoja Megatodo.", peticiones[0].reason || peticiones[0].value?.status);
+  }
 
-    position:relative;
+  if(peticiones[1].status === "fulfilled" && peticiones[1].value.ok){
+    const dataVariantes = await peticiones[1].value.json();
+    variantes = Array.isArray(dataVariantes) ? dataVariantes : [];
+    variantesCargadas = true;
+  }else{
+    variantes = [];
+    console.warn("No se pudo consultar la pestaña Variantes. El catálogo seguirá funcionando con los precios principales.", peticiones[1].reason || peticiones[1].value?.status);
+  }
 
-    width:58px;
-
-    height:58px;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--celeste),
-            var(--turquesa)
-        );
-
-    color:white;
-
-    font-size:28px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
-
-    flex-shrink:0;
-
-    box-shadow:
-        0 5px 16px rgba(8,165,198,.25);
-
-    transition:.2s;
-
+  mostrarNuevos();
+  if(buscadorGlobal.value.trim()) buscarProductos(buscadorGlobal.value);
 }
-
-
-.btn-carrito-global:hover{
-
-    transform:scale(1.05);
-
-}
-
-
-#cartCount{
-
-    position:absolute;
-
-    top:-4px;
-
-    right:-3px;
-
-    min-width:24px;
-
-    height:24px;
-
-    padding:0 5px;
-
-    background:var(--rosa);
-
-    color:white;
-
-    border:2px solid white;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:12px;
-
-    font-weight:bold;
-
-}
-
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero-categorias{
-
-    width:100%;
-
-    min-height:190px;
-
-    margin:0;
-
-    padding:25px 20px;
-
-    background:
-
-    radial-gradient(
-        circle at 12% 20%,
-        rgba(255,255,255,.85) 0 70px,
-        transparent 71px
-    ),
-
-    radial-gradient(
-        circle at 88% 70%,
-        rgba(255,255,255,.65) 0 100px,
-        transparent 101px
-    ),
-
-    linear-gradient(
-        110deg,
-        #ffd8e9,
-        #f8e9f7,
-        #dff5f3
-    );
-
-    border-radius:
-        0 0 18px 18px;
-
-    position:relative;
-
-    overflow:hidden;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-align:center;
-
-}
-
-
-.hero-categorias:before{
-
-    content:"♥";
-
-    position:absolute;
-
-    top:20px;
-
-    left:18%;
-
-    color:var(--rosa);
-
-    font-size:32px;
-
-    transform:rotate(-15deg);
-
-}
-
-
-.hero-categorias:after{
-
-    content:"✦";
-
-    position:absolute;
-
-    top:35px;
-
-    right:27%;
-
-    color:var(--celeste);
-
-    font-size:30px;
-
-    transform:rotate(18deg);
-
-}
-
-
-.hero-contenido{
-
-    position:relative;
-
-    z-index:2;
-
-}
-
-
-.hero-pequeno{
-
-    margin:0;
-
-    font-size:31px;
-
-    font-weight:900;
-
-    color:var(--azul);
-
-    letter-spacing:.5px;
-
-}
-
-
-.hero-grande{
-
-    margin:0;
-
-    font-size:55px;
-
-    line-height:.95;
-
-    font-weight:1000;
-
-    color:var(--rosa);
-
-    text-shadow:
-
-        2px 2px 0 white,
-
-        4px 4px 0 #e7a4c4;
-
-}
-
-
-/* =====================================================
-   CATEGORÍAS
-===================================================== */
-
-.categorias{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(7,minmax(0,1fr));
-
-    gap:12px;
-
-    padding:18px 15px;
-
-    max-width:1250px;
-
-    margin:auto;
-
-}
-
-
-.categoria{
-
-    min-height:118px;
-
-    border-radius:17px;
-
-    text-decoration:none;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-align:center;
-
-    padding:10px 7px;
-
-    border:1px solid rgba(255,255,255,.7);
-
-    box-shadow:
-        0 5px 13px rgba(0,0,0,.06);
-
-    transition:.25s;
-
-}
-
-
-.categoria:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 9px 20px rgba(0,0,0,.12);
-
-}
-
-
-.categoria-icono{
-
-    font-size:38px;
-
-    line-height:1;
-
-    margin-bottom:10px;
-
-}
-
-
-.categoria-nombre{
-
-    font-size:14px;
-
-    line-height:1.15;
-
-    font-weight:800;
-
-}
-
-
-/* COLORES */
-
-.categoria-belleza{
-
-    background:#ffd4e7;
-
-    color:#d71970;
-
-}
-
-
-.categoria-juguetes{
-
-    background:#bdeeff;
-
-    color:#0758a9;
-
-}
-
-
-.categoria-bazar{
-
-    background:#d9c8ff;
-
-    color:#5330c9;
-
-}
-
-
-.categoria-peluches{
-
-    background:#f4dfca;
-
-    color:#72431e;
-
-}
-
-
-.categoria-cosmeticos{
-
-    background:#ffcce5;
-
-    color:#c51d70;
-
-}
-
-
-.categoria-regalo{
-
-    background:#bdeff7;
-
-    color:#0878a6;
-
-}
-
-
-.categoria-coches{
-
-    background:#d9c8ff;
-
-    color:#5425c8;
-
-}
-
+cargarCatalogo();
 
 /* =====================================================
    NUEVOS INGRESOS
 ===================================================== */
-
-.nuevos{
-
-    max-width:1220px;
-
-    margin:0 auto;
-
-    padding:0 15px 25px;
-
-}
-
-
-.nuevos-titulo{
-
-    width:max-content;
-
-    max-width:90%;
-
-    margin:0 auto 7px;
-
-    padding:10px 42px;
-
-    border-radius:30px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--rosa),
-            var(--morado),
-            var(--celeste)
-        );
-
-    color:white;
-
-    font-size:25px;
-
-    text-align:center;
-
-    font-weight:900;
-
-    box-shadow:
-        0 5px 14px rgba(232,59,131,.20);
-
-}
-
-
-.nuevos-subtitulo{
-
-    margin:0 0 20px;
-
-    text-align:center;
-
-    color:#bd1665;
-
-    font-size:14px;
-
-    font-weight:bold;
-
-}
-
-
-/* =====================================================
-   PRODUCTOS
-===================================================== */
-
-.productos-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
-
-    gap:15px;
-
-}
-
-
-.producto-nuevo{
-
-    position:relative;
-
-    background:white;
-
-    border:
-        1px solid #f2c4dc;
-
-    border-radius:17px;
-
-    padding:9px;
-
-    text-decoration:none;
-
-    color:var(--azul);
-
-    box-shadow:
-        0 3px 13px rgba(232,59,131,.08);
-
-    overflow:hidden;
-
-    transition:.25s;
-
-}
-
-
-.producto-nuevo:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 8px 20px rgba(232,59,131,.15);
-
-}
-
-
-.producto-imagen{
-
-    width:100%;
-
-    height:195px;
-
-    border-radius:12px;
-
-    overflow:hidden;
-
-    background:#f9f9f9;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-}
-
-
-.producto-imagen img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-}
-
-
-/* =====================================================
-   BADGES
-===================================================== */
-
-.badge{
-
-    position:absolute;
-
-    top:15px;
-
-    left:15px;
-
-    padding:6px 9px;
-
-    border-radius:10px;
-
-    color:white;
-
-    font-size:11px;
-
-    font-weight:900;
-
-    z-index:3;
-
-}
-
-
-.badge-nuevo{
-
-    background:
-        #11b96b;
-
-}
-
-
-.badge-oferta{
-
-    background:
-        #ff4c4c;
-
-}
-
-
-/* =====================================================
-   INFO PRODUCTO
-===================================================== */
-
-.producto-nuevo h3{
-
-    margin:11px 4px 7px;
-
-    font-size:14px;
-
-    line-height:1.2;
-
-    min-height:34px;
-
-}
-
-
-.producto-precio{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:5px;
-
-}
-
-
-.precio{
-
-    color:var(--rosa);
-
-    font-size:20px;
-
-    font-weight:900;
-
-}
-
-
-.precio-anterior{
-
-    color:#8990a7;
-
-    font-size:13px;
-
-    text-decoration:line-through;
-
-}
-
-
-/* =====================================================
-   BOTÓN AGREGAR
-===================================================== */
-
-.btn-agregar-producto{
-
-    width:39px;
-
-    height:39px;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--rosa),
-            var(--morado)
-        );
-
-    color:white;
-
-    font-size:19px;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    flex-shrink:0;
-
-    transition:.2s;
-
-}
-
-
-.btn-agregar-producto:hover{
-
-    transform:scale(1.08);
-
-}
-
-
-/* =====================================================
-   BENEFICIOS
-===================================================== */
-
-.beneficios{
-
-    width:100%;
-
-    margin-top:10px;
-
-    padding:16px 25px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff0f8,
-            #f6efff,
-            #ecfbfa
-        );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:55px;
-
-    border-top:
-        1px solid #f9d8e9;
-
-}
-
-
-.beneficio{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    color:#1460ad;
-
-    font-size:13px;
-
-    font-weight:bold;
-
-}
-
-
-.beneficio-icono{
-
-    color:var(--rosa);
-
-    font-size:27px;
-
-}
-
-
-/* =====================================================
-   HORARIO
-===================================================== */
-
-.horario{
-
-    max-width:650px;
-
-    margin:25px auto 50px;
-
-    padding:20px;
-
-    border-radius:18px;
-
-    background:white;
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.07);
-
-    border:
-        1px solid #f5dce8;
-
-}
-
-
-.horario h2{
-
-    text-align:center;
-
-    margin:0 0 15px;
-
-    color:var(--rosa);
-
-    font-size:20px;
-
-}
-
-
-.fila{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    padding:10px 5px;
-
-    border-bottom:
-        1px solid #eee;
-
-    font-size:14px;
-
-}
-
-
-.fila:last-child{
-
-    border-bottom:0;
-
-}
-
-
-.fila strong{
-
-    color:var(--rosa);
-
-}
-
-
-/* =====================================================
-   WHATSAPP
-===================================================== */
-
-.btn-wpp-flotante{
-
-    position:fixed;
-
-    bottom:20px;
-
-    right:20px;
-
-    width:55px;
-
-    height:55px;
-
-    border-radius:50%;
-
-    background:#20c968;
-
-    color:white;
-
-    text-decoration:none;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:27px;
-
-    box-shadow:
-        0 5px 16px rgba(0,0,0,.20);
-
-    z-index:9998;
-
-    transition:.2s;
-
-}
-
-
-.btn-wpp-flotante:hover{
-
-    transform:scale(1.08);
-
-}
-
-
-/* =====================================================
-   BOTÓN ARRIBA
-===================================================== */
-
-#btnArriba{
-
-    position:fixed;
-
-    bottom:20px;
-
-    left:20px;
-
-    width:48px;
-
-    height:48px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--morado),
-            var(--rosa)
-        );
-
-    color:white;
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:20px;
-
-    cursor:pointer;
-
-    z-index:9998;
-
-}
-
-
-/* =====================================================
-   CARRITO LATERAL
-===================================================== */
-
-.carrito-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.30);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:10000;
-
-}
-
-
-.carrito-overlay.abierto{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-
-.carrito-panel{
-
-    position:fixed;
-
-    top:0;
-
-    right:0;
-
-    width:390px;
-
-    max-width:94%;
-
-    height:100vh;
-
-    background:white;
-
-    z-index:10001;
-
-    transform:translateX(100%);
-
-    transition:
-        transform .35s ease;
-
-    box-shadow:
-        -8px 0 30px rgba(0,0,0,.18);
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-
-/* =====================================================
-   HEADER CARRITO
-===================================================== */
-
-.carrito-panel.abierto{
-
-    transform:translateX(0);
-
-}
-
-
-.carrito-header{
-
-    min-height:68px;
-
-    padding:15px 18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--rosa),
-            var(--morado),
-            var(--celeste)
-        );
-
-    color:white;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-}
-
-
-.carrito-titulo{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    font-size:22px;
-
-    font-weight:bold;
-
-}
-
-
-.carrito-titulo-icono{
-
-    font-size:28px;
-
-}
-
-
-.cerrar-carrito{
-
-    width:38px;
-
-    height:38px;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:rgba(255,255,255,.15);
-
-    color:white;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-}
-
-
-/* =====================================================
-   CONTENIDO CARRITO
-===================================================== */
-
-.carrito-contenido{
-
-    flex:1;
-
-    overflow-y:auto;
-
-    padding:10px 16px;
-
-}
-
-
-.carrito-item{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:13px 0;
-
-    border-bottom:
-        1px solid #eee;
-
-}
-
-
-.carrito-item-imagen{
-
-    width:80px;
-
-    height:80px;
-
-    min-width:80px;
-
-    border-radius:11px;
-
-    overflow:hidden;
-
-    background:#fafafa;
-
-}
-
-
-.carrito-item-imagen img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-}
-
-
-.carrito-item-info{
-
-    flex:1;
-
-    min-width:0;
-
-}
-
-
-.carrito-item-nombre{
-
-    font-size:14px;
-
-    font-weight:bold;
-
-    line-height:1.25;
-
-    margin-bottom:5px;
-
-}
-
-
-.carrito-item-precio{
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    color:var(--azul);
-
-}
-
-
-.carrito-item-cantidad{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    margin-top:8px;
-
-}
-
-
-.cantidad-btn{
-
-    width:29px;
-
-    height:29px;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:#fff0f7;
-
-    color:var(--rosa);
-
-    font-size:19px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-
-.cantidad-numero{
-
-    min-width:18px;
-
-    text-align:center;
-
-    font-size:14px;
-
-    font-weight:bold;
-
-}
-
-
-.eliminar-item{
-
-    border:0;
-
-    background:none;
-
-    color:#ff3d42;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-}
-
-
-/* =====================================================
-   CARRITO VACÍO
-===================================================== */
-
-.carrito-vacio{
-
-    text-align:center;
-
-    padding:65px 20px;
-
-    color:#777;
-
-}
-
-
-.carrito-vacio-icono{
-
-    font-size:55px;
-
-    margin-bottom:12px;
-
-}
-
-
-.carrito-vacio h3{
-
-    margin:0 0 7px;
-
-    color:var(--azul);
-
-}
-
-
-.carrito-vacio p{
-
-    margin:0;
-
-    font-size:13px;
-
-}
-
-
-/* =====================================================
-   FOOTER CARRITO
-===================================================== */
-
-.carrito-footer{
-
-    padding:15px 17px 18px;
-
-    background:white;
-
-    border-top:
-        1px solid #eee;
-
-    box-shadow:
-        0 -4px 14px rgba(0,0,0,.06);
-
-}
-
-
-.carrito-total{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    margin-bottom:14px;
-
-}
-
-
-.carrito-total-texto{
-
-    font-size:17px;
-
-    font-weight:bold;
-
-}
-
-
-.carrito-total-precio{
-
-    font-size:23px;
-
-    font-weight:900;
-
-    color:var(--rosa);
-
-}
-
-
-.btn-wpp-carrito{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:9px;
-
-    width:100%;
-
-    height:48px;
-
-    background:#19bf67;
-
-    color:white;
-
-    border-radius:11px;
-
-    text-decoration:none;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    margin-bottom:10px;
-
-}
-
-
-.btn-ver-carrito{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:8px;
-
-    width:100%;
-
-    height:48px;
-
-    border:2px solid var(--rosa);
-
-    background:white;
-
-    color:var(--rosa);
-
-    border-radius:11px;
-
-    text-decoration:none;
-
-    font-size:14px;
-
-    font-weight:bold;
-
-}
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(max-width:1000px){
-
-    .header{
-
-        min-height:115px;
-
-        padding:9px 15px;
-
-        gap:14px;
-
-    }
-
-
-    .marca-megatodo{
-
-        width:245px;
-
-    }
-
-
-    .logo-letra{
-
-        font-size:43px;
-
-    }
-
-
-    .categorias{
-
-        grid-template-columns:
-            repeat(4,1fr);
-
-    }
-
-
-    .productos-grid{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-
-    .beneficios{
-
-        gap:25px;
-
-    }
-
-}
-
-
-/* =====================================================
-   CELULAR
-===================================================== */
-
-@media(max-width:650px){
-
-    .header{
-
-        min-height:105px;
-
-        height:auto;
-
-        padding:7px 9px;
-
-        gap:7px;
-
-        align-items:center;
-
-    }
-
-
-    /* MARCA */
-
-    .marca-megatodo{
-
-        width:130px;
-
-        align-items:flex-start;
-
-    }
-
-
-    .logo-megatodo{
-
-        height:31px;
-
-    }
-
-
-    .logo-letra{
-
-        font-size:29px;
-
-        letter-spacing:-3px;
-
-    }
-
-
-    .eslogan{
-
-        font-size:8px;
-
-        margin:
-            2px 0 2px 3px;
-
-    }
-
-
-    .sonrisa-megatodo{
-
-        transform:scale(.60);
-
-        transform-origin:left top;
-
-        width:68px;
-
-        height:18px;
-
-        margin-left:39px;
-
-        margin-bottom:-2px;
-
-    }
-
-
-    /* CATEGORÍAS */
-
-    .menu-categorias{
-
-        position:absolute;
-
-        left:9px;
-
-        bottom:5px;
-
-    }
-
-
-    .btn-menu{
-
-        height:28px;
-
-        padding:0 10px;
-
-        font-size:10px;
-
-        gap:5px;
-
-    }
-
-
-    .btn-menu-icono{
-
-        font-size:15px;
-
-    }
-
-
-    .menu-flecha{
-
-        font-size:13px;
-
-    }
-
-
-    .menu-desplegable{
-
-        top:34px;
-
-        left:0;
-
-        width:215px;
-
-    }
-
-
- 
-
-
-/* CARRITO */
-
-    .btn-carrito-global{
-
-        width:45px;
-
-        height:45px;
-
-        font-size:22px;
-
-    }
-
-
-    #cartCount{
-
-        min-width:21px;
-
-        height:21px;
-
-        font-size:10px;
-
-    }
-
-
-    /* HERO */
-
-    .hero-categorias{
-
-        min-height:135px;
-
-        padding:18px 10px;
-
-    }
-
-
-    .hero-pequeno{
-
-        font-size:23px;
-
-    }
-
-
-    .hero-grande{
-
-        font-size:40px;
-
-    }
-
-
-    /* CATEGORÍAS */
-
-    .categorias{
-
-        grid-template-columns:
-            repeat(4,1fr);
-
-        gap:8px;
-
-        padding:12px 9px;
-
-    }
-
-
-    .categoria{
-
-        min-height:105px;
-
-        padding:8px 3px;
-
-        border-radius:13px;
-
-    }
-
-
-    .categoria-icono{
-
-        font-size:29px;
-
-        margin-bottom:7px;
-
-    }
-
-
-    .categoria-nombre{
-
-        font-size:11px;
-
-    }
-
-
-    /* PRODUCTOS */
-
-    .nuevos{
-
-        padding:0 9px 20px;
-
-    }
-
-
-    .nuevos-titulo{
-
-        font-size:20px;
-
-        padding:9px 25px;
-
-    }
-
-
-    .nuevos-subtitulo{
-
-        font-size:12px;
-
-    }
-
-
-    .productos-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:10px;
-
-    }
-
-
-    .producto-nuevo{
-
-        padding:7px;
-
-        border-radius:13px;
-
-    }
-
-
-    .producto-imagen{
-
-        height:150px;
-
-    }
-
-
-    .producto-nuevo h3{
-
-        font-size:12px;
-
-        min-height:30px;
-
-        margin:8px 3px 5px;
-
-    }
-
-
-    .precio{
-
-        font-size:17px;
-
-    }
-
-
-    .precio-anterior{
-
-        font-size:11px;
-
-    }
-
-
-    .btn-agregar-producto{
-
-        width:35px;
-
-        height:35px;
-
-        font-size:17px;
-
-    }
-
-
-    /* BENEFICIOS */
-
-    .beneficios{
-
-        display:grid;
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:12px;
-
-        padding:15px;
-
-    }
-
-
-    .beneficio{
-
-        font-size:11px;
-
-    }
-
-
-    .beneficio-icono{
-
-        font-size:22px;
-
-    }
-
-
-    /* CARRITO */
-
-    .carrito-panel{
-
-        width:100%;
-
-        max-width:100%;
-
-    }
-
-}
-
-
-/* =====================================================
-   CELULAR PEQUEÑO
-===================================================== */
-
-@media(max-width:400px){
-
-    .marca-megatodo{
-
-        width:112px;
-
-    }
-
-
-    .logo-letra{
-
-        font-size:25px;
-
-        letter-spacing:-3px;
-
-    }
-
-
-    .eslogan{
-
-        font-size:7px;
-
-    }
-
-
-    .buscador-header input{
-
-        font-size:11px;
-
-    }
-
-
-    .categorias{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-
-    .producto-imagen{
-
-        height:135px;
-
-    }
-
-}
-
-/* CARRUSEL DE BANNERS MEGATODO */
-.carrusel-megatodo {
-  width: 100%;
-  max-width: 1300px;
-  margin: 15px auto 25px;
-  padding: 0 15px;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.carrusel-megatodo img {
-  display: block;
-  width: 100%;
-  height: 420px;
-  object-fit: contain;
-  border-radius: 16px;
-}
-
-.flecha-banner {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 45px;
-  height: 45px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  color: #E83B83;
-  font-size: 32px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.flecha-banner:hover {
-  background: #E83B83;
-  color: white;
-}
-
-.flecha-anterior {
-  left: 25px;
-}
-
-.flecha-siguiente {
-  right: 25px;
-}
-
-@media (max-width: 650px) {
-  .carrusel-megatodo img {
-    height: 170px;
-    border-radius: 10px;
-  }
-
-  .flecha-banner {
-    width: 32px;
-    height: 32px;
-    font-size: 23px;
-  }
-
-  .flecha-anterior {
-    left: 20px;
-  }
-
-  .flecha-siguiente {
-    right: 20px;
-  }
-}
-
-      
-      
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     ENCABEZADO
-===================================================== -->
-
-<header class="header">
-
-
-    <!-- =================================================
-         MARCA MEGATODO
-    ================================================== -->
-
-    <div class="marca-megatodo">
-
-
-        <div class="logo-megatodo">
-
-            <span class="logo-letra logo-m">m</span>
-            <span class="logo-letra logo-e">e</span>
-            <span class="logo-letra logo-g">g</span>
-            <span class="logo-letra logo-a">a</span>
-            <span class="logo-letra logo-t">t</span>
-            <span class="logo-letra logo-o1">o</span>
-            <span class="logo-letra logo-d">d</span>
-            <span class="logo-letra logo-o2">o</span>
-
-        </div>
-
-
-        <div class="eslogan">
-
-            Todo lo que necesitas
-
-        </div>
-
-
-        <div class="sonrisa-megatodo">
-        </div>
-
-
-        <!-- =================================================
-             MENÚ CATEGORÍAS
-        ================================================== -->
-
-        <div
-            class="menu-categorias"
-            id="menuCategorias">
-
-
-            <button
-                class="btn-menu"
-                id="btnMenuCategorias"
-                type="button">
-
-
-                <span
-                    class="btn-menu-icono">
-
-                    ☰
-
-                </span>
-
-
-                <span>
-
-                    Categorías
-
-                </span>
-
-
-                <span
-                    class="menu-flecha">
-
-                    ⌄
-
-                </span>
-
-
-            </button>
-
-
-            <!-- MENÚ -->
-
-            <div
-                class="menu-desplegable"
-                id="menuDesplegable">
-
-
-             <a href="categoria.html?cat=Artículos%20de%20Belleza">
-<span class="menu-icono">
-    💅
-</span>
-
-    <span>
-        Artículos de Belleza
-    </span>
-
-</a>
-
-
-                <a
-                    href="categoria.html?cat=Juguetes">
-
-                    <span class="menu-icono">
-                        🧸
-                    </span>
-
-                    <span>
-                        Juguetes
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="categoria.html?cat=Bazar">
-
-                    <span class="menu-icono">
-                        🏠
-                    </span>
-
-                    <span>
-                        Bazar
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="categoria.html?cat=Peluches">
-
-                    <span class="menu-icono">
-                        🐻
-                    </span>
-
-                    <span>
-                        Peluches
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="categoria.html?cat=Cosméticos">
-
-                    <span class="menu-icono">
-                        💄
-                    </span>
-
-                    <span>
-                        Cosméticos
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="categoria.html?cat=Cajas%20de%20Regalo">
-
-                    <span class="menu-icono">
-                        🎁
-                    </span>
-
-                    <span>
-                        Cajas y fundas de regalo
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="categoria.html?cat=Coches%20de%20Bebé">
-
-                    <span class="menu-icono">
-                        🚗
-                    </span>
-
-                    <span>
-                         Correpasillos, monopatines y patinetas
-                    </span>
-
-                </a>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =================================================
-         BUSCADOR
-    ================================================== -->
-
-    <div class="buscador-header">
-        <input
-            type="text"
-            id="buscadorGlobal"
-            placeholder="Buscar por nombre o código..."
-            autocomplete="off">
-
-        <div class="buscador-acciones">
-            <button
-                type="button"
-                id="btnAbrirVisual"
-                class="btn-abrir-camara"
-                aria-label="Buscar con foto">📷</button>
-        </div>
-
-        <div id="resultadosBusqueda"></div>
-    </div>
-
-
-    <!-- =================================================
-         CARRITO
-    ================================================== -->
-
-    <button
-        class="btn-carrito-global"
-        id="abrirCarrito"
-        type="button"
-        aria-label="Abrir carrito">
-
-        🛒
-
-        <span id="cartCount">
-            0
-        </span>
-
-    </button>
-
-
-</header>
-
- 
-<!-- VENTANA ÚNICA DE BÚSQUEDA VISUAL -->
-<div class="modal-busqueda" id="modalBusquedaVisual">
-
-    <div class="modal-busqueda-contenido">
-
-        <button
-            class="modal-busqueda-cerrar"
-            type="button"
-            id="btnCerrarVisual"
-            aria-label="Cerrar">
-            ✕
-        </button>
-
-        <h2 class="modal-busqueda-titulo">
-            Buscar producto con foto
-        </h2>
-
-        <p class="modal-busqueda-texto">
-            Toma una fotografía o selecciona una imagen
-            para buscar productos en Megatodo.
-        </p>
-
-        <button
-            type="button"
-            id="btnAbrirEscaner"
-            class="btn-escanear-codigo">
-            ▦ Escanear código de barras
-        </button>
-
-        <div class="opciones-fotografia">
-
-            <button
-                class="opcion-fotografia"
-                type="button"
-                id="btnTomarFoto">
-                <span>📷</span>
-                Tomar una foto
-            </button>
-
-            <button
-                class="opcion-fotografia"
-                type="button"
-                id="btnElegirFoto">
-                <span>🖼️</span>
-                Elegir de galería
-            </button>
-
-        </div>
-
-        <input
-            type="file"
-            id="archivoCamara"
-            accept="image/*"
-            capture="environment"
-            hidden>
-
-        <input
-            type="file"
-            id="archivoGaleria"
-            accept="image/*"
-            hidden>
-
-        <img
-            id="imagenSeleccionada"
-            alt="Fotografía seleccionada"
-            style="display:none;width:100%;max-height:260px;object-fit:contain;margin-top:18px;border-radius:12px;">
-
-        <p id="mensajeVisual" class="modal-busqueda-texto">
-            Selecciona una fotografía del producto.
-        </p>
-
-        <div id="scannerContenedor" hidden>
-
-            <video
-                id="videoEscaner"
-                autoplay
-                muted
-                playsinline
-                style="width:100%;border-radius:13px;background:#111;">
-            </video>
-
-            <p id="estadoEscaner">
-                Preparando cámara...
-            </p>
-
-            <button
-                type="button"
-                id="btnCerrarEscaner"
-                class="btn-escanear-codigo">
-                Detener escáner
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<!-- CARRUSEL DE BANNERS -->
-<div class="carrusel-megatodo">
-
-  <img id="bannerMegatodo"
-       src="banners/banner1.jpg"
-       alt="Productos Megatodo">
-
-  <button type="button"
-          class="flecha-banner flecha-anterior"
-          onclick="cambiarBanner(-1)"
-          aria-label="Banner anterior">
-    &#10094;
-  </button>
-
-  <button type="button"
-          class="flecha-banner flecha-siguiente"
-          onclick="cambiarBanner(1)"
-          aria-label="Banner siguiente">
-    &#10095;
-  </button>
-
-</div>
-      
-<section
-    class="hero-categorias">
-
-
-    <div
-        class="hero-contenido">
-
-
-        <p
-            class="hero-pequeno">
-
-            ELIGE UNA
-
-        </p>
-
-
-        <h1
-            class="hero-grande">
-
-            CATEGORÍA
-
-        </h1>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     CATEGORÍAS
-===================================================== -->
-
-<section
-    class="categorias">
-
-
-    <a
-        href="categoria.html?cat=Artículos%20de%20Belleza"
-        class="categoria categoria-belleza">
-
-       <span class="categoria-icono">
-    💅
-</span>
-
-<span class="categoria-nombre">
-    Artículos de Belleza
-</span>
-
-    </a>
-
-
-    <a
-        href="categoria.html?cat=Juguetes"
-        class="categoria categoria-juguetes">
-
-        <span class="categoria-icono">
-            🧸
-        </span>
-
-        <span class="categoria-nombre">
-            Juguetes
-        </span>
-
-    </a>
-
-
-    <a
-        href="categoria.html?cat=Bazar"
-        class="categoria categoria-bazar">
-
-        <span class="categoria-icono">
-            🏠
-        </span>
-
-        <span class="categoria-nombre">
-            Bazar
-        </span>
-
-    </a>
-
-
-    <a
-        href="categoria.html?cat=Peluches"
-        class="categoria categoria-peluches">
-
-        <span class="categoria-icono">
-            🐻
-        </span>
-
-        <span class="categoria-nombre">
-            Peluches
-        </span>
-
-    </a>
-
-
-   <a
-    href="categoria.html?cat=Cosméticos"
-    class="categoria categoria-cosmeticos">
-
-    <span class="categoria-icono">
-        💄
-    </span>
-
-    <span class="categoria-nombre">
-        Maquillaje
-    </span>
-
-</a>
-
-
-    <a
-        href="categoria.html?cat=Cajas%20de%20Regalo"
-        class="categoria categoria-regalo">
-
-        <span class="categoria-icono">
-            🎁
-        </span>
-
-        <span class="categoria-nombre">
-                Cajas y fundas<br>de regalo
-        </span>
-
-    </a>
-
-
-    <a
-        href="categoria.html?cat=Coches%20de%20Bebé"
-        class="categoria categoria-coches">
-
-       <span class="categoria-icono">
-    🚗
-</span>
-
-<span class="categoria-nombre">
-    Correpasillos,<br>monopatines y patinetas
-</span>
-
-    </a>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     NUEVOS INGRESOS
-===================================================== -->
-
-<section
-    class="nuevos">
-
-
-    <h2
-        class="nuevos-titulo">
-
-        ✨ NUEVOS INGRESOS ✨
-
-    </h2>
-
-
-    <p
-        class="nuevos-subtitulo">
-
-        Descubre nuestros productos recién llegados
-
-    </p>
-
-
-    <div
-        id="productosNuevos"
-        class="productos-grid">
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     BENEFICIOS
-===================================================== -->
-
-<section
-    class="beneficios">
-
-
-    <div class="beneficio">
-
-        <span class="beneficio-icono">
-            ⚡
-        </span>
-
-        <span>
-            Rápido y fácil
-        </span>
-
-    </div>
-
-
-    <div class="beneficio">
-
-        <span class="beneficio-icono">
-            🛡️
-        </span>
-
-        <span>
-            Seguro
-        </span>
-
-    </div>
-
-
-    <div class="beneficio">
-
-        <span class="beneficio-icono">
-            ♡
-        </span>
-
-        <span>
-            Tu tienda de confianza
-        </span>
-
-    </div>
-
-
-    <div class="beneficio">
-
-        <span class="beneficio-icono">
-            🚚
-        </span>
-
-        <span>
-            Envíos a todo el país
-        </span>
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     HORARIO
-===================================================== -->
-
-<section
-    class="horario">
-
-
-    <h2>
-        🕒 Horario de atención
-    </h2>
-
-
-    <div class="fila">
-
-        <span>
-            Lunes a Sábado
-        </span>
-
-        <strong>
-            8:30 a 19:30
-        </strong>
-
-    </div>
-
-
-    <div class="fila">
-
-        <span>
-            Domingo
-        </span>
-
-        <strong>
-            9:30 a 18:30
-        </strong>
-
-    </div>
-
-  
-<section class="datos-contacto">
-
-  
-<div style="margin-bottom: 18px;">
-  <p>
-    📍 <strong>Ubicación:</strong>
-    Otavalo, calle Bolívar entre Quiroga y Salinas
-  </p>
-
-  <a href="https://maps.app.goo.gl/8Q15o9XXEw2d9LS67"
-     target="_blank"
-     rel="noopener noreferrer"
-     style="display:block;">
-
-    <iframe
-      src="https://maps.google.com/maps?q=Otavalo%2C%20calle%20Bol%C3%ADvar%20entre%20Quiroga%20y%20Salinas%2C%20Ecuador&output=embed"
-      width="100%"
-      height="250"
-      style="border:0; border-radius:12px; pointer-events:none;"
-      loading="lazy">
-    </iframe>
-
-  </a>
-</div>
-
-
-      
-<p>
-  📞 <strong>Teléfono:</strong>
-  <a href="tel:+593990924437">0990924437</a>
-</p>
-
-<p>
-  ✉️ <strong>Correo:</strong>
-  <a href="mailto:megatodo.ecu@gmail.com">
-    megatodo.ecu@gmail.com
-  </a>
-</p>
-
-</section>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     WHATSAPP
-===================================================== -->
-
-<a
-    href="https://wa.me/593990924437"
-    target="_blank"
-    class="btn-wpp-flotante"
-    aria-label="WhatsApp">
-
-    💬
-
-</a>
-
-
-
-<!-- =====================================================
-     BOTÓN ARRIBA
-===================================================== -->
-
-<div
-    id="btnArriba"
-    onclick="irArriba()">
-
-    ⬆️
-
-</div>
-
-
-
-<!-- =====================================================
-     OVERLAY CARRITO
-===================================================== -->
-
-<div
-    class="carrito-overlay"
-    id="carritoOverlay">
-</div>
-
-
-
-<!-- =====================================================
-     CARRITO LATERAL
-===================================================== -->
-
-<aside
-    class="carrito-panel"
-    id="carritoPanel">
-
-
-    <div
-        class="carrito-header">
-
-
-        <div
-            class="carrito-titulo">
-
-
-            <span
-                class="carrito-titulo-icono">
-
-                🛒
-
-            </span>
-
-
-            <span>
-
-                Mi carrito
-
-            </span>
-
-
-        </div>
-
-
-        <button
-            class="cerrar-carrito"
-            id="cerrarCarrito"
-            type="button">
-
-            ×
-
-        </button>
-
-
-    </div>
-
-
-
-    <div
-        class="carrito-contenido"
-        id="carritoContenido">
-
-    </div>
-
-
-
-    <div
-        class="carrito-footer">
-
-
-        <div
-            class="carrito-total">
-
-
-            <span
-                class="carrito-total-texto">
-
-                Total
-
-            </span>
-
-
-            <span
-                class="carrito-total-precio"
-                id="carritoTotal">
-
-                $0.00
-
-            </span>
-
-
-        </div>
-
-
-
-        <a
-            href="https://wa.me/593990924437"
-            target="_blank"
-            class="btn-wpp-carrito">
-
-            💬 Comprar por WhatsApp
-
-        </a>
-
-
-
-        <a
-            href="carrito.html"
-            class="btn-ver-carrito">
-
-            🛒 Ver carrito completo
-
-        </a>
-
-
-    </div>
-
-
-</aside>
-
-
-<script src="https://unpkg.com/@zxing/browser@0.2.1"></script>
-
-
-      
-<script>
-
-
-/* =====================================================
-   GOOGLE SHEETS
-===================================================== */
-
-const url =
-"https://opensheet.elk.sh/1r9dXj_AOXk5ejaGjLxDLA0aY1h0eD0-FNewslUkH0eU/Megatodo";
-
-
-let productos = [];
-
-
-/* =====================================================
-   NORMALIZAR
-===================================================== */
-
-function normalizar(texto){
-
-    return (texto || "")
-        .toString()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g,"");
-
-}
-
-
-/* =====================================================
-   CARGAR PRODUCTOS
-===================================================== */
-
-fetch(url)
-
-.then(res => res.json())
-
-.then(data => {
-
-    productos = data || [];
-
-    mostrarNuevos();
-
-})
-
-.catch(error => {
-
-    console.error(
-        "Error cargando productos:",
-        error
-    );
-
-});
-
-
-/* =====================================================
-   MOSTRAR NUEVOS
-===================================================== */
-
 function mostrarNuevos(){
+  const contenedor = document.getElementById("productosNuevos");
+  const nuevos = productos.filter(p => normalizar(p.Nuevo) === "si");
+  if(!productosCargados){
+    contenedor.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:35px;color:#888">Cargando productos...</div>';
+    return;
+  }
+  if(!nuevos.length){
+    contenedor.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:35px;color:#888">Pronto tendremos nuevos ingresos.</div>';
+    return;
+  }
 
-    const contenedor =
-        document.getElementById(
-            "productosNuevos"
-        );
+  contenedor.innerHTML = nuevos.slice(0,8).map((p,indice) => {
+    const codigo = obtenerCodigoProducto(p);
+    const id = obtenerIdInternoProducto(p);
+    const foto = convertirUrlFotografia(obtenerFotoProducto(p), 1005) || "https://via.placeholder.com/500x500?text=Megatodo";
+    const nombre = escaparHTML(p.Nombre || "Producto");
+    const oferta = normalizar(p.Oferta) === "si";
+    const urlProducto = obtenerUrlFichaProducto(p);
+    const listaVariantes = obtenerVariantesProducto(p);
+    const tieneVariantes = listaVariantes.length > 0;
+    const varianteMenor = tieneVariantes ? varianteMenorPrecio(listaVariantes) : null;
+    const precioBase = p.Precio ?? "";
+    const precioMostrar = tieneVariantes && varianteMenor ? varianteMenor.Precio : precioBase;
+    const tamanoMostrar = tieneVariantes && varianteMenor ? (varianteMenor.Tamaño || "") : (p.Tamaño || p.Tamano || "");
+    const agotado = tieneVariantes ? !listaVariantes.some(varianteDisponible) : normalizar(p.Stock) === "agotado";
+    const idAccion = "nuevo_" + indice;
 
-
-    const nuevos =
-        productos.filter(p =>
-
-            normalizar(p.Nuevo) === "si"
-
-        );
-
-
-    contenedor.innerHTML =
-
-        nuevos
-        .slice(0,8)
-        .map(p => {
-
-
-            const codigo =
-                p.Código ||
-                p.Codigo ||
-                "";
-
-
-            const foto =
-                p["Foto 1"] ||
-                p["Foto"] ||
-                p["Foto 2"] ||
-                p["Foto 3"] ||
-                "";
-
-
-            const nombre =
-                p.Nombre ||
-                "Producto";
-
-
-            const precio =
-                p.Precio ||
-                "";
-
-
-            const oferta =
-                normalizar(p.Oferta) === "si";
-
-
-            return `
-
-                <a
-                    href="producto.html?codigo=${encodeURIComponent(codigo)}"
-                    class="producto-nuevo">
-
-
-                    ${
-                        normalizar(p.Nuevo) === "si"
-                        ?
-                        `<span class="badge badge-nuevo">
-                            NUEVO
-                        </span>`
-                        :
-                        ""
-                    }
-
-
-                    ${
-                        oferta
-                        ?
-                        `<span
-                            class="badge badge-oferta"
-                            style="top:15px;left:auto;right:15px;">
-
-                            OFERTA
-
-                        </span>`
-                        :
-                        ""
-                    }
-
-
-                    <div
-                        class="producto-imagen">
-
-
-                        <img
-                            src="${foto}"
-                            alt="${nombre}">
-
-
-                    </div>
-
-
-                    <h3>
-
-                        ${nombre}
-
-                    </h3>
-
-
-                    <div
-                        class="producto-precio">
-
-
-                        <div>
-
-
-                            <span
-                                class="precio">
-
-                                $${precio}
-
-                            </span>
-
-
-                            ${
-                                oferta &&
-                                p["Precio Anterior"]
-                                ?
-                                `<span
-                                    class="precio-anterior">
-
-                                    $${p["Precio Anterior"]}
-
-                                </span>`
-                                :
-                                ""
-                            }
-
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="btn-agregar-producto"
-                            onclick="event.preventDefault(); agregarProductoDesdeInicio('${codigo}')">
-
-                            🛒
-
-                        </button>
-
-
-                    </div>
-
-
-                </a>
-
-            `;
-
-        }).join("");
-
+    return `
+      <a href="${escaparHTML(urlProducto || "#")}" class="producto-nuevo" ${urlProducto ? "" : `onclick="event.preventDefault();alert('Este producto no tiene ID interno ni código. Prepara el administrador para asignarle un identificador.')"`}>
+        ${normalizar(p.Nuevo) === "si" ? '<span class="badge badge-nuevo">NUEVO</span>' : ""}
+        ${oferta ? '<span class="badge badge-oferta" style="top:15px;left:auto;right:15px">OFERTA</span>' : ""}
+        <div class="producto-imagen"><img src="${escaparHTML(foto)}" alt="${nombre}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://via.placeholder.com/500x500?text=Megatodo'"></div>
+        <h3>${nombre}</h3>
+        <div class="producto-precio">
+          <div>
+            ${tieneVariantes ? '<div class="precio-desde">Desde</div>' : ""}
+            <span class="precio">${escaparHTML(precioMostrar === "" ? "Consultar" : precioTexto(precioMostrar))}</span>
+            ${!tieneVariantes && oferta && p["Precio Anterior"] ? `<span class="precio-anterior">$${escaparHTML(p["Precio Anterior"])}</span>` : ""}
+          </div>
+          <button type="button" class="btn-agregar-producto" ${agotado ? "disabled" : ""} title="${tieneVariantes ? "Elegir presentación" : "Agregar al carrito"}" data-identificador="${escaparHTML(id || codigo)}" data-variantes="${tieneVariantes ? "si" : "no"}" onclick="event.preventDefault();event.stopPropagation();agregarProductoDesdeInicio(this.dataset.identificador,this.dataset.variantes==='si')">${tieneVariantes ? "↗" : "🛒"}</button>
+        </div>
+        ${tamanoMostrar ? `<div class="texto-variante-home">Tamaño: ${escaparHTML(tamanoMostrar)}</div>` : ""}
+        ${tieneVariantes ? `<span class="mas-opciones-home">Más opciones · Ver tamaños →</span>` : ""}
+        ${agotado ? '<div class="texto-variante-home" style="color:#c33;font-weight:bold">AGOTADO</div>' : ""}
+      </a>`;
+  }).join("");
 }
 
-
 /* =====================================================
-   AGREGAR AL CARRITO
+   BUSCADOR DEL ENCABEZADO: TEXTO + FOTO + ID INTERNO
 ===================================================== */
-
-function agregarProductoDesdeInicio(codigo){
-
-    const producto =
-        productos.find(p =>
-
-            (p.Código || p.Codigo) == codigo
-
-        );
-
-
-    if(!producto){
-
-        return;
-
-    }
-
-
-    let carrito = getCart();
-
-
-    const existente =
-        carrito.find(p =>
-
-            (p.codigo ||
-             p.Código ||
-             p.Codigo) == codigo
-
-        );
-
-
-    if(existente){
-
-        existente.cantidad =
-            (Number(existente.cantidad) || 1) + 1;
-
-    }else{
-
-        carrito.push({
-
-            codigo:
-                producto.Código ||
-                producto.Codigo ||
-                "",
-
-            nombre:
-                producto.Nombre ||
-                "",
-
-            precio:
-                producto.Precio ||
-                0,
-
-            cantidad:1,
-
-            foto:
-                producto["Foto 1"] ||
-                producto["Foto"] ||
-                ""
-
-        });
-
-    }
-
-
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
-    );
-
-
-    actualizarCarritoUI();
-
-    renderizarCarrito();
-
-    abrirPanelCarrito();
-
-}
-
-
-
-/* =====================================================
-   BUSCADOR MEGATODO - TEXTO, CÓDIGOS Y CÁMARA
-===================================================== */
-
 const buscadorGlobal = document.getElementById("buscadorGlobal");
 const resultadosBusqueda = document.getElementById("resultadosBusqueda");
+function compactarCodigo(texto){return normalizar(texto).replace(/[\s-]/g,"");}
+function crearResultadoBusqueda(p){
+  const fila = document.createElement("div");
+  fila.className = "resultado";
+  const enlace = document.createElement("a");
+  const urlFicha = obtenerUrlFichaProducto(p);
+  if(urlFicha) enlace.href = urlFicha;
+  else enlace.href = "buscar.html?q=" + encodeURIComponent(p.Nombre || "");
 
-function obtenerCodigoProducto(p) {
-    return p.Código || p.Codigo || p.codigo || "";
+  const foto = document.createElement("img");
+  foto.className = "resultado-foto";
+  foto.alt = p.Nombre || "Producto Megatodo";
+  foto.loading = "lazy";
+  foto.referrerPolicy = "no-referrer";
+  foto.src = convertirUrlFotografia(obtenerFotoProducto(p),400) || "https://via.placeholder.com/100x100?text=Megatodo";
+  foto.onerror = function(){this.onerror=null;this.src="https://via.placeholder.com/100x100?text=Megatodo";};
+
+  const datos = document.createElement("span");
+  datos.className = "resultado-datos";
+  const nombre = document.createElement("span");
+  nombre.className = "resultado-nombre";
+  nombre.textContent = p.Nombre || "Producto";
+  const detalle = document.createElement("small");
+  detalle.className = "resultado-detalle";
+  const variantesProducto = obtenerVariantesProducto(p);
+  const varianteMenor = variantesProducto.length ? varianteMenorPrecio(variantesProducto) : null;
+  const codigo = obtenerCodigoProducto(p);
+  if(variantesProducto.length && varianteMenor){
+    detalle.textContent = "Desde " + precioTexto(varianteMenor.Precio) + (varianteMenor.Tamaño ? " · " + varianteMenor.Tamaño : "") + " · Más opciones";
+  }else{
+    detalle.textContent = codigo ? "Código: " + codigo : "Ver producto y presentaciones";
+  }
+  datos.append(nombre,detalle);
+  enlace.append(foto,datos);
+  fila.appendChild(enlace);
+  return fila;
 }
+function buscarProductos(texto){
+  const busqueda = normalizar(texto);
+  if(!busqueda){resultadosBusqueda.innerHTML="";resultadosBusqueda.style.display="none";return;}
+  if(!productosCargados){
+    resultadosBusqueda.innerHTML='<div class="resultado-vacio">Cargando productos...</div>';
+    resultadosBusqueda.style.display="block";
+    return;
+  }
+  const palabras = busqueda.split(/\s+/).filter(Boolean);
+  const codigoBuscado = compactarCodigo(texto);
+  const filtrados = productos.filter(p => {
+    const contenido = normalizar([
+      p.Nombre || "",p.Categoria || p.Categoría || "",p.Descripción || p.Descripcion || "",obtenerCodigoProducto(p)
+    ].join(" "));
+    const coincideTexto = palabras.every(palabra => contenido.includes(palabra));
+    const codigoProducto = compactarCodigo(obtenerCodigoProducto(p));
+    const coincideCodigo = codigoBuscado && codigoProducto && codigoProducto.includes(codigoBuscado);
+    return coincideTexto || coincideCodigo;
+  }).slice(0,10);
 
-function compactarCodigo(texto) {
-    return normalizar(texto).replace(/[\s-]/g, "");
+  resultadosBusqueda.innerHTML = "";
+  if(!filtrados.length){
+    const vacio = document.createElement("div");
+    vacio.className = "resultado-vacio";
+    vacio.textContent = "No encontramos productos con ese nombre o código.";
+    resultadosBusqueda.appendChild(vacio);
+    resultadosBusqueda.style.display = "block";
+    return;
+  }
+  filtrados.forEach(p => resultadosBusqueda.appendChild(crearResultadoBusqueda(p)));
+  resultadosBusqueda.style.display = "block";
 }
-
-function buscarProductos(texto) {
-    const busqueda = normalizar(texto).trim();
-    const codigoBusqueda = compactarCodigo(texto);
-
-    if (!busqueda) {
-        resultadosBusqueda.innerHTML = "";
-        return;
-    }
-
-    const filtrados = productos.filter(p => {
-        const nombre = normalizar(p.Nombre);
-        const categoria = normalizar(p.Categoria || p.Categoría);
-        const codigo = normalizar(obtenerCodigoProducto(p));
-        const codigoCompacto = compactarCodigo(obtenerCodigoProducto(p));
-
-        return (
-            nombre.includes(busqueda) ||
-            categoria.includes(busqueda) ||
-            codigo.includes(busqueda) ||
-            codigoCompacto.includes(codigoBusqueda)
-        );
-    });
-
-    resultadosBusqueda.innerHTML = filtrados.slice(0, 10).map(p => {
-        const codigo = obtenerCodigoProducto(p);
-
-        return `
-            <div class="resultado">
-                <a href="producto.html?codigo=${encodeURIComponent(codigo)}">
-                    ${p.Nombre || "Producto"}
-                    ${codigo ? `<small> · ${codigo}</small>` : ""}
-                </a>
-            </div>
-        `;
-    }).join("");
+buscadorGlobal.addEventListener("input",function(){buscarProductos(this.value);});
+function ejecutarBusquedaTexto(){
+  const texto = buscadorGlobal.value.trim();
+  if(texto) window.location.href = "buscar.html?q=" + encodeURIComponent(texto);
 }
-
-buscadorGlobal.addEventListener("input", function() {
-    buscarProductos(this.value);
-});
-
-function ejecutarBusquedaTexto() {
-    const texto = buscadorGlobal.value.trim();
-
-    if (texto) {
-        window.location.href =
-            "buscar.html?q=" + encodeURIComponent(texto);
-    }
-}
-
-buscadorGlobal.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-        ejecutarBusquedaTexto();
-    }
-});
+buscadorGlobal.addEventListener("keydown",function(e){if(e.key === "Enter"){e.preventDefault();ejecutarBusquedaTexto();}});
+document.addEventListener("click",function(e){if(!e.target.closest(".buscador-header")) resultadosBusqueda.style.display="none";});
 
 /* =====================================================
-   VENTANA DE BUSQUEDA POR FOTO
+   ACCIÓN DE PRODUCTOS DE NUEVOS INGRESOS
 ===================================================== */
+function agregarProductoDesdeInicio(identificador,tieneVariantes=false){
+  const texto = String(identificador || "");
+  const producto = productos.find(p => obtenerIdInternoProducto(p) === texto) || productos.find(p => obtenerCodigoProducto(p) === texto);
+  if(!producto){alert("No encontramos este producto en el catálogo. Actualiza la página e inténtalo nuevamente.");return;}
+  if(tieneVariantes || obtenerVariantesProducto(producto).length){
+    const url = obtenerUrlFichaProducto(producto);
+    if(url) window.location.href = url;
+    else alert("Este producto todavía no tiene ID interno ni código para abrir su ficha.");
+    return;
+  }
+  if(normalizar(producto.Stock) === "agotado"){alert("Este producto está agotado.");return;}
+  const clave = obtenerIdInternoProducto(producto) || obtenerCodigoProducto(producto) || normalizar(producto.Nombre);
+  const carrito = getCart();
+  const existente = carrito.find(item => String(item.idProducto || item.codigo || normalizar(item.nombre)) === clave && !item.idVariante);
+  if(existente) existente.cantidad = (Number(existente.cantidad) || 1) + 1;
+  else carrito.push({idProducto:obtenerIdInternoProducto(producto),codigo:obtenerCodigoProducto(producto),nombre:producto.Nombre || "Producto",precio:producto.Precio || 0,cantidad:1,foto:convertirUrlFotografia(obtenerFotoProducto(producto),1005),tamano:producto.Tamaño || producto.Tamano || "",stock:producto.Stock || "",idVariante:""});
+  guardarCart(carrito);
+  actualizarCarritoUI();
+  renderizarCarrito();
+  abrirPanelCarrito();
+}
 
+/* =====================================================
+   VENTANA DE BÚSQUEDA POR FOTO
+===================================================== */
 const modalVisual = document.getElementById("modalBusquedaVisual");
 const archivoCamara = document.getElementById("archivoCamara");
 const archivoGaleria = document.getElementById("archivoGaleria");
 const imagenSeleccionada = document.getElementById("imagenSeleccionada");
 const mensajeVisual = document.getElementById("mensajeVisual");
-
 let urlFotoTemporal = null;
-
-document.getElementById("btnAbrirVisual").addEventListener("click", () => {
-    modalVisual.classList.add("abierto");
-});
-
-document.getElementById("btnCerrarVisual").addEventListener("click", cerrarModalVisual);
-
-function cerrarModalVisual() {
-    detenerEscaner();
-    modalVisual.classList.remove("abierto");
+document.getElementById("btnAbrirVisual").addEventListener("click",()=>modalVisual.classList.add("abierto"));
+document.getElementById("btnCerrarVisual").addEventListener("click",cerrarModalVisual);
+function cerrarModalVisual(){detenerEscaner();modalVisual.classList.remove("abierto");}
+modalVisual.addEventListener("click",function(e){if(e.target === modalVisual) cerrarModalVisual();});
+document.getElementById("btnTomarFoto").addEventListener("click",()=>archivoCamara.click());
+document.getElementById("btnElegirFoto").addEventListener("click",()=>archivoGaleria.click());
+function mostrarFotoSeleccionada(archivo){
+  if(!archivo) return;
+  if(urlFotoTemporal) URL.revokeObjectURL(urlFotoTemporal);
+  urlFotoTemporal = URL.createObjectURL(archivo);
+  imagenSeleccionada.src = urlFotoTemporal;
+  imagenSeleccionada.style.display = "block";
+  mensajeVisual.textContent = "Fotografía cargada. La búsqueda automática por similitud se implementará en una siguiente etapa.";
 }
-
-modalVisual.addEventListener("click", function(e) {
-    if (e.target === modalVisual) {
-        cerrarModalVisual();
-    }
-});
-
-document.getElementById("btnTomarFoto").addEventListener("click", () => {
-    archivoCamara.click();
-});
-
-document.getElementById("btnElegirFoto").addEventListener("click", () => {
-    archivoGaleria.click();
-});
-
-function mostrarFotoSeleccionada(archivo) {
-    if (!archivo) return;
-
-    if (urlFotoTemporal) {
-        URL.revokeObjectURL(urlFotoTemporal);
-    }
-
-    urlFotoTemporal = URL.createObjectURL(archivo);
-    imagenSeleccionada.src = urlFotoTemporal;
-    imagenSeleccionada.style.display = "block";
-
-    mensajeVisual.textContent =
-        "Fotografía cargada. La búsqueda automática por similitud se implementará en la siguiente etapa.";
-}
-
-archivoCamara.addEventListener("change", function() {
-    mostrarFotoSeleccionada(this.files[0]);
-});
-
-archivoGaleria.addEventListener("change", function() {
-    mostrarFotoSeleccionada(this.files[0]);
-});
-
+archivoCamara.addEventListener("change",function(){mostrarFotoSeleccionada(this.files[0]);});
+archivoGaleria.addEventListener("change",function(){mostrarFotoSeleccionada(this.files[0]);});
 
 /* =====================================================
-   LECTOR DE CODIGOS DE BARRAS
+   LECTOR DE CÓDIGOS DE BARRAS
 ===================================================== */
-
 let controlesEscaner = null;
 let lectorActivo = false;
-
 const scannerContenedor = document.getElementById("scannerContenedor");
 const videoEscaner = document.getElementById("videoEscaner");
 const estadoEscaner = document.getElementById("estadoEscaner");
-
-document.getElementById("btnAbrirEscaner").addEventListener("click", iniciarEscaner);
-document.getElementById("btnCerrarEscaner").addEventListener("click", detenerEscaner);
-
-async function iniciarEscaner() {
+document.getElementById("btnAbrirEscaner").addEventListener("click",iniciarEscaner);
+document.getElementById("btnCerrarEscaner").addEventListener("click",detenerEscaner);
+async function iniciarEscaner(){
+  scannerContenedor.hidden = false;
+  estadoEscaner.textContent = "Solicitando acceso a la cámara...";
+  if(!window.ZXingBrowser){estadoEscaner.textContent="No se pudo cargar el lector de códigos.";return;}
+  try{
+    detenerEscaner();
     scannerContenedor.hidden = false;
-    estadoEscaner.textContent = "Solicitando acceso a la cámara...";
-
-    if (!window.ZXingBrowser) {
-        estadoEscaner.textContent = "No se pudo cargar el lector de códigos.";
-        return;
-    }
-
-    try {
+    const lector = new ZXingBrowser.BrowserMultiFormatReader();
+    lectorActivo = true;
+    controlesEscaner = await lector.decodeFromVideoDevice(undefined,videoEscaner,(resultado,error)=>{
+      if(resultado && lectorActivo){
+        const codigoLeido = resultado.getText();
         detenerEscaner();
-
-        scannerContenedor.hidden = false;
-
-        const lector = new ZXingBrowser.BrowserMultiFormatReader();
-
-        lectorActivo = true;
-
-        controlesEscaner = await lector.decodeFromVideoDevice(
-            undefined,
-            videoEscaner,
-            (resultado, error) => {
-                if (resultado && lectorActivo) {
-                    const codigoLeido = resultado.getText();
-
-                    detenerEscaner();
-
-                    buscadorGlobal.value = codigoLeido;
-                    buscarProductos(codigoLeido);
-
-                    const codigoCompacto = compactarCodigo(codigoLeido);
-
-                    const producto = productos.find(p =>
-                        compactarCodigo(obtenerCodigoProducto(p)) === codigoCompacto
-                    );
-
-                    if (producto) {
-                        window.location.href =
-                            "producto.html?codigo=" +
-                            encodeURIComponent(obtenerCodigoProducto(producto));
-                    } else {
-                        estadoEscaner.textContent =
-                            "No encontramos el código " + codigoLeido +
-                            ". Revisa la columna Código de tu catálogo.";
-                    }
-                }
-            }
-        );
-
-        estadoEscaner.textContent = "Enfoca el código de barras del producto.";
-
-    } catch (error) {
-        lectorActivo = false;
-        estadoEscaner.textContent =
-            "No se pudo abrir la cámara. Revisa los permisos del navegador.";
-        console.error("Error del escáner:", error);
-    }
-}
-
-function detenerEscaner() {
+        buscadorGlobal.value = codigoLeido;
+        buscarProductos(codigoLeido);
+        const compacto = compactarCodigo(codigoLeido);
+        const producto = productos.find(p => compactarCodigo(obtenerCodigoProducto(p)) === compacto);
+        if(producto){
+          const url = obtenerUrlFichaProducto(producto);
+          if(url) window.location.href = url;
+          else estadoEscaner.textContent = "El producto no tiene ID interno ni código utilizable.";
+        }else{
+          estadoEscaner.textContent = "No encontramos el código " + codigoLeido + ". Revisa la columna Código de tu catálogo.";
+        }
+      }
+    });
+    estadoEscaner.textContent = "Enfoca el código de barras del producto.";
+  }catch(error){
     lectorActivo = false;
-
-    if (controlesEscaner) {
-        controlesEscaner.stop();
-        controlesEscaner = null;
-    }
-
-    if (videoEscaner.srcObject) {
-        videoEscaner.srcObject.getTracks().forEach(track => track.stop());
-        videoEscaner.srcObject = null;
-    }
+    estadoEscaner.textContent = "No se pudo abrir la cámara. Revisa los permisos del navegador.";
+    console.error("Error del escáner:",error);
+  }
+}
+function detenerEscaner(){
+  lectorActivo = false;
+  if(controlesEscaner){try{controlesEscaner.stop();}catch(e){}controlesEscaner=null;}
+  if(videoEscaner.srcObject){videoEscaner.srcObject.getTracks().forEach(track=>track.stop());videoEscaner.srcObject=null;}
 }
 
 /* =====================================================
    MENÚ CATEGORÍAS
 ===================================================== */
-
-const menuCategorias =
-    document.getElementById(
-        "menuCategorias"
-    );
-
-
-const btnMenuCategorias =
-    document.getElementById(
-        "btnMenuCategorias"
-    );
-
-
-/* ABRIR / CERRAR */
-
-btnMenuCategorias.addEventListener(
-    "click",
-    function(e){
-
-        e.stopPropagation();
-
-        menuCategorias.classList.toggle(
-            "abierto"
-        );
-
-    }
-);
-
-
-/* CERRAR AL HACER CLIC FUERA */
-
-document.addEventListener(
-    "click",
-    function(e){
-
-        if(
-            !menuCategorias.contains(e.target)
-        ){
-
-            menuCategorias.classList.remove(
-                "abierto"
-            );
-
-        }
-
-    }
-);
-
+const menuCategorias = document.getElementById("menuCategorias");
+const btnMenuCategorias = document.getElementById("btnMenuCategorias");
+btnMenuCategorias.addEventListener("click",function(e){e.stopPropagation();menuCategorias.classList.toggle("abierto");});
+document.addEventListener("click",function(e){if(!menuCategorias.contains(e.target)) menuCategorias.classList.remove("abierto");});
 
 /* =====================================================
-   CARRITO
+   CARRITO LATERAL
 ===================================================== */
-
 function getCart(){
-
-    return JSON.parse(
-        localStorage.getItem("carrito")
-    ) || [];
-
+  try{const data=JSON.parse(localStorage.getItem("carrito") || "[]");return Array.isArray(data)?data:[];}
+  catch(e){return [];}
 }
-
-
+function guardarCart(cart){localStorage.setItem("carrito",JSON.stringify(cart));}
 function actualizarCarritoUI(){
-
-    const carrito =
-        getCart();
-
-
-    const cantidad =
-        carrito.reduce(
-            (sum,p) =>
-
-                sum +
-                (Number(p.cantidad) || 0),
-
-            0
-        );
-
-
-    document.getElementById(
-        "cartCount"
-    ).textContent = cantidad;
-
+  const cantidad = getCart().reduce((sum,p)=>sum+(Number(p.cantidad)||0),0);
+  document.getElementById("cartCount").textContent = cantidad;
 }
-
-
+const abrirCarrito = document.getElementById("abrirCarrito");
+const cerrarCarrito = document.getElementById("cerrarCarrito");
+const carritoPanel = document.getElementById("carritoPanel");
+const carritoOverlay = document.getElementById("carritoOverlay");
+const carritoContenido = document.getElementById("carritoContenido");
+const carritoTotal = document.getElementById("carritoTotal");
+const btnWppCarrito = document.getElementById("btnWppCarrito");
+function abrirPanelCarrito(){renderizarCarrito();carritoPanel.classList.add("abierto");carritoOverlay.classList.add("abierto");document.body.style.overflow="hidden";}
+function cerrarPanelCarrito(){carritoPanel.classList.remove("abierto");carritoOverlay.classList.remove("abierto");document.body.style.overflow="";}
+abrirCarrito.addEventListener("click",abrirPanelCarrito);
+cerrarCarrito.addEventListener("click",cerrarPanelCarrito);
+carritoOverlay.addEventListener("click",cerrarPanelCarrito);
+document.addEventListener("keydown",e=>{if(e.key === "Escape") cerrarPanelCarrito();});
+function renderizarCarrito(){
+  const carrito = getCart();
+  if(!carrito.length){
+    carritoContenido.innerHTML='<div class="carrito-vacio"><div class="carrito-vacio-icono">🛒</div><h3>Tu carrito está vacío</h3><p>Agrega productos para verlos aquí.</p></div>';
+    carritoTotal.textContent="$0.00";
+    btnWppCarrito.href="https://wa.me/"+NUMERO_WHATSAPP;
+    return;
+  }
+  carritoContenido.innerHTML = carrito.map((p,index)=>{
+    const nombre = escaparHTML(p.nombre || p.Nombre || "Producto");
+    const precio = convertirPrecio(p.precio ?? p.Precio ?? 0);
+    const cantidad = Number(p.cantidad)||1;
+    const foto = escaparHTML(p.foto || p.imagen || p["Foto 1"] || p.Foto || "");
+    const detalle = [p.tamano || p.Tamaño || "",p.codigoVariante || p.CodigoVariante || ""].filter(Boolean).join(" · ");
+    return `<div class="carrito-item"><div class="carrito-item-imagen"><img src="${foto}" alt="${nombre}" loading="lazy" onerror="this.style.visibility='hidden'"></div><div class="carrito-item-info"><div class="carrito-item-nombre">${nombre}</div>${detalle?`<div class="carrito-item-detalle">${escaparHTML(detalle)}</div>`:""}<div class="carrito-item-precio">$${precio.toFixed(2)}</div><div class="carrito-item-cantidad"><button class="cantidad-btn" type="button" onclick="cambiarCantidadCarrito(${index},-1)">−</button><span class="cantidad-numero">${cantidad}</span><button class="cantidad-btn" type="button" onclick="cambiarCantidadCarrito(${index},1)">+</button></div></div><button class="eliminar-item" type="button" onclick="eliminarDelCarrito(${index})" aria-label="Eliminar">🗑️</button></div>`;
+  }).join("");
+  const total = carrito.reduce((sum,p)=>sum+convertirPrecio(p.precio ?? p.Precio ?? 0)*(Number(p.cantidad)||1),0);
+  carritoTotal.textContent="$"+total.toFixed(2);
+  btnWppCarrito.href = "https://wa.me/"+NUMERO_WHATSAPP+"?text="+encodeURIComponent(crearMensajeWhatsAppCarrito(carrito,total));
+}
+function cambiarCantidadCarrito(index,cambio){
+  const carrito=getCart();if(!carrito[index])return;
+  carrito[index].cantidad=(Number(carrito[index].cantidad)||1)+cambio;
+  if(carrito[index].cantidad<=0)carrito.splice(index,1);
+  guardarCart(carrito);actualizarCarritoUI();renderizarCarrito();
+}
+function eliminarDelCarrito(index){const carrito=getCart();carrito.splice(index,1);guardarCart(carrito);actualizarCarritoUI();renderizarCarrito();}
+function crearMensajeWhatsAppCarrito(carrito,total){
+  let mensaje="Hola Megatodo 👋\n\nQuiero realizar una compra:\n\n";
+  carrito.forEach((p,i)=>{
+    const precio=convertirPrecio(p.precio ?? p.Precio ?? 0);const cantidad=Number(p.cantidad)||1;
+    const detalle=[p.tamano || p.Tamaño || "",p.codigoVariante || p.CodigoVariante || ""].filter(Boolean).join(" · ");
+    const id=p.idProducto || "";const codigo=p.codigo || "";
+    const url=id?new URL("producto.html?id="+encodeURIComponent(id),window.location.href).href:new URL("producto.html?codigo="+encodeURIComponent(codigo),window.location.href).href;
+    mensaje+=`${i+1}. ${p.nombre || "Producto"}\n${detalle?"Presentación: "+detalle+"\n":""}Cantidad: ${cantidad}\nPrecio: $${precio.toFixed(2)}\nSubtotal: $${(precio*cantidad).toFixed(2)}\n🔗 ${url}\n\n`;
+  });
+  return mensaje+`💰 TOTAL: $${total.toFixed(2)}\n\nQuedo atento/a. Gracias 😊`;
+}
 actualizarCarritoUI();
 
+/* =====================================================
+   BOTÓN VOLVER ARRIBA
+===================================================== */
+window.addEventListener("scroll",function(){document.getElementById("btnArriba").style.display=window.scrollY>250?"flex":"none";});
+function irArriba(){window.scrollTo({top:0,behavior:"smooth"});}
 
 /* =====================================================
-   ELEMENTOS CARRITO
+   CARRUSEL AUTOMÁTICO DE BANNERS
 ===================================================== */
-
-const abrirCarrito =
-    document.getElementById(
-        "abrirCarrito"
-    );
-
-
-const cerrarCarrito =
-    document.getElementById(
-        "cerrarCarrito"
-    );
-
-
-const carritoPanel =
-    document.getElementById(
-        "carritoPanel"
-    );
-
-
-const carritoOverlay =
-    document.getElementById(
-        "carritoOverlay"
-    );
-
-
-const carritoContenido =
-    document.getElementById(
-        "carritoContenido"
-    );
-
-
-const carritoTotal =
-    document.getElementById(
-        "carritoTotal"
-    );
-
-
-/* =====================================================
-   ABRIR CARRITO
-===================================================== */
-
-function abrirPanelCarrito(){
-
-    renderizarCarrito();
-
-
-    carritoPanel.classList.add(
-        "abierto"
-    );
-
-
-    carritoOverlay.classList.add(
-        "abierto"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-/* =====================================================
-   CERRAR CARRITO
-===================================================== */
-
-function cerrarPanelCarrito(){
-
-    carritoPanel.classList.remove(
-        "abierto"
-    );
-
-
-    carritoOverlay.classList.remove(
-        "abierto"
-    );
-
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-abrirCarrito.addEventListener(
-    "click",
-    abrirPanelCarrito
-);
-
-
-cerrarCarrito.addEventListener(
-    "click",
-    cerrarPanelCarrito
-);
-
-
-carritoOverlay.addEventListener(
-    "click",
-    cerrarPanelCarrito
-);
-
-
-document.addEventListener(
-    "keydown",
-    function(e){
-
-        if(e.key === "Escape"){
-
-            cerrarPanelCarrito();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   MOSTRAR CARRITO
-===================================================== */
-
-function renderizarCarrito(){
-
-    const carrito =
-        getCart();
-
-
-    if(!carrito.length){
-
-        carritoContenido.innerHTML = `
-
-            <div
-                class="carrito-vacio">
-
-
-                <div
-                    class="carrito-vacio-icono">
-
-                    🛒
-
-                </div>
-
-
-                <h3>
-
-                    Tu carrito está vacío
-
-                </h3>
-
-
-                <p>
-
-                    Agrega productos para verlos aquí.
-
-                </p>
-
-
-            </div>
-
-        `;
-
-
-        carritoTotal.textContent =
-            "$0.00";
-
-
-        return;
-
-    }
-
-
-    carritoContenido.innerHTML =
-
-        carrito.map(
-            (p,index) => {
-
-
-                const nombre =
-                    p.nombre ||
-                    p.Nombre ||
-                    "Producto";
-
-
-                const precio =
-                    parseFloat(
-                        String(
-                            p.precio ||
-                            p.Precio ||
-                            0
-                        ).replace(
-                            /[^0-9.-]/g,
-                            ""
-                        )
-                    ) || 0;
-
-
-                const cantidad =
-                    Number(
-                        p.cantidad
-                    ) || 1;
-
-
-                const foto =
-                    p.foto ||
-                    p.imagen ||
-                    p["Foto 1"] ||
-                    p["Foto"] ||
-                    "";
-
-
-                return `
-
-                    <div
-                        class="carrito-item">
-
-
-                        <div
-                            class="carrito-item-imagen">
-
-
-                            <img
-                                src="${foto}"
-                                alt="${nombre}">
-
-
-                        </div>
-
-
-                        <div
-                            class="carrito-item-info">
-
-
-                            <div
-                                class="carrito-item-nombre">
-
-                                ${nombre}
-
-                            </div>
-
-
-                            <div
-                                class="carrito-item-precio">
-
-                                $${precio.toFixed(2)}
-
-                            </div>
-
-
-                            <div
-                                class="carrito-item-cantidad">
-
-
-                                <button
-                                    class="cantidad-btn"
-                                    onclick="cambiarCantidadCarrito(${index},-1)">
-
-                                    −
-
-                                </button>
-
-
-                                <span
-                                    class="cantidad-numero">
-
-                                    ${cantidad}
-
-                                </span>
-
-
-                                <button
-                                    class="cantidad-btn"
-                                    onclick="cambiarCantidadCarrito(${index},1)">
-
-                                    +
-
-                                </button>
-
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            class="eliminar-item"
-                            onclick="eliminarDelCarrito(${index})"
-                            aria-label="Eliminar">
-
-                            🗑️
-
-                        </button>
-
-
-                    </div>
-
-                `;
-
-            }
-        ).join("");
-
-
-    const total =
-
-        carrito.reduce(
-            (sum,p) => {
-
-
-                const precio =
-                    parseFloat(
-                        String(
-                            p.precio ||
-                            p.Precio ||
-                            0
-                        ).replace(
-                            /[^0-9.-]/g,
-                            ""
-                        )
-                    ) || 0;
-
-
-                const cantidad =
-                    Number(
-                        p.cantidad
-                    ) || 1;
-
-
-                return sum +
-                    precio * cantidad;
-
-            },
-
-            0
-
-        );
-
-
-    carritoTotal.textContent =
-        "$" + total.toFixed(2);
-
-}
-
-
-/* =====================================================
-   CAMBIAR CANTIDAD
-===================================================== */
-
-function cambiarCantidadCarrito(
-    index,
-    cambio
-){
-
-    let carrito =
-        getCart();
-
-
-    if(!carrito[index]){
-
-        return;
-
-    }
-
-
-    carrito[index].cantidad =
-
-        (Number(
-            carrito[index].cantidad
-        ) || 1)
-
-        + cambio;
-
-
-    if(
-        carrito[index].cantidad <= 0
-    ){
-
-        carrito.splice(
-            index,
-            1
-        );
-
-    }
-
-
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
-    );
-
-
-    actualizarCarritoUI();
-
-    renderizarCarrito();
-
-}
-
-
-/* =====================================================
-   ELIMINAR
-===================================================== */
-
-function eliminarDelCarrito(index){
-
-    let carrito =
-        getCart();
-
-
-    carrito.splice(
-        index,
-        1
-    );
-
-
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
-    );
-
-
-    actualizarCarritoUI();
-
-    renderizarCarrito();
-
-}
-
-
-/* =====================================================
-   ACTUALIZAR CARRITO
-===================================================== */
-
-window.addEventListener(
-    "storage",
-    function(){
-
-        actualizarCarritoUI();
-
-
-        if(
-            carritoPanel.classList.contains(
-                "abierto"
-            )
-        ){
-
-            renderizarCarrito();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   BOTÓN ARRIBA
-===================================================== */
-
-window.addEventListener(
-    "scroll",
-    function(){
-
-        const boton =
-            document.getElementById(
-                "btnArriba"
-            );
-
-
-        boton.style.display =
-
-            window.scrollY > 250
-            ? "flex"
-            : "none";
-
-    }
-);
-
-
-function irArriba(){
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
-    });
-
-}
-
-/* CAMBIO AUTOMÁTICO DE BANNERS MEGATODO */
-const imagenesBanners = [
-  "banners/banner1.jpg",
-  "banners/banner2.jpg",
-  "banners/banner3.jpg",
-  "banners/banner4.jpg"
-];
-
-let bannerActual = 0;
-
-function mostrarBanner() {
-  document.getElementById("bannerMegatodo").src =
-    imagenesBanners[bannerActual];
-}
-
-function cambiarBanner(direccion) {
-  bannerActual =
-    (bannerActual + direccion + imagenesBanners.length) %
-    imagenesBanners.length;
-
-  mostrarBanner();
-}
-
-setInterval(() => {
-  cambiarBanner(1);
-}, 4000);
-      
+const imagenesBanners=["banners/banner1.jpg","banners/banner2.jpg","banners/banner3.jpg","banners/banner4.jpg"];
+let bannerActual=0;
+function mostrarBanner(){const img=document.getElementById("bannerMegatodo");if(img)img.src=imagenesBanners[bannerActual];}
+function cambiarBanner(direccion){bannerActual=(bannerActual+direccion+imagenesBanners.length)%imagenesBanners.length;mostrarBanner();}
+setInterval(()=>cambiarBanner(1),4000);
 
 </script>
-
-
 </body>
-
 </html>
