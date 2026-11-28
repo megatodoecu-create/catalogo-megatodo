@@ -660,7 +660,7 @@ async function iniciarEscaner(){
         const codigoLeido = resultado.getText();
         detenerEscaner();
         buscadorGlobal.value = codigoLeido;
-        buscarProductos(codigoLeido);
+     procesarCodigoEscaneado(codigoLeido);
         const compacto = compactarCodigo(codigoLeido);
         const producto = productos.find(p => compactarCodigo(obtenerCodigoProducto(p)) === compacto);
         if(producto){
@@ -679,6 +679,45 @@ async function iniciarEscaner(){
     console.error("Error del escáner:",error);
   }
 }
+
+function procesarCodigoEscaneado(codigoLeido){
+  const codigo = compactarCodigo(codigoLeido);
+
+  if(!codigo) return;
+
+  // 1. Buscar primero el código exacto de una variante.
+  const variante = buscarVariantePorCodigo(codigoLeido);
+
+  if(variante){
+    const producto = buscarProductoDeVariante(variante);
+
+    if(producto){
+      const codigoVariante = String(
+        variante.CodigoVariante ?? variante["Código Variante"] ?? ""
+      ).trim();
+
+      window.location.href = obtenerUrlFichaProducto(
+        producto,
+        codigoVariante
+      );
+      return;
+    }
+  }
+
+  // 2. Si no es una variante, buscar el código del producto principal.
+  const producto = productos.find(p =>
+    compactarCodigo(obtenerCodigoProducto(p)) === codigo
+  );
+
+  if(producto){
+    window.location.href = obtenerUrlFichaProducto(producto);
+    return;
+  }
+
+  // 3. Si no existe, mostrar los resultados de búsqueda.
+  buscarProductos(codigoLeido);
+}
+   
 function detenerEscaner(){
   lectorActivo = false;
   if(controlesEscaner){try{controlesEscaner.stop();}catch(e){}controlesEscaner=null;}
