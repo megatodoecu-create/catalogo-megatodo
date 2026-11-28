@@ -249,33 +249,11 @@ function mostrarResultados(){
     return;
   }
 
-  const codigoBuscado = normalizar(buscador.value).replace(/[\s-]/g,"");
-
-  const encontrados = productos.filter(p => {
-    const nombre = normalizar(p.Nombre);
-    const categoria = normalizar(obtenerCategoriaProducto(p));
-    const codigo = normalizar(obtenerCodigo(p));
-
-    const coincideNombre = nombre.includes(texto);
-    const coincideCategoria = categoria.includes(texto);
-    const coincideCodigo = codigo.includes(texto);
-
-    const variantesProducto = variantesDeProducto(p);
-
-    const coincideCodigoVariante = variantesProducto.some(v => {
-      const codigoVariante = normalizar(
-        v.CodigoVariante ?? v["Código Variante"] ?? ""
-      ).replace(/[\s-]/g,"");
-
-      return codigoBuscado && codigoVariante.includes(codigoBuscado);
-    });
-
-    return coincideNombre ||
-      coincideCategoria ||
-      coincideCodigo ||
-      coincideCodigoVariante;
-
-  }).slice(0,8);
+  const encontrados = productos.filter(p =>
+    normalizar(p.Nombre).includes(texto) ||
+    normalizar(obtenerCodigo(p)).includes(texto) ||
+    normalizar(obtenerCategoriaProducto(p)).includes(texto)
+  ).slice(0,8);
 
   if(!encontrados.length){
     resultados.innerHTML =
